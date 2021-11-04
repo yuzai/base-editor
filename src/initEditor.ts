@@ -1,3 +1,6 @@
+/*
+* 初始化editor
+*/
 import * as monaco from 'monaco-editor';
 import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
@@ -9,13 +12,18 @@ export const startUp = () => {
         //     noSemanticValidation: true,
         //     noSyntaxValidation: true,
         // });
+        // 加载textmate语义解析webassembly文件
         await loadWASM('/onigasm.wasm');
+        // 获取主题文件
         const onDarkProTheme = JSON.parse(await (await fetch('/themes/OneDarkPro.json')).text());
+        // 定义主题
         monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
+        // 设置主题
         monaco.editor.setTheme('OneDarkPro');
     };
     init();
     
+    // 创建语法映射
     const grammars = new Map();
     
     grammars.set('typescript', 'source.ts');
@@ -32,10 +40,12 @@ export const startUp = () => {
         },
     });
     
+    // 将语法映射揉进monaco
     function wireMonacoGrammars() {
         wireTmGrammars(monaco, registry, grammars);
     }
-    
+
+    // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射
     setTimeout(() => {
         wireMonacoGrammars();
     }, 3000);

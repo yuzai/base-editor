@@ -14,6 +14,7 @@ const App = () => {
     const [files, setFiles] = useState<fileObj>({});
 
     useEffect(() => {
+        // 获取多文件
         const promises = filesName.map(async v => await (await (fetch(`/editorfiles${v}`))).text());
         Promise.all(promises).then(filesContent => {
             const res:fileObj = {};
@@ -28,12 +29,14 @@ const App = () => {
         })
     }, []);
 
+    // 设置当前文件路径和value
     const handleClick = (e: MouseEvent<HTMLLIElement>) => {
         const key = e.currentTarget.dataset.src!;
         setPath(key);
         setValue(files[key]);
     };
 
+    // 同步ide内容修改
     const handleChange = useCallback((e) => {
         setValue(e);
         setFiles(pre => ({
@@ -53,7 +56,6 @@ const App = () => {
                         value={value}
                         files={files}
                         path={path}
-                        language="javascript"
                         onValueChange={handleChange}
                         options={{
                             fontSize: 14,

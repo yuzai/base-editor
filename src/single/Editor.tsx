@@ -2,13 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 
 const Editor: React.FC<{
-    path: string,
     value: string,
     language: string,
     onValueChange: (v: string) => void,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }> = ({
-    path,
     value,
     language,
     onValueChange,

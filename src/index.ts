@@ -1,4 +1,4 @@
-import './Multi';
-import { startUp } from './initEditor';
+import './multi';
+import { startUp } from './utils/initEditor';
 
 startUp();

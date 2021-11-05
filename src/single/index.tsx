@@ -13,7 +13,6 @@ const App = () => {
     };
 
     const handleChange = useCallback((e) => {
-        console.log(e);
         setValue(e);
     }, [])
 
@@ -23,7 +22,6 @@ const App = () => {
             <li data-src="app.js" onClick={handleClick}>app.js</li>
             <li data-src="cc.js" onClick={handleClick}>cc.js</li>
             <Editor
-                path="test"
                 value={value}
                 language="javascript"
                 onValueChange={handleChange}

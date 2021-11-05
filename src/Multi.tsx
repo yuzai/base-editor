@@ -30,11 +30,10 @@ const App = () => {
     }, []);
 
     // 设置当前文件路径和value
-    const handleClick = (e: MouseEvent<HTMLLIElement>) => {
-        const key = e.currentTarget.dataset.src!;
+    const handlePathChange = useCallback((key: string, value: string) => {
         setPath(key);
-        setValue(files[key]);
-    };
+        setValue(value);
+    }, []);
 
     // 同步ide内容修改
     const handleChange = useCallback((e) => {
@@ -47,15 +46,13 @@ const App = () => {
 
     return (
         <div>
-            <li data-src={filesName[0]} onClick={handleClick}>fn.js</li>
-            <li data-src={filesName[1]} onClick={handleClick}>app.js</li>
-            <li data-src={filesName[2]} onClick={handleClick}>cc.js</li>
             {
                 Object.keys(files).length > 0 && (
                     <Editor
                         value={value}
                         files={files}
                         path={path}
+                        onPathChange={handlePathChange}
                         onValueChange={handleChange}
                         options={{
                             fontSize: 14,

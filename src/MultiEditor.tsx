@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 
 interface fileObj {
     [key: string]: string,
 }
-
 
 // 初始化各个文件
 function initializeFile(path: string, value: string) {
@@ -40,21 +39,31 @@ function initializeFile(path: string, value: string) {
     }
 }
 
+// 存储各个文件的状态
+const editorStates = new Map();
+
+// TODO:删除model
+
+// TODO:重命名model
+
 const Editor: React.FC<{
     path: string,
     files: fileObj,
     value: string,
     onValueChange: (v: string) => void,
+    onPathChange: (key: string, value: string) => void,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }> = ({
     path,
     files,
     value,
     onValueChange,
-    options
+    options,
+    onPathChange,
 }) => {
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const prePath = useRef<string | null>(path);
 
     useEffect(() => {
         // 创建editor 实例
@@ -76,6 +85,10 @@ const Editor: React.FC<{
     useEffect(() => {
         // 先创建 or 更新model内容
         initializeFile(path, value);
+        // path切换，存储上一个path编辑状态
+        if (path !== prePath.current) {
+            editorStates.set(prePath.current, editorRef.current?.saveViewState());
+        }
         // 获取当前model
         const model = monaco.editor
             .getModels()
@@ -84,13 +97,24 @@ const Editor: React.FC<{
         if (model && editorRef.current) {
             // 设置editor实例使用当前model
             editorRef.current.setModel(model);
+            // 如果path改变，那么恢复上一次的状态
+            if (path !== prePath.current) {
+                const editorState = editorStates.get(path);
+                if (editorState) {
+                    editorRef.current?.restoreViewState(editorState);
+                }
+                // 聚焦editor
+                editorRef.current?.focus();
+            }
             // 监听editor内容改变
-            sub = editorRef.current.getModel()!.onDidChangeContent(() => {
-                const v = editorRef.current!.getModel()!.getValue();    
+            sub = model.onDidChangeContent(() => {
+                const v = model.getValue();    
                 // 受控        
                 onValueChange(v);
             })
         }
+        // 更新上一次的path
+        prePath.current = path;
         return () => {
             if (sub.dispose) {
                 // 销毁监听
@@ -106,8 +130,20 @@ const Editor: React.FC<{
         }
     }, [options]);
 
+    const handlePathChange = useCallback((e) => {
+        const key = e.currentTarget.dataset.src!;
+        onPathChange(key, files[key]);
+    }, [files, onPathChange]);
+
     return (
-        <div ref={editorNodeRef} style={{ width: '800px', height: '600px' }} />
+        <div className="music-monaco-editor">
+            <ul className="music-manaco-editor-tree">
+                {
+                    Object.keys(files).map(v => <li data-src={v} onClick={handlePathChange} key={v}>{v}</li>)
+                }
+            </ul>
+            <div ref={editorNodeRef} style={{ width: '800px', height: '600px' }} />
+        </div>
     )
 };
 

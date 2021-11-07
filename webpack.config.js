@@ -31,8 +31,8 @@ module.exports = {
                 use: ["ts-loader"],
             },
             {
-                test: /\.(css|scss)$/,
-                use: ["style-loader", "css-loader"],
+                test: /\.(css|less)$/,
+                use: ["style-loader", "css-loader", "less-loader"],
             },
             {
                 test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
@@ -44,18 +44,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "src", "index.html"),
         }),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         {
-        //             from: monacoEditorCorePath,
-        //             to: 'vs'
-        //         },
-        //         {
-        //             from: onigasmPath,
-        //             to: 'oniga'
-        //         },
-        //     ]
-        // }),
         new MonacoWebpackPlugin({
 			languages: ['typescript', 'javascript', 'css']
 		}),

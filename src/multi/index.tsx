@@ -1,12 +1,20 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
-import { MouseEvent, useCallback, useState, useEffect } from 'react';
-import Editor from './MultiEditor';
+import { useCallback, useState, useEffect } from 'react';
+import Editor from './Editor';
 
 interface fileObj {
     [key: string]: string,
 }
 
-const filesName = ['/fn.js', '/app.js', '/cc.js'];
+const filesName = [
+    '/fn.js',
+    '/app.js',
+    '/cc.js',
+    '/src/index.js',
+    '/styles/index.less',
+    '/src/components/title/index.js',
+    '/src/components/title/index.less',
+];
 
 const App = () => {
     const [value, setValue] = useState('');

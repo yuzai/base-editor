@@ -26,6 +26,8 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "image-webpack-loader": "^8.0.1",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "monaco-editor": "^0.29.1",
     "monaco-editor-core": "^0.29.2",
     "monaco-editor-webpack-plugin": "^5.0.0",

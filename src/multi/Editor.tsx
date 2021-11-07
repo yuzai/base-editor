@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as monaco from 'monaco-editor';
+import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import './Editor.less';
 
@@ -74,6 +75,10 @@ const Editor: React.FC<{
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(path);
+    const [openedFiles, setOpenedFiles] = useState<Array<{
+        status?: string,
+        path: string,
+    }>>([]);
 
     useEffect(() => {
         // 创建editor 实例
@@ -143,6 +148,7 @@ const Editor: React.FC<{
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
         onPathChange(key, files[key]);
+        setOpenedFiles(pre => [...pre, { path: key }]);
     }, [files, onPathChange]);
 
     return (
@@ -151,7 +157,10 @@ const Editor: React.FC<{
                 currentPath={path}
                 files={files}
                 onPathChange={handlePathChange} />
-            <div ref={editorNodeRef} style={{ flex: 1, height: '100%' }}/>
+            <div className="music-monaco-editor-area">
+                <OpenedTab openedFiles={openedFiles}/>
+                <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }}/>
+            </div>
         </div>
     )
 };

@@ -12,10 +12,12 @@ const File: React.FC<{
     onPathChange: MouseEventHandler<HTMLDivElement>,
     directory?: string,
     root: boolean,
+    currentPath?: string
 }> = ({
     file,
     onPathChange,
     directory = '',
+    currentPath = '',
     root
 }) => {
     const [showChild, setShowChild] = useState(false);
@@ -23,18 +25,33 @@ const File: React.FC<{
         setShowChild(pre => !pre);
     }, []);
     if (file.name) {
+        const fileType = file.name.split('.').slice(-1);
+        
         return (
-            <div data-src={file.path} onClick={onPathChange} key={file.path}>
+            <div
+                data-src={file.path}
+                onClick={onPathChange}
+                key={file.path}
+                className={`music-monaco-editor-list-file-item-row ${currentPath === file.path ? 'music-monaco-editor-list-file-item-row-focused' : ''}`}>
+                <Icon
+                    type={`file_type_${fileType}`}
+                    style={{
+                        marginRight: '5px',
+                    }} />
                 {file.name}
             </div>
         )
     }
     return (
-        <div className="music-monaco-editor-list">
-            <Icon />
+        <div className="music-monaco-editor-list-file-item">
             {
                 directory && (
-                    <div onClick={handleClick} className="music-manaco-editor-tree-icon default_folder-opened">
+                    <div onClick={handleClick} className="music-monaco-editor-list-file-item-row">
+                        <Icon
+                            style={{
+                                marginRight: '5px',
+                            }}
+                            type={showChild ? 'default_folder_opened' : 'default_folder'} />
                         {directory}
                     </div>
                 )
@@ -45,6 +62,7 @@ const File: React.FC<{
                         {
                             Object.keys(file).map(item => (
                                 <File
+                                    currentPath={currentPath}
                                     root={false}
                                     file={file[item]}
                                     onPathChange={onPathChange}
@@ -64,20 +82,24 @@ const FileTree: React.FC<{
     files: fileObj,
     onPathChange: MouseEventHandler<HTMLParagraphElement>,
     title?: string,
+    currentPath?: string,
 }> = ({
     files,
     onPathChange,
-    title = 'editor',
+    title = 'monaco-base-editor',
+    currentPath = '',
 }) => {
+    console.log(currentPath);
     const fileTree = generateFileTree(files);
 
     return (
-        <div className="music-monaco-editor-list">
+        <div className="music-monaco-editor-list-wrapper">
             <div className="music-monaco-editor-list-title">
                 {title}
             </div>
             <div className="music-monaco-editor-list-files">
                 <File
+                    currentPath={currentPath}
                     root
                     file={fileTree}
                     onPathChange={onPathChange} />

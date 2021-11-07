@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
-import FileTree from './components/filetree';
+import FileList from './components/filelist';
 import './Editor.less';
 
 interface fileObj {
@@ -32,10 +32,18 @@ function initializeFile(path: string, value: string) {
         }
     } else {
         // 否则，创建新的model
+        const type = path.split('.').slice(-1)[0];
+        const config: {
+            [key: string]: string
+        } = {
+            'js': 'javascript',
+            'ts': 'typescript',
+            'less': 'less',
+        }
         model = monaco.editor.createModel(
             value,
             // TODO:根据输入文件后缀选择语言
-            'javascript',
+            config[type] || type,
             new monaco.Uri().with({ path })
         );
     }
@@ -139,8 +147,11 @@ const Editor: React.FC<{
 
     return (
         <div className="music-monaco-editor">
-            <FileTree files={files} onPathChange={handlePathChange}/>
-            <div ref={editorNodeRef} style={{ width: '800px', height: '600px' }} />
+            <FileList
+                currentPath={path}
+                files={files}
+                onPathChange={handlePathChange} />
+            <div ref={editorNodeRef} style={{ flex: 1, height: '100%' }}/>
         </div>
     )
 };

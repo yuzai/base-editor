@@ -1,0 +1,30 @@
+.music-monaco-editor-list {
+    &-wrapper {
+        width: 180px;
+        font-size: 14px;
+        line-height: 21px;
+        height: 100%;
+        background: var(--list-background);
+        color: var(--list-foreground);
+        overflow: scroll;
+    }
+
+    &-file-item {
+        &-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 10px;
+
+            &:hover {
+                background-color: var(--list-hoverBackground);
+                color: var(--list-hoverForeground);
+            }
+
+            &-focused {
+                background-color: var(--list-focusBackground);
+                color: var(--list-focusForeground);
+            }
+        }
+    }
+}

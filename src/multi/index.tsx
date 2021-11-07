@@ -10,6 +10,7 @@ const filesName = [
     '/fn.js',
     '/app.js',
     '/cc.js',
+    '/index.ts',
     '/src/index.js',
     '/styles/index.less',
     '/src/components/title/index.js',
@@ -56,16 +57,18 @@ const App = () => {
         <div>
             {
                 Object.keys(files).length > 0 && (
-                    <Editor
-                        value={value}
-                        files={files}
-                        path={path}
-                        onPathChange={handlePathChange}
-                        onValueChange={handleChange}
-                        options={{
-                            fontSize: 14,
-                            automaticLayout: true,
-                        }} />
+                    <div style={{ width: '800px', height: '600px' }}>
+                        <Editor
+                            value={value}
+                            files={files}
+                            path={path}
+                            onPathChange={handlePathChange}
+                            onValueChange={handleChange}
+                            options={{
+                                fontSize: 14,
+                                automaticLayout: true,
+                            }} />
+                    </div>
                 )
             }
         </div>

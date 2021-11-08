@@ -8,6 +8,18 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 // const monacoEditorCorePath = '/Users/maxiaobo/Documents/netease/music-monaco-editor/base-editor/node_modules/monaco-editor/min/vs';
 // const onigasmPath = '/Users/maxiaobo/Documents/netease/music-monaco-editor/base-editor/node_modules/onigasm/lib';
 
+const devServer = {
+}
+
+if (process.env.CLOUDIDE_DEV_PORT) {
+    // 设置热更新的端口为80
+    devServer.host = '0.0.0.0';
+    devServer.allowedHosts = 'all';
+    devServer.client = {
+        webSocketURL: 'http://0.0.0.0/ws',
+    }
+}
+
 module.exports = {
     entry: "./src/index.ts",
     output: { path: path.join(__dirname, "build"), filename: "index.bundle.js" },
@@ -15,9 +27,7 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
-    devServer: {
-        // static: path.join(__dirname, "src")
-    },
+    devServer,
     module: {
         rules: [
             {

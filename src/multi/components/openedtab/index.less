@@ -3,6 +3,28 @@
     font-size: 14px;
     line-height: 35px;
     background-color: #000;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+    white-space: nowrap;
+
+    /* 滚动槽 */
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: var(--list-background);
+        -webkit-box-shadow: inset 0 0 5px var(--scrollbar-shadow);
+    }
+    /* 滚动条滑块 */
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: var(--scrollbarSlider-background);
+        -webkit-box-shadow: inset 0 0 5px var(--scrollbar-shadow);
+
+        //TODO: 增加滚动条hover态展示
+    }
 
     &-item {
         box-sizing: border-box;

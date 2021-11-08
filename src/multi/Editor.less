@@ -19,6 +19,11 @@
     --list-inactiveSelectionForeground: #d7dae0;
     --list-warningForeground: #d19a66;
 
+    --scrollbar-shadow: #23252c;
+    --scrollbarSlider-activeBackground: #747d9180;
+    --scrollbarSlider-background: #4e566660;
+    --scrollbarSlider-hoverBackground: #5a637580;
+
     //"list.deemphasizedForeground": "#8c8c8c",
     //"list.errorForeground": "#f88070",
     //"list.focusHighlightForeground": "#18a3ff",
@@ -26,6 +31,7 @@
     //"list.highlightForeground": "#18a3ff",
 
     &-area {
+        overflow: hidden;
         color: var(--list-foreground);
         background-color: var(--list-background);
         flex: 1;

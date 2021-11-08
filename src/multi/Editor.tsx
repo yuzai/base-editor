@@ -148,7 +148,19 @@ const Editor: React.FC<{
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
         onPathChange(key, files[key]);
-        setOpenedFiles(pre => [...pre, { path: key }]);
+        setOpenedFiles(pre => {
+            let exist = false;
+            pre.forEach(v => {
+                if (v.path === key) {
+                    exist = true;
+                }
+            })
+            if (exist) {
+                return pre;
+            } else {
+                return [...pre, { path: key }]
+            }
+        });
     }, [files, onPathChange]);
 
     return (
@@ -158,7 +170,7 @@ const Editor: React.FC<{
                 files={files}
                 onPathChange={handlePathChange} />
             <div className="music-monaco-editor-area">
-                <OpenedTab openedFiles={openedFiles}/>
+                <OpenedTab openedFiles={openedFiles} onPathChange={handlePathChange} />
                 <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }}/>
             </div>
         </div>

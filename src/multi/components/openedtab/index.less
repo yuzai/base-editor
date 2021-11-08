@@ -2,16 +2,17 @@
     height: 35px;
     font-size: 14px;
     line-height: 35px;
-    background-color: #000;
     overflow-x: scroll;
     overflow-y: hidden;
     width: 100%;
     white-space: nowrap;
+    background-color: #000;
 
     /* 滚动槽 */
     &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
+        background: var(--list-background);
     }
     &::-webkit-scrollbar-track {
         background: var(--list-background);

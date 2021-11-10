@@ -1,12 +1,16 @@
 .music-monaco-editor-opened-tab {
     height: 35px;
+    box-sizing: border-box;
     font-size: 14px;
-    line-height: 35px;
     overflow-x: scroll;
     overflow-y: hidden;
     width: 100%;
     white-space: nowrap;
     background-color: #000;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 
     /* 滚动槽 */
     &::-webkit-scrollbar {
@@ -27,16 +31,28 @@
     }
 
     &-item {
+        cursor: pointer;
+        height: 35px;
         box-sizing: border-box;
         padding: 0 10px;
         min-width: 100px;
-        display: inline-block;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         margin-right: 1px;
         background-color: var(--list-background);
+
+        &-focused {
+            background-color: var(--list-focusBackground);
+            color: var(--list-focusForeground);
+        }
 
         &:hover {
             background-color: var(--list-hoverBackground);
             color: var(--list-hoverForeground);
+        }
+
+        &-close {
         }
     }
 }

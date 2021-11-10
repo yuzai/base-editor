@@ -32,8 +32,8 @@ const App = () => {
             });
             unstable_batchedUpdates(() => {
                 setFiles(res);
-                setPath(filesName[0]);
-                setValue(filesContent[0]);
+                // setPath(filesName[0]);
+                // setValue(filesContent[0]);
             });
         })
     }, []);

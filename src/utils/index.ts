@@ -1,9 +1,9 @@
-export function generateFileTree(files) {
+export function generateFileTree(files: any) {
     const keys = Object.keys(files);
     const tree = {};
     keys.forEach((key) => {
         const path = key.slice(1).split('/');
-        let temp = tree;
+        let temp: any = tree;
         path.forEach((v, index) => {
         if (index === path.length - 1) {
             temp[v] = {

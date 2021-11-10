@@ -131,7 +131,7 @@ const Editor: React.FC<{
         // 更新上一次的path
         prePath.current = path;
         return () => {
-            if (sub.dispose) {
+            if (sub && sub.dispose) {
                 // 销毁监听
                 sub.dispose();
             }
@@ -170,7 +170,10 @@ const Editor: React.FC<{
                 files={files}
                 onPathChange={handlePathChange} />
             <div className="music-monaco-editor-area">
-                <OpenedTab openedFiles={openedFiles} onPathChange={handlePathChange} />
+                <OpenedTab
+                    currentPath={path}
+                    openedFiles={openedFiles}
+                    onPathChange={handlePathChange} />
                 <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }}/>
             </div>
         </div>

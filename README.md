@@ -42,7 +42,7 @@ MultiEditor提供了多文件目录导航的功能。
 ```ts
 React.FC<{
     path: string,
-    files: fileObj,
+    files: filelist,
     value: string,
     onValueChange: (v: string) => void,
     onPathChange: (key: string, value: string) => void,

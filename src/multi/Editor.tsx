@@ -4,7 +4,7 @@ import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import './Editor.less';
 
-interface fileObj {
+interface filelist {
     [key: string]: string,
 }
 
@@ -59,7 +59,7 @@ const editorStates = new Map();
 
 const Editor: React.FC<{
     path: string,
-    files: fileObj,
+    files: filelist,
     value: string,
     onValueChange: (v: string) => void,
     onPathChange: (key: string, value: string) => void,

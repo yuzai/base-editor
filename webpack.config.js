@@ -17,7 +17,7 @@ if (process.env.CLOUDIDE_DEV_PORT) {
 
 module.exports = {
     entry: {
-        app: "./src/index.ts",
+        app: "./src/example.ts",
         // 'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
 		// 'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
 		// 'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',

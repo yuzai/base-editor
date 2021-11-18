@@ -2,7 +2,7 @@ import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import { useCallback, useState, useEffect } from 'react';
 import Editor from './Editor';
 
-interface fileObj {
+interface filelist {
     [key: string]: string,
 }
 
@@ -20,13 +20,13 @@ const filesName = [
 const App = () => {
     const [value, setValue] = useState('');
     const [path, setPath] = useState('');
-    const [files, setFiles] = useState<fileObj>({});
+    const [files, setFiles] = useState<filelist>({});
 
     useEffect(() => {
         // 获取多文件
         const promises = filesName.map(async v => await (await (fetch(`/editorfiles${v}`))).text());
         Promise.all(promises).then(filesContent => {
-            const res:fileObj = {};
+            const res:filelist = {};
             filesContent.forEach((content, index) => {
                 res[filesName[index]] = content;
             });

@@ -3,7 +3,7 @@ import Icon from '../icons';
 import { generateFileTree } from '../../../utils';
 import './index.less';
 
-interface fileObj {
+interface filelist {
     [key: string]: string,
 }
 
@@ -79,7 +79,7 @@ const File: React.FC<{
 }
 
 const FileTree: React.FC<{
-    files: fileObj,
+    files: filelist,
     onPathChange: MouseEventHandler<HTMLParagraphElement>,
     title?: string,
     currentPath?: string,

@@ -468,6 +468,17 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 
 /***/ }),
 
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Editor\": () => (/* reexport safe */ _single_Editor__WEBPACK_IMPORTED_MODULE_1__[\"default\"]),\n/* harmony export */   \"MultiEditor\": () => (/* reexport safe */ _multi_Editor__WEBPACK_IMPORTED_MODULE_0__[\"default\"])\n/* harmony export */ });\n/* harmony import */ var _multi_Editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./multi/Editor */ \"./src/multi/Editor.tsx\");\n/* harmony import */ var _single_Editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./single/Editor */ \"./src/single/Editor.tsx\");\n/* harmony import */ var _utils_initEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/initEditor */ \"./src/utils/initEditor.ts\");\n\n\n\n(0,_utils_initEditor__WEBPACK_IMPORTED_MODULE_2__.startUp)();\n\n\n\n//# sourceURL=webpack://@music/base-editor/./src/index.ts?");
+
+/***/ }),
+
 /***/ "./src/multi/Editor.tsx":
 /*!******************************!*\
   !*** ./src/multi/Editor.tsx ***!
@@ -509,17 +520,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../icons */ \"./src/multi/components/icons/index.tsx\");\n/* harmony import */ var _index_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./index.less */ \"./src/multi/components/openedtab/index.less\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\n\n\n\n\nvar TabItem = function (_a) {\n    var file = _a.file, onPathChange = _a.onPathChange, currentPath = _a.currentPath, onCloseFile = _a.onCloseFile;\n    var name = file.path.split('/').slice(-1)[0];\n    var fileType = file.path.split('.').slice(-1);\n    var active = currentPath === file.path;\n    var _b = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false), showClose = _b[0], setShowClose = _b[1];\n    var handleOver = function () {\n        setShowClose(true);\n    };\n    var handleLeave = function () {\n        setShowClose(false);\n    };\n    var handleClose = function (e) {\n        e.stopPropagation();\n        onCloseFile(file.path);\n    };\n    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ onMouseOver: handleOver, onMouseLeave: handleLeave, \"data-src\": file.path, className: \"music-monaco-editor-opened-tab-item \" + (active ? 'music-monaco-editor-opened-tab-item-focused' : ''), onClick: onPathChange }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_icons__WEBPACK_IMPORTED_MODULE_2__[\"default\"], { type: \"file_type_\" + fileType, style: { marginRight: '2px' } }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"span\", __assign({ style: { flex: 1, paddingRight: '5px' } }, { children: name }), void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"span\", __assign({ onClick: handleClose, style: {\n                    visibility: (showClose || active) ? 'visible' : 'hidden',\n                }, className: \"music-monaco-editor-opened-tab-item-close\" }, { children: \"x\" }), void 0)] }), void 0));\n};\nvar OpenedTab = function (_a) {\n    var openedFiles = _a.openedFiles, onPathChange = _a.onPathChange, currentPath = _a.currentPath, onCloseFile = _a.onCloseFile;\n    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"div\", __assign({ className: \"music-monaco-editor-opened-tab\" }, { children: openedFiles.map(function (file) {\n            return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(TabItem, { onCloseFile: onCloseFile, file: file, onPathChange: onPathChange, currentPath: currentPath }, file.path);\n        }) }), void 0));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OpenedTab);\n\n\n//# sourceURL=webpack://@music/base-editor/./src/multi/components/openedtab/index.tsx?");
-
-/***/ }),
-
-/***/ "./src/package.ts":
-/*!************************!*\
-  !*** ./src/package.ts ***!
-  \************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _multi_Editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./multi/Editor */ \"./src/multi/Editor.tsx\");\n/* harmony import */ var _single_Editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./single/Editor */ \"./src/single/Editor.tsx\");\n/* harmony import */ var _utils_initEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/initEditor */ \"./src/utils/initEditor.ts\");\n\n\n\n(0,_utils_initEditor__WEBPACK_IMPORTED_MODULE_2__.startUp)();\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n    Editor: _single_Editor__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n    MultiEditor: _multi_Editor__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n});\n\n\n//# sourceURL=webpack://@music/base-editor/./src/package.ts?");
 
 /***/ }),
 
@@ -714,7 +714,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/package.ts");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.ts");
 /******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()

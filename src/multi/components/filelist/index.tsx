@@ -89,7 +89,6 @@ const FileTree: React.FC<{
     title = 'monaco-base-editor',
     currentPath = '',
 }) => {
-    console.log(currentPath);
     const fileTree = generateFileTree(files);
 
     return (

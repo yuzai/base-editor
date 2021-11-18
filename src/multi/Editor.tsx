@@ -163,6 +163,10 @@ const Editor: React.FC<{
         });
     }, [files, onPathChange]);
 
+    const onCloseFile = useCallback((path: string) => {
+        setOpenedFiles(pre => pre.filter(v => v.path !== path));
+    }, []);
+
     return (
         <div className="music-monaco-editor">
             <FileList
@@ -173,6 +177,7 @@ const Editor: React.FC<{
                 <OpenedTab
                     currentPath={path}
                     openedFiles={openedFiles}
+                    onCloseFile={onCloseFile}
                     onPathChange={handlePathChange} />
                 <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }}/>
             </div>

@@ -22,9 +22,10 @@ const App = () => {
             <li data-src="app.js" onClick={handleClick}>app.js</li>
             <li data-src="cc.js" onClick={handleClick}>cc.js</li>
             <Editor
+                defaultValue={value}
                 value={value}
                 language="javascript"
-                onValueChange={handleChange}
+                // onValueChange={handleChange}
                 options={{
                     fontSize: 14,
                     automaticLayout: true,

@@ -9,7 +9,7 @@
     "build": "webpack --config webpack.build.js",
     "start": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && node replace.js && git add CHANGELOG.md",
     "postversion": "git push && git push origin --tags"
   },
   "keywords": [],

@@ -1,3 +1,12 @@
+## [1.0.7-0](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.6...v1.0.7-0) (2021-11-18)
+
+
+### Features
+
+* delete unused files ([469e320](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/469e32027378bc646281f85edfaed91dd66e3fb4))
+
+
+
 ## [1.0.6](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.5...v1.0.6) (2021-11-18)
 
 

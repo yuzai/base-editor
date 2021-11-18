@@ -1,6 +1,6 @@
 {
   "name": "@music/base-editor",
-  "version": "1.0.2-beta1",
+  "version": "1.0.2-beta2",
   "description": "",
   "main": "dist/index.bundle.js",
   "typings": "dist/index.d.ts",
@@ -30,19 +30,19 @@
     "image-webpack-loader": "^8.0.1",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "monaco-editor": "^0.30.1",
     "monaco-editor-webpack-plugin": "^5.0.0",
     "node-sass": "^6.0.1",
     "path": "^0.12.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.6",
+    "typescript": "^4.4.4",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0",
-    "typescript": "^4.4.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "monaco-editor": "^0.30.1"
+    "webpack-dev-server": "^4.4.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",

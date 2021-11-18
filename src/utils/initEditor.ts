@@ -6,7 +6,30 @@ import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
 import { wireTmGrammars } from 'monaco-editor-textmate';
 
+let execed = false;
+
+//@ts-ignore
+self.MonacoEnvironment = { //@ts-ignore
+	getWorkerUrl: function (moduleId, label) {
+		if (label === 'json') {
+			return './json.worker.bundle.js';
+		}
+		if (label === 'css' || label === 'scss' || label === 'less') {
+			return './css.worker.bundle.js';
+		}
+		if (label === 'html' || label === 'handlebars' || label === 'razor') {
+			return './html.worker.bundle.js';
+		}
+		if (label === 'typescript' || label === 'javascript') {
+			return './ts.worker.bundle.js';
+		}
+		return './editor.worker.bundle.js';
+	}
+};
+
 export const startUp = () => {
+    if (execed) return;
+    execed = true;
     const init = async () => {
         // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
         //     noSemanticValidation: true,

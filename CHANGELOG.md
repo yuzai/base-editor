@@ -1,3 +1,12 @@
+## [1.0.8-0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.7-0...v1.0.8-0) (2021-11-18)
+
+
+### Bug Fixes
+
+* replace changelog gitlab host ([b196a1c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/b196a1cac69506d559a04cac371030629d73507e))
+
+
+
 ## [1.0.7-0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.6...v1.0.7-0) (2021-11-18)
 
 

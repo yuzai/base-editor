@@ -8,24 +8,24 @@ import { wireTmGrammars } from 'monaco-editor-textmate';
 
 let execed = false;
 
-//@ts-ignore
-self.MonacoEnvironment = { //@ts-ignore
-	getWorkerUrl: function (moduleId, label) {
-		if (label === 'json') {
-			return './json.worker.bundle.js';
-		}
-		if (label === 'css' || label === 'scss' || label === 'less') {
-			return './css.worker.bundle.js';
-		}
-		if (label === 'html' || label === 'handlebars' || label === 'razor') {
-			return './html.worker.bundle.js';
-		}
-		if (label === 'typescript' || label === 'javascript') {
-			return './ts.worker.bundle.js';
-		}
-		return './editor.worker.bundle.js';
-	}
-};
+// //@ts-ignore
+// self.MonacoEnvironment = { //@ts-ignore
+// 	getWorkerUrl: function (moduleId, label) {
+// 		if (label === 'json') {
+// 			return './json.worker.bundle.js';
+// 		}
+// 		if (label === 'css' || label === 'scss' || label === 'less') {
+// 			return './css.worker.bundle.js';
+// 		}
+// 		if (label === 'html' || label === 'handlebars' || label === 'razor') {
+// 			return './html.worker.bundle.js';
+// 		}
+// 		if (label === 'typescript' || label === 'javascript') {
+// 			return './ts.worker.bundle.js';
+// 		}
+// 		return './editor.worker.bundle.js';
+// 	}
+// };
 
 export const startUp = () => {
     if (execed) return;
@@ -36,9 +36,9 @@ export const startUp = () => {
         //     noSyntaxValidation: true,
         // });
         // 加载textmate语义解析webassembly文件
-        await loadWASM('/onigasm.wasm');
+        await loadWASM('https://st.qa-qwe.igame.163.com/g/monaco-editor/onigasm.wasm');
         // 获取主题文件
-        const onDarkProTheme = JSON.parse(await (await fetch('/themes/OneDarkPro.json')).text());
+        const onDarkProTheme = JSON.parse(await (await fetch('https://st.qa-qwe.igame.163.com/g/monaco-editor/themes/OneDarkPro.json')).text());
         // 定义主题
         monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
         // 设置主题
@@ -55,7 +55,7 @@ export const startUp = () => {
     // 创建一个注册表，可以从作用域名称来加载对应的语法文件
     const registry = new Registry({
         getGrammarDefinition: async (scopeName) => {
-            const res = await (await fetch(`/Grammars/Javascript.tmLanguage.json`)).text();
+            const res = await (await fetch(`https://st.qa-qwe.igame.163.com/g/monaco-editor/Grammars/Javascript.tmLanguage.json`)).text();
             return {
                 format: 'json', // 语法文件格式，有json、plist
                 content: res,

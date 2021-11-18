@@ -25,7 +25,7 @@ const Icon: React.FC<{
 }) => {
     return (<img
             style={style}
-            src={`./icons/${fileTypeMap(type)}.svg`}
+            src={`https://st.qa-qwe.igame.163.com/g/monaco-editor/icons/${fileTypeMap(type)}.svg`}
             className={`music-monaco-icons ${className}`}/>)
 }
 

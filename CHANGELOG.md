@@ -1,3 +1,12 @@
+## [1.0.6](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.5...v1.0.6) (2021-11-18)
+
+
+### Features
+
+* add note ([1e22fef](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/1e22fef68a919bd80ba38219ed592c49c758171c))
+
+
+
 ## 1.0.4 (2021-11-18)
 
 

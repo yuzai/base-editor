@@ -1,4 +1,4 @@
-## 1.0.2-beta1 (2021-11-18)
+## 1.0.2-beta2 (2021-11-18)
 
 
 ### Features
@@ -9,6 +9,7 @@
 * add tab close & focus style ([aedd687](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/aedd687f28c33dfbbaa0982cc3f3c0c204f1002e))
 * add typings ([b50c61e](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/b50c61e56375fc26a4b35572b898276dae4cd369))
 * adjust params ([b96106b](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/b96106b71ad8b5ebfed8ee46c9a960a9c3d3e8cc))
+* change to version beta 2 ([e45b79d](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/e45b79df9e26460798e36db14866cf641ce74216))
 * first commit ([8bd14f2](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/8bd14f21f4693e4660a9601ce1ec1b8b73b5422a))
 * tab adjust ([0151a29](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/0151a29b8c9a889d51cda109cd5fd8df37946101))
 * v1.0.2 ([65ec031](https://g.hz.netease.com:22222/cloudmusic-frontend/independent/monaco-editor-playground/commits/65ec0311d3e951c799604d40f6e43c15813b91ea))

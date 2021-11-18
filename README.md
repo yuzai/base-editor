@@ -63,3 +63,21 @@ api还会不断修改完善
 我创建的一个实例在[这里](https://st.music.163.com/st/idestudio/openide?ideId=iaf7410d82e6b&projectName=monaco-editor-playground),
 
 [demo](http://dev-iaf7410d82e6b-ide.igame.163.com/)可以在此处预览
+
+### 如何贡献代码
+
+1. git checkout -b [feature | fix]/ [ xxx ]
+
+2. change code
+
+3. git commit changes, pull master
+
+3. npm version prerelease --preid=beta
+
+4. nenpm publish --tag=beta
+
+5. merge code to master
+
+6. npm version [ patch | minor | major ]
+
+7. nenpm publish

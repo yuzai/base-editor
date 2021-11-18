@@ -1,3 +1,29 @@
+## [1.0.8-beta.3](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.2...v1.0.8-beta.3) (2021-11-18)
+
+
+### Bug Fixes
+
+* readme ([e86660b](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/e86660bb8373dcf90ceca206e5edabb0ab411182))
+
+
+
+## [1.0.8-beta.2](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.1...v1.0.8-beta.2) (2021-11-18)
+
+
+
+## [1.0.8-beta.1](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.0...v1.0.8-beta.1) (2021-11-18)
+
+
+
+## [1.0.8-beta.0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-0...v1.0.8-beta.0) (2021-11-18)
+
+
+### Features
+
+* add 如何贡献代码 ([cddeb75](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/cddeb750cea5d864713e29b60c5dd5c42932d6f7))
+
+
+
 ## [1.0.8-0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.7-0...v1.0.8-0) (2021-11-18)
 
 

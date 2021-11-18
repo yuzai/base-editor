@@ -1,3 +1,7 @@
+## [1.0.8](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.3...v1.0.8) (2021-11-18)
+
+
+
 ## [1.0.8-beta.3](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.2...v1.0.8-beta.3) (2021-11-18)
 
 

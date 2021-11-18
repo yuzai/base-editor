@@ -74,7 +74,7 @@ api还会不断修改完善
 
 3. npm version prerelease --preid=beta
 
-4. npm publish --tag=beta
+4. nenpm publish --tag=beta
 
 5. merge code to master
 

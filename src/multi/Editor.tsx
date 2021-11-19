@@ -1,7 +1,7 @@
 /*
 * 暂不支持受控，等有场景再支持
 */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import * as monaco from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
@@ -22,6 +22,10 @@ export interface MultiEditorIProps {
     defaultFiles?: filelist,
     files?: filelist,
     options: monaco.editor.IStandaloneEditorConstructionOptions
+}
+
+export interface MultiRefType {
+    test: () => void,
 }
 
 // 初始化各个文件
@@ -68,7 +72,7 @@ const editorStates = new Map();
 
 // TODO:重命名model
 
-export const MultiEditor: React.FC<MultiEditorIProps> = ({
+export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     defaultPath,
     // path,
     onPathChange,
@@ -79,7 +83,7 @@ export const MultiEditor: React.FC<MultiEditorIProps> = ({
     // files,
     onFileChange,
     options,
-}) => {
+}, ref) => {
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
@@ -192,6 +196,10 @@ export const MultiEditor: React.FC<MultiEditorIProps> = ({
         setOpenedFiles(pre => pre.filter(v => v.path !== path));
     }, []);
 
+    useImperativeHandle(ref, () => ({
+        test: () => console.log('test'),
+    }));
+
     return (
         <div className="music-monaco-editor">
             <FileList
@@ -208,6 +216,6 @@ export const MultiEditor: React.FC<MultiEditorIProps> = ({
             </div>
         </div>
     )
-};
+});
 
 export default MultiEditor;

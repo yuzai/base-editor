@@ -1,6 +1,6 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
-import { useCallback, useState, useEffect } from 'react';
-import Editor from './Editor';
+import { useCallback, useState, useEffect, useRef } from 'react';
+import Editor, { MultiRefType } from './Editor';
 
 interface filelist {
     [key: string]: string,
@@ -21,6 +21,7 @@ const App = () => {
     const [value, setValue] = useState('');
     const [path, setPath] = useState('');
     const [files, setFiles] = useState<filelist>({});
+    const editorRef = useRef<MultiRefType>(null);
 
     useEffect(() => {
         // 获取多文件
@@ -63,10 +64,12 @@ const App = () => {
 
     return (
         <div>
+            <div onClick={() => console.log(editorRef.current) }>test</div>
             {
                 Object.keys(files).length > 0 && (
                     <div style={{ width: '800px', height: '600px' }}>
                         <Editor
+                            ref={editorRef}
                             // defaultPath="/fn.js"
                             defaultFiles={files}
                             // value={value}

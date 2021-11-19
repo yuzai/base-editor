@@ -58,20 +58,24 @@ const editorStates = new Map();
 const Editor: React.FC<{
     defaultPath?: string,
     // path?: string,
-    // onPathChange?: (key: string, value: string) => void,
-    defaultValue?: string,
+    onPathChange?: (key: string, value: string) => void,
+    // defaultValue?: string,
     // value?: string,
-    // onValueChange?: (v: string) => void,
-    files: filelist,
+    onValueChange?: (v: string) => void,
+    onFileChange?: (key: string, value: string) => void,
+    defaultFiles?: filelist,
+    files?: filelist,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }> = ({
     defaultPath,
     // path,
-    // onPathChange,
-    defaultValue,
+    onPathChange,
+    // defaultValue,
     // value,
-    // onValueChange,
-    files,
+    onValueChange,
+    defaultFiles = {},
+    // files,
+    onFileChange,
     options,
 }) => {
     const editorNodeRef = useRef<HTMLDivElement>(null);
@@ -84,8 +88,9 @@ const Editor: React.FC<{
         path: defaultPath,
     }] : []);
 
+    const [innerFiles, setInnerFiles] = useState(defaultFiles);
     const [innerPath, setInnerPath] = useState(defaultPath || '');
-    const [innerValue, setInnerValue] = useState(defaultValue || '');
+    const [innerValue, setInnerValue] = useState(defaultFiles[defaultPath || ''] || '');
 
     useEffect(() => {
         // 创建editor 实例
@@ -101,8 +106,8 @@ const Editor: React.FC<{
 
     useEffect(() => {
         // 创建各个文件model
-        Object.keys(files).forEach(key => initializeFile(key, files[key]));
-    }, [files]);
+        Object.keys(innerFiles).forEach(key => initializeFile(key, innerFiles[key]));
+    }, [innerFiles]);
 
     useEffect(() => {
         // 先创建 or 更新model内容
@@ -132,6 +137,16 @@ const Editor: React.FC<{
             sub = model.onDidChangeContent(() => {
                 const v = model.getValue();    
                 setInnerValue(v);
+                setInnerFiles(pre => ({
+                    ...pre,
+                    [innerPath]: v,
+                }))
+                if (onValueChange) {
+                    onValueChange(v);
+                }
+                if (onFileChange) {
+                    onFileChange(innerPath, v);
+                }
             })
         }
         // 更新上一次的path
@@ -152,7 +167,10 @@ const Editor: React.FC<{
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
         setInnerPath(key);
-        setInnerValue(files[key]);
+        setInnerValue(innerFiles[key]);
+        if (onPathChange) {
+            onPathChange(key, innerFiles[key]);
+        }
         setOpenedFiles(pre => {
             let exist = false;
             pre.forEach(v => {
@@ -166,7 +184,7 @@ const Editor: React.FC<{
                 return [...pre, { path: key }]
             }
         });
-    }, [files]);
+    }, [innerFiles, onPathChange]);
 
     const onCloseFile = useCallback((path: string) => {
         setOpenedFiles(pre => pre.filter(v => v.path !== path));
@@ -176,7 +194,7 @@ const Editor: React.FC<{
         <div className="music-monaco-editor">
             <FileList
                 currentPath={innerPath}
-                files={files}
+                files={innerFiles}
                 onPathChange={handlePathChange} />
             <div className="music-monaco-editor-area">
                 <OpenedTab

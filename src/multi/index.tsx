@@ -42,6 +42,7 @@ const App = () => {
     const handlePathChange = useCallback((key: string, value: string) => {
         setPath(key);
         setValue(value);
+        console.log(key, value);
     }, []);
 
     // 同步ide内容修改
@@ -53,18 +54,26 @@ const App = () => {
         }))
     }, [path]);
 
+    const handleFileChange = (key: string, value: string) => {
+        setFiles(pre => ({
+            ...pre,
+            [key]: value,
+        }))
+    }
+
     return (
         <div>
             {
                 Object.keys(files).length > 0 && (
                     <div style={{ width: '800px', height: '600px' }}>
                         <Editor
-                            defaultPath="/fn.js"
-                            files={files}
+                            // defaultPath="/fn.js"
+                            defaultFiles={files}
                             // value={value}
                             // path={path}
                             // onPathChange={handlePathChange}
                             // onValueChange={handleChange}
+                            // onFileChange={handleFileChange}
                             options={{
                                 fontSize: 14,
                                 automaticLayout: true,

@@ -22,33 +22,7 @@ nenpm install @music/base-editor
 
 Editor的作用主要是提供同时只需要单独编辑一个文件的场景。内部通过monaco-modal实现单monaco实例，多文件切换的行为。
 
-使用方法可以参考[代码](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/-/blob/master/src/single/index.tsx);
-
-组件参数定义如下：
-
-```ts
-React.FC<{
-    value: string,
-    language: string,
-    onValueChange: (v: string) => void,
-    options: monaco.editor.IStandaloneEditorConstructionOptions
-}> 
-```
-
 MultiEditor提供了多文件目录导航的功能。
-
-组件参数定义如下：
-
-```ts
-React.FC<{
-    path: string,
-    files: filelist,
-    value: string,
-    onValueChange: (v: string) => void,
-    onPathChange: (key: string, value: string) => void,
-    options: monaco.editor.IStandaloneEditorConstructionOptions
-}
-```
 
 ### 说明
 

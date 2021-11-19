@@ -59,9 +59,10 @@ const App = () => {
                 Object.keys(files).length > 0 && (
                     <div style={{ width: '800px', height: '600px' }}>
                         <Editor
+                            defaultPath="/fn.js"
                             files={files}
-                            value={value}
-                            path={path}
+                            // value={value}
+                            // path={path}
                             // onPathChange={handlePathChange}
                             // onValueChange={handleChange}
                             options={{

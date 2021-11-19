@@ -1,3 +1,6 @@
+/*
+* 暂不支持受控，等有场景再支持
+*/
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as monaco from 'monaco-editor';
 import OpenedTab from './components/openedtab';
@@ -16,10 +19,7 @@ function initializeFile(path: string, value: string) {
       .find(model => model.uri.path === path);
 
     if (model) {
-        // 存在，则比较value是否不同
         if (model.getValue() !== value) {
-            // 不同，则更新
-            // 采用这种方法才能保留 undo/redo
             model.pushEditOperations(
                 [],
                 [
@@ -32,7 +32,6 @@ function initializeFile(path: string, value: string) {
             );
         }
     } else {
-        // 否则，创建新的model
         const type = path.split('.').slice(-1)[0];
         const config: {
             [key: string]: string
@@ -43,7 +42,6 @@ function initializeFile(path: string, value: string) {
         }
         model = monaco.editor.createModel(
             value,
-            // TODO:根据输入文件后缀选择语言
             config[type] || type,
             new monaco.Uri().with({ path })
         );
@@ -58,27 +56,36 @@ const editorStates = new Map();
 // TODO:重命名model
 
 const Editor: React.FC<{
-    path: string,
+    defaultPath?: string,
+    // path?: string,
+    // onPathChange?: (key: string, value: string) => void,
+    defaultValue?: string,
+    // value?: string,
+    // onValueChange?: (v: string) => void,
     files: filelist,
-    value: string,
-    onValueChange?: (v: string) => void,
-    onPathChange?: (key: string, value: string) => void,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }> = ({
-    path,
+    defaultPath,
+    // path,
+    // onPathChange,
+    defaultValue,
+    // value,
+    // onValueChange,
     files,
-    value,
-    onValueChange,
     options,
-    onPathChange,
 }) => {
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-    const prePath = useRef<string | null>(path);
+    const prePath = useRef<string | null>(defaultPath || '');
     const [openedFiles, setOpenedFiles] = useState<Array<{
         status?: string,
         path: string,
-    }>>([]);
+    }>>(defaultPath ? [{
+        path: defaultPath,
+    }] : []);
+
+    const [innerPath, setInnerPath] = useState(defaultPath || '');
+    const [innerValue, setInnerValue] = useState(defaultValue || '');
 
     useEffect(() => {
         // 创建editor 实例
@@ -99,22 +106,22 @@ const Editor: React.FC<{
 
     useEffect(() => {
         // 先创建 or 更新model内容
-        initializeFile(path, value);
+        initializeFile(innerPath, innerValue);
         // path切换，存储上一个path编辑状态
-        if (path !== prePath.current) {
+        if (innerPath !== prePath.current) {
             editorStates.set(prePath.current, editorRef.current?.saveViewState());
         }
         // 获取当前model
         const model = monaco.editor
             .getModels()
-            .find(model => model.uri.path === path);
+            .find(model => model.uri.path === innerPath);
         let sub: monaco.IDisposable;
         if (model && editorRef.current) {
             // 设置editor实例使用当前model
             editorRef.current.setModel(model);
             // 如果path改变，那么恢复上一次的状态
-            if (path !== prePath.current) {
-                const editorState = editorStates.get(path);
+            if (innerPath !== prePath.current) {
+                const editorState = editorStates.get(innerPath);
                 if (editorState) {
                     editorRef.current?.restoreViewState(editorState);
                 }
@@ -124,34 +131,28 @@ const Editor: React.FC<{
             // 监听editor内容改变
             sub = model.onDidChangeContent(() => {
                 const v = model.getValue();    
-                // 受控
-                if (onValueChange) {
-                    onValueChange(v);
-                }
+                setInnerValue(v);
             })
         }
         // 更新上一次的path
-        prePath.current = path;
+        prePath.current = innerPath;
         return () => {
             if (sub && sub.dispose) {
-                // 销毁监听
                 sub.dispose();
             }
         }
-    }, [path, value]);
+    }, [innerPath, innerValue]);
 
     useEffect(() => {
         if (editorRef.current) {
-            // 同步editor options改变
             editorRef.current.updateOptions(options);
         }
     }, [options]);
 
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
-        if (onPathChange) {
-            onPathChange(key, files[key]);
-        }
+        setInnerPath(key);
+        setInnerValue(files[key]);
         setOpenedFiles(pre => {
             let exist = false;
             pre.forEach(v => {
@@ -165,7 +166,7 @@ const Editor: React.FC<{
                 return [...pre, { path: key }]
             }
         });
-    }, [files, onPathChange]);
+    }, [files]);
 
     const onCloseFile = useCallback((path: string) => {
         setOpenedFiles(pre => pre.filter(v => v.path !== path));
@@ -174,12 +175,12 @@ const Editor: React.FC<{
     return (
         <div className="music-monaco-editor">
             <FileList
-                currentPath={path}
+                currentPath={innerPath}
                 files={files}
                 onPathChange={handlePathChange} />
             <div className="music-monaco-editor-area">
                 <OpenedTab
-                    currentPath={path}
+                    currentPath={innerPath}
                     openedFiles={openedFiles}
                     onCloseFile={onCloseFile}
                     onPathChange={handlePathChange} />

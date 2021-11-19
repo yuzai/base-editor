@@ -1,3 +1,18 @@
+## [1.0.10](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.9...v1.0.10) (2021-11-19)
+
+
+### Bug Fixes
+
+* 发包中的自动化脚本遗漏dist文件修改的bug ([fdd8df6](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/fdd8df67679df4b18addbbb44b7460eaa128ebd0))
+
+
+### Features
+
+* add doc ([68dac76](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/68dac76659a921c64b9e0f2aad98bb53eadd9a3c))
+* make doc more ([7f55465](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/7f55465a3ce65ec867d5450af02887e2df3235bb))
+
+
+
 ## [1.0.9](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8...v1.0.9) (2021-11-19)
 
 

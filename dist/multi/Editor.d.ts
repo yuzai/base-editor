@@ -1,10 +1,10 @@
 import React from 'react';
 import * as monaco from 'monaco-editor';
 import './Editor.less';
-interface filelist {
+export interface filelist {
     [key: string]: string;
 }
-declare const Editor: React.FC<{
+export interface MultiEditorIProps {
     defaultPath?: string;
     onPathChange?: (key: string, value: string) => void;
     onValueChange?: (v: string) => void;
@@ -12,5 +12,9 @@ declare const Editor: React.FC<{
     defaultFiles?: filelist;
     files?: filelist;
     options: monaco.editor.IStandaloneEditorConstructionOptions;
-}>;
-export default Editor;
+}
+export interface MultiRefType {
+    test: () => void;
+}
+export declare const MultiEditor: React.ForwardRefExoticComponent<MultiEditorIProps & React.RefAttributes<MultiRefType>>;
+export default MultiEditor;

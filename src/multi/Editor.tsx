@@ -7,8 +7,21 @@ import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import './Editor.less';
 
-interface filelist {
+export interface filelist {
     [key: string]: string,
+}
+
+export interface MultiEditorIProps {
+    defaultPath?: string,
+    // path?: string,
+    onPathChange?: (key: string, value: string) => void,
+    // defaultValue?: string,
+    // value?: string,
+    onValueChange?: (v: string) => void,
+    onFileChange?: (key: string, value: string) => void,
+    defaultFiles?: filelist,
+    files?: filelist,
+    options: monaco.editor.IStandaloneEditorConstructionOptions
 }
 
 // 初始化各个文件
@@ -55,18 +68,7 @@ const editorStates = new Map();
 
 // TODO:重命名model
 
-const Editor: React.FC<{
-    defaultPath?: string,
-    // path?: string,
-    onPathChange?: (key: string, value: string) => void,
-    // defaultValue?: string,
-    // value?: string,
-    onValueChange?: (v: string) => void,
-    onFileChange?: (key: string, value: string) => void,
-    defaultFiles?: filelist,
-    files?: filelist,
-    options: monaco.editor.IStandaloneEditorConstructionOptions
-}> = ({
+export const MultiEditor: React.FC<MultiEditorIProps> = ({
     defaultPath,
     // path,
     onPathChange,
@@ -208,4 +210,4 @@ const Editor: React.FC<{
     )
 };
 
-export default Editor;
+export default MultiEditor;

@@ -1,3 +1,15 @@
+## [1.0.9](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8...v1.0.9) (2021-11-19)
+
+
+### Features
+
+* change single editor props to accept default value ([65696a4](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/65696a4265cfb81ee5b60cc43a974e7dcab17452))
+* signle Editor 受控 ([cecd210](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/cecd210d87eef9916737d4a0b4f867802d5b7a48))
+* 多文件组件完全内部控制状态，不做外部受控 ([96650fe](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/96650fe80719595db883edfc9690bd70417588fe))
+* 多文件编辑器下，暂不支持受控 ([6dcd409](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/6dcd4097d3eb1bf788a3278bc7aff809778a192a))
+
+
+
 ## [1.0.8](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.8-beta.3...v1.0.8) (2021-11-18)
 
 

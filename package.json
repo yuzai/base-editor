@@ -1,6 +1,6 @@
 {
   "name": "@music/base-editor",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "",
   "main": "dist/index.bundle.js",
   "typings": "dist/index.d.ts",
@@ -10,7 +10,7 @@
     "start": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1",
     "preversion": "npm run build && npm run doc",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && node replace.js && git add *",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && node replace.js && git add .",
     "postversion": "git push && git push origin --tags",
     "doc": "typedoc src/index.ts"
   },

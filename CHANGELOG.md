@@ -1,3 +1,12 @@
+## [1.0.13](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.12...v1.0.13) (2021-11-19)
+
+
+### Features
+
+* 修改readme ([932694c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/932694c59de0c23a4b6d35f544eeff4f95ce2231))
+
+
+
 ## [1.0.12](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.9...v1.0.12) (2021-11-19)
 
 

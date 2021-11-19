@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import * as monaco from 'monaco-editor';
 
 const Editor: React.FC<{
@@ -16,15 +16,22 @@ const Editor: React.FC<{
 }) => {
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const editorNodeRef = useRef<HTMLDivElement>(null);
+    // 当value不传时，内部自行维护状态
+    const [innerValue, setInnerValue] = useState(defaultValue);
+    // 如果是外界value值变化引起的改变，那么不需要触发外部onValueChange
+    const needChangeRef = useRef(true);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         editorRef.current = monaco.editor.create(editorNodeRef.current!, options);
-        const model = monaco.editor.createModel(value || defaultValue || '', language);
+        const model = monaco.editor.createModel(innerValue || '', language);
         editorRef.current.setModel(model);
 
         const sub = model.onDidChangeContent(() => {
-            if (onValueChange) {
-                onValueChange(model.getValue());
+            const v = model.getValue();
+            if (onValueChange && value !== undefined && needChangeRef.current) {
+                onValueChange(v);
+            } else {
+                setInnerValue(v);
             }
         });
 
@@ -41,24 +48,26 @@ const Editor: React.FC<{
             editorRef.current.updateOptions(options || {});
         }
     }, [options]);
-
-    useEffect(() => {
-        if (editorRef.current) {
-            const model = editorRef.current.getModel();
-            if (value !== model?.getValue()) {
-                model!.pushEditOperations(
-                    [],
-                    [
-                        {
-                            range: model!.getFullModelRange(),
-                            text: value || defaultValue || '',
-                        },
-                    ],
-                    () => null
-                );
-            }
+    
+    const realValue = value !== undefined ? value : innerValue;
+    if (editorRef.current) {
+        const model = editorRef.current.getModel();
+        if (realValue !== model?.getValue()) {
+            needChangeRef.current = false;
+            model!.pushEditOperations(
+                [],
+                [
+                    {
+                        range: model!.getFullModelRange(),
+                        text: realValue || '',
+                    },
+                ],
+                () => null
+            );
+        } else {
+            needChangeRef.current = true;
         }
-    }, [value]);
+    }
 
     return (
         <div ref={editorNodeRef} style={{ width: '800px', height: '600px' }} />

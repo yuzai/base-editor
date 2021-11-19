@@ -62,8 +62,8 @@ const App = () => {
                             files={files}
                             value={value}
                             path={path}
-                            onPathChange={handlePathChange}
-                            onValueChange={handleChange}
+                            // onPathChange={handlePathChange}
+                            // onValueChange={handleChange}
                             options={{
                                 fontSize: 14,
                                 automaticLayout: true,

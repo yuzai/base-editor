@@ -25,7 +25,7 @@ const App = () => {
                 defaultValue={value}
                 value={value}
                 language="javascript"
-                // onValueChange={handleChange}
+                onValueChange={handleChange}
                 options={{
                     fontSize: 14,
                     automaticLayout: true,

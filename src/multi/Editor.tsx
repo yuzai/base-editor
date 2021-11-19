@@ -61,8 +61,8 @@ const Editor: React.FC<{
     path: string,
     files: filelist,
     value: string,
-    onValueChange: (v: string) => void,
-    onPathChange: (key: string, value: string) => void,
+    onValueChange?: (v: string) => void,
+    onPathChange?: (key: string, value: string) => void,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }> = ({
     path,
@@ -124,8 +124,10 @@ const Editor: React.FC<{
             // 监听editor内容改变
             sub = model.onDidChangeContent(() => {
                 const v = model.getValue();    
-                // 受控        
-                onValueChange(v);
+                // 受控
+                if (onValueChange) {
+                    onValueChange(v);
+                }
             })
         }
         // 更新上一次的path
@@ -147,7 +149,9 @@ const Editor: React.FC<{
 
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
-        onPathChange(key, files[key]);
+        if (onPathChange) {
+            onPathChange(key, files[key]);
+        }
         setOpenedFiles(pre => {
             let exist = false;
             pre.forEach(v => {

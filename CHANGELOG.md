@@ -1,3 +1,12 @@
+## [1.0.15](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.15-beta.2...v1.0.15) (2021-11-22)
+
+
+### Bug Fixes
+
+* assets path ([d4d1005](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/d4d100560281ca7e00a86066e5ed4a9194ca35f7))
+
+
+
 ## [1.0.15-beta.2](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.15-beta.1...v1.0.15-beta.2) (2021-11-22)
 
 

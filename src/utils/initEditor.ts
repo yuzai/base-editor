@@ -48,9 +48,9 @@ export const startUp = () => {
         //     noSyntaxValidation: true,
         // });
         // 加载textmate语义解析webassembly文件
-        await loadWASM('https://st.qa-qwe.igame.163.com/g/monaco-editor/onigasm.wasm');
+        await loadWASM(`${ASSETSPATH}onigasm.wasm`);
         // 获取主题文件
-        const onDarkProTheme = JSON.parse(await (await fetch('https://st.qa-qwe.igame.163.com/g/monaco-editor/themes/OneDarkPro.json')).text());
+        const onDarkProTheme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/OneDarkPro.json`)).text());
         // 定义主题
         monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
         // 设置主题

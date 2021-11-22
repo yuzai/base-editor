@@ -1,4 +1,5 @@
 import React from 'react';
+import { ASSETSPATH } from '../../../utils/consts';
 import './index.less';
 
 const fileTypeMap = (fileType: string): string => {
@@ -25,7 +26,7 @@ const Icon: React.FC<{
 }) => {
     return (<img
             style={style}
-            src={`https://st.qa-qwe.igame.163.com/g/monaco-editor/icons/${fileTypeMap(type)}.svg`}
+            src={`${ASSETSPATH}icons/${fileTypeMap(type)}.svg`}
             className={`music-monaco-icons ${className}`}/>)
 }
 

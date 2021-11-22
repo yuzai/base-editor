@@ -1,6 +1,6 @@
 {
   "name": "@music/base-editor",
-  "version": "1.0.15-beta.0",
+  "version": "1.0.15-beta.1",
   "description": "",
   "main": "dist/index.bundle.js",
   "typings": "dist/index.d.ts",

@@ -26,15 +26,10 @@
 <p>提供了两个IDE，Editor和MultiEditor.</p>
 <p>Editor的作用主要是提供同时只需要单独编辑一个文件的场景。内部通过monaco-modal实现单monaco实例，多文件切换的行为。</p>
 <p>MultiEditor提供了多文件目录导航的功能。</p>
+<p>该组件由于内部状态较多，故不提供受控，仅通通过forwardRef进行各种命令的暴露。建议通过命令式的方法进行操作</p>
 
-<a href="#说明" id="说明" style="color: inherit; text-decoration: none;">
-  <h3>说明</h3>
-</a>
-<p>目前的版本比较匆忙，还是beta，使用上也都还<strong>非常</strong>粗糙</p>
-<p>api还会不断修改完善</p>
-
-<a href="#cloudide开发" id="cloudide开发" style="color: inherit; text-decoration: none;">
-  <h3>cloudide开发</h3>
+<a href="#如何用cloudide开发" id="如何用cloudide开发" style="color: inherit; text-decoration: none;">
+  <h3>如何用cloudide开发</h3>
 </a>
 <p>该项目已经在<a href="https://st.music.163.com/st/idestudio/">cloudide平台</a>上运行，</p>
 <p>我创建的一个实例在<a href="https://st.music.163.com/st/idestudio/openide?ideId=iaf7410d82e6b&amp;projectName=monaco-editor-playground">这里</a>,</p>
@@ -43,6 +38,7 @@
 <a href="#如何贡献代码" id="如何贡献代码" style="color: inherit; text-decoration: none;">
   <h3>如何贡献代码</h3>
 </a>
+<p>由于集成了typedoc, conventional-changelog工具，某些行为需要特定命令进行触发，故提供工作流程以供参考，操作正确的话，将会自动生成文档和changelog</p>
 <ol>
 <li><p>git checkout -b [feature | fix]/ [ xxx ]</p>
 </li>

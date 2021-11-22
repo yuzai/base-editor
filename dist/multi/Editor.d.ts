@@ -10,7 +10,6 @@ export interface MultiEditorIProps {
     onValueChange?: (v: string) => void;
     onFileChange?: (key: string, value: string) => void;
     defaultFiles?: filelist;
-    files?: filelist;
     options: monaco.editor.IStandaloneEditorConstructionOptions;
 }
 export interface MultiRefType {

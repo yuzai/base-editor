@@ -1,3 +1,20 @@
+## [1.0.14](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.13...v1.0.14) (2021-11-22)
+
+
+### Bug Fixes
+
+* empty file deal ([bfa8aa7](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/bfa8aa72a976cb1b20a61adb5458d67b041f32dc))
+* filelist last one focuse bug ([fdf1d97](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/fdf1d97dea2be5efafa902ffc08096f598053edf))
+
+
+### Features
+
+* 增加less语言高亮 ([5398053](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/539805358d5a6669f69994d9fd519d2e36f303fc))
+* 增加readme内容 ([9153637](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/9153637a7a35e850d2902380bb6dd7ee259d8bb6))
+* 增加文件关闭后自动聚焦下一文件，增加空态处理 ([a418333](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a4183335ae275302d06bcf65b3417f7735a699e9))
+
+
+
 ## [1.0.13](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.12...v1.0.13) (2021-11-19)
 
 

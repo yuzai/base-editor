@@ -5,7 +5,7 @@ interface filelist {
 }
 declare const _default: React.NamedExoticComponent<{
     files: filelist;
-    onPathChange: React.MouseEventHandler<HTMLParagraphElement>;
+    onPathChange: (key: string) => void;
     title?: string | undefined;
     currentPath?: string | undefined;
 }>;

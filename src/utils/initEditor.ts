@@ -30,8 +30,8 @@ let execed = false;
 const grammerMap: {
     [key: string]: string,
 } = {
-    'source.ts': 'typescript.tmLanguage.json',
-    'source.js': 'javascript.tmLanguage.json',
+    'source.ts': 'Typescript.tmLanguage.json',
+    'source.js': 'Javascript.tmLanguage.json',
     'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
     'source.ts.tsx': 'TypesSriptReact.tmLanguage.json',
     'source.css': 'css.tmLanguage.json',

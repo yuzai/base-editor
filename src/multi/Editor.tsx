@@ -238,6 +238,7 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     return (
         <div className="music-monaco-editor">
             <FileList
+                title="music web editor"
                 currentPath={innerPath}
                 files={innerFiles}
                 onPathChange={handlePathChange} />

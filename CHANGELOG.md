@@ -1,3 +1,19 @@
+## [1.0.15-beta.0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.14...v1.0.15-beta.0) (2021-11-22)
+
+
+### Bug Fixes
+
+* fix 大小写问题 ([586b393](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/586b3937f71002c2ab9601ed6aea05d510e8e8b1))
+* 静态资源文件大小写问题 ([e735afa](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/e735afa76de1e061a58eea10f349e50abfdefc0d))
+
+
+### Features
+
+* add global variable ([a314ea2](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a314ea2c1c0e18e15aedc4bdfe79697a6f91d6b8))
+* 增加prettier对js文件的支持 ([66a6222](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/66a62224771207ba95bd05370d95fc5742e954a6))
+
+
+
 ## [1.0.14](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.13...v1.0.14) (2021-11-22)
 
 

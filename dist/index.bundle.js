@@ -486,7 +486,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"MultiEditor\": () => (/* binding */ MultiEditor),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! monaco-editor */ \"monaco-editor\");\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(monaco_editor__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _components_openedtab__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/openedtab */ \"./src/multi/components/openedtab/index.tsx\");\n/* harmony import */ var _components_filelist__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/filelist */ \"./src/multi/components/filelist/index.tsx\");\n/* harmony import */ var _Editor_less__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Editor.less */ \"./src/multi/Editor.less\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\nvar __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {\n    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n        if (ar || !(i in from)) {\n            if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n            ar[i] = from[i];\n        }\n    }\n    return to.concat(ar || Array.prototype.slice.call(from));\n};\n\n/*\n* 暂不支持受控，等有场景再支持\n*/\n\n\n\n\n\n// 初始化各个文件\nfunction initializeFile(path, value) {\n    // model 是否存在\n    var model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.getModels()\n        .find(function (model) { return model.uri.path === path; });\n    if (model) {\n        if (model.getValue() !== value) {\n            model.pushEditOperations([], [\n                {\n                    range: model.getFullModelRange(),\n                    text: value,\n                },\n            ], function () { return []; });\n        }\n    }\n    else if (path) {\n        var type = path.split('.').slice(-1)[0];\n        var config = {\n            'js': 'javascript',\n            'ts': 'typescript',\n            'less': 'less',\n            'jsx': 'javascript',\n            'tsx': 'typescript',\n        };\n        model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.createModel(value, config[type] || type, new monaco_editor__WEBPACK_IMPORTED_MODULE_2__.Uri().with({ path: path }));\n    }\n}\n// 存储各个文件的状态\nvar editorStates = new Map();\n// TODO:删除model\n// TODO:重命名model\nvar MultiEditor = react__WEBPACK_IMPORTED_MODULE_1___default().forwardRef(function (_a, ref) {\n    var defaultPath = _a.defaultPath, \n    // path,\n    onPathChange = _a.onPathChange, \n    // defaultValue,\n    // value,\n    onValueChange = _a.onValueChange, _b = _a.defaultFiles, defaultFiles = _b === void 0 ? {} : _b, \n    // files,\n    onFileChange = _a.onFileChange, options = _a.options;\n    var editorNodeRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);\n    var editorRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);\n    var prePath = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(defaultPath || '');\n    var _c = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultPath ? [{\n            path: defaultPath,\n        }] : []), openedFiles = _c[0], setOpenedFiles = _c[1];\n    var _d = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultFiles), innerFiles = _d[0], setInnerFiles = _d[1];\n    var _e = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultPath || ''), innerPath = _e[0], setInnerPath = _e[1];\n    var _f = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultFiles[defaultPath || ''] || ''), innerValue = _f[0], setInnerValue = _f[1];\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        // 创建editor 实例\n        editorRef.current = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.create(editorNodeRef.current, options);\n        return function () {\n            // 销毁实例\n            if (editorRef.current) {\n                editorRef.current.dispose();\n            }\n        };\n    }, []);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        function dealKey(e) {\n            console.log(e);\n        }\n        document.addEventListener('keydown', dealKey);\n        return function () { return document.removeEventListener('keydown', dealKey); };\n    }, []);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        // 创建各个文件model\n        Object.keys(innerFiles).forEach(function (key) { return initializeFile(key, innerFiles[key]); });\n    }, [innerFiles]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        var _a, _b, _c;\n        // 先创建 or 更新model内容\n        initializeFile(innerPath, innerValue);\n        // path切换，存储上一个path编辑状态\n        if (innerPath !== prePath.current) {\n            editorStates.set(prePath.current, (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.saveViewState());\n        }\n        // 获取当前model\n        var model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.getModels()\n            .find(function (model) { return model.uri.path === innerPath; });\n        var sub;\n        if (model && editorRef.current) {\n            // 设置editor实例使用当前model\n            editorRef.current.setModel(model);\n            // 如果path改变，那么恢复上一次的状态\n            if (innerPath !== prePath.current) {\n                var editorState = editorStates.get(innerPath);\n                if (editorState) {\n                    (_b = editorRef.current) === null || _b === void 0 ? void 0 : _b.restoreViewState(editorState);\n                }\n                // 聚焦editor\n                (_c = editorRef.current) === null || _c === void 0 ? void 0 : _c.focus();\n            }\n            // 监听editor内容改变\n            sub = model.onDidChangeContent(function () {\n                var v = model.getValue();\n                setInnerValue(v);\n                setInnerFiles(function (pre) {\n                    var _a;\n                    return (__assign(__assign({}, pre), (_a = {}, _a[innerPath] = v, _a)));\n                });\n                if (onValueChange) {\n                    onValueChange(v);\n                }\n                if (onFileChange) {\n                    onFileChange(innerPath, v);\n                }\n            });\n        }\n        // 更新上一次的path\n        prePath.current = innerPath;\n        return function () {\n            if (sub && sub.dispose) {\n                sub.dispose();\n            }\n        };\n    }, [innerPath, innerValue]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        if (editorRef.current) {\n            editorRef.current.updateOptions(options);\n        }\n    }, [options]);\n    var handlePathChange = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (key) {\n        setInnerPath(key);\n        if (!key)\n            return;\n        setInnerValue(innerFiles[key]);\n        if (onPathChange) {\n            onPathChange(key, innerFiles[key]);\n        }\n        setOpenedFiles(function (pre) {\n            var exist = false;\n            pre.forEach(function (v) {\n                if (v.path === key) {\n                    exist = true;\n                }\n            });\n            if (exist) {\n                return pre;\n            }\n            else {\n                return __spreadArray(__spreadArray([], pre, true), [{ path: key }], false);\n            }\n        });\n    }, [innerFiles, onPathChange]);\n    var onCloseFile = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (path) {\n        var targetPath = '';\n        setOpenedFiles(function (pre) {\n            if (pre.length) {\n                var res = pre.filter(function (v, index) {\n                    if (v.path === path) {\n                        if (index === 0) {\n                            if (pre[index + 1]) {\n                                targetPath = pre[index + 1].path;\n                            }\n                        }\n                        else {\n                            targetPath = pre[index - 1].path;\n                        }\n                    }\n                    return v.path !== path;\n                });\n                if (targetPath && innerPath === path) {\n                    handlePathChange(targetPath);\n                }\n                if (res.length === 0) {\n                    handlePathChange('');\n                }\n                return res;\n            }\n            return pre;\n        });\n    }, [innerPath, handlePathChange]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useImperativeHandle)(ref, function () { return ({\n        test: function () { return console.log('test'); },\n    }); });\n    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_components_filelist__WEBPACK_IMPORTED_MODULE_4__[\"default\"], { currentPath: innerPath, files: innerFiles, onPathChange: handlePathChange }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor-area\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_components_openedtab__WEBPACK_IMPORTED_MODULE_3__[\"default\"], { currentPath: innerPath, openedFiles: openedFiles, onCloseFile: onCloseFile, onPathChange: handlePathChange }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"div\", { ref: editorNodeRef, style: { flex: 1, width: '100%' } }, void 0), openedFiles.length === 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor-area-empty\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"img\", { src: \"//p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5759801316/fb85/e193/a256/03a81ea60cf94212bbc814f2c82b6940.png\", className: \"music-monaco-editor-area-empty-icon\" }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"div\", { children: \"music web editor\" }, void 0)] }), void 0))] }), void 0)] }), void 0));\n});\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MultiEditor);\n\n\n//# sourceURL=webpack://@music/base-editor/./src/multi/Editor.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"MultiEditor\": () => (/* binding */ MultiEditor),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! monaco-editor */ \"monaco-editor\");\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(monaco_editor__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _components_openedtab__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/openedtab */ \"./src/multi/components/openedtab/index.tsx\");\n/* harmony import */ var _components_filelist__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/filelist */ \"./src/multi/components/filelist/index.tsx\");\n/* harmony import */ var _Editor_less__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Editor.less */ \"./src/multi/Editor.less\");\nvar __assign = (undefined && undefined.__assign) || function () {\n    __assign = Object.assign || function(t) {\n        for (var s, i = 1, n = arguments.length; i < n; i++) {\n            s = arguments[i];\n            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))\n                t[p] = s[p];\n        }\n        return t;\n    };\n    return __assign.apply(this, arguments);\n};\nvar __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {\n    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n        if (ar || !(i in from)) {\n            if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n            ar[i] = from[i];\n        }\n    }\n    return to.concat(ar || Array.prototype.slice.call(from));\n};\n\n/*\n* 暂不支持受控，等有场景再支持\n*/\n\n\n\n\n\n// 初始化各个文件\nfunction initializeFile(path, value) {\n    // model 是否存在\n    var model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.getModels()\n        .find(function (model) { return model.uri.path === path; });\n    if (model) {\n        if (model.getValue() !== value) {\n            model.pushEditOperations([], [\n                {\n                    range: model.getFullModelRange(),\n                    text: value,\n                },\n            ], function () { return []; });\n        }\n    }\n    else if (path) {\n        var type = path.split('.').slice(-1)[0];\n        var config = {\n            'js': 'javascript',\n            'ts': 'typescript',\n            'less': 'less',\n            'jsx': 'javascript',\n            'tsx': 'typescript',\n        };\n        model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.createModel(value, config[type] || type, new monaco_editor__WEBPACK_IMPORTED_MODULE_2__.Uri().with({ path: path }));\n    }\n}\n// 存储各个文件的状态\nvar editorStates = new Map();\n// TODO:删除model\n// TODO:重命名model\nvar MultiEditor = react__WEBPACK_IMPORTED_MODULE_1___default().forwardRef(function (_a, ref) {\n    var defaultPath = _a.defaultPath, \n    // path,\n    onPathChange = _a.onPathChange, \n    // defaultValue,\n    // value,\n    onValueChange = _a.onValueChange, _b = _a.defaultFiles, defaultFiles = _b === void 0 ? {} : _b, \n    // files,\n    onFileChange = _a.onFileChange, options = _a.options;\n    var editorNodeRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);\n    var editorRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);\n    var prePath = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(defaultPath || '');\n    var _c = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultPath ? [{\n            path: defaultPath,\n        }] : []), openedFiles = _c[0], setOpenedFiles = _c[1];\n    var _d = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultFiles), innerFiles = _d[0], setInnerFiles = _d[1];\n    var _e = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultPath || ''), innerPath = _e[0], setInnerPath = _e[1];\n    var _f = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(defaultFiles[defaultPath || ''] || ''), innerValue = _f[0], setInnerValue = _f[1];\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        // 创建editor 实例\n        editorRef.current = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.create(editorNodeRef.current, options);\n        return function () {\n            // 销毁实例\n            if (editorRef.current) {\n                editorRef.current.dispose();\n            }\n        };\n    }, []);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        function dealKey(e) {\n            console.log(e);\n        }\n        document.addEventListener('keydown', dealKey);\n        return function () { return document.removeEventListener('keydown', dealKey); };\n    }, []);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        // 创建各个文件model\n        Object.keys(innerFiles).forEach(function (key) { return initializeFile(key, innerFiles[key]); });\n    }, [innerFiles]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        var _a, _b, _c;\n        // 先创建 or 更新model内容\n        initializeFile(innerPath, innerValue);\n        // path切换，存储上一个path编辑状态\n        if (innerPath !== prePath.current) {\n            editorStates.set(prePath.current, (_a = editorRef.current) === null || _a === void 0 ? void 0 : _a.saveViewState());\n        }\n        // 获取当前model\n        var model = monaco_editor__WEBPACK_IMPORTED_MODULE_2__.editor.getModels()\n            .find(function (model) { return model.uri.path === innerPath; });\n        var sub;\n        if (model && editorRef.current) {\n            // 设置editor实例使用当前model\n            editorRef.current.setModel(model);\n            // 如果path改变，那么恢复上一次的状态\n            if (innerPath !== prePath.current) {\n                var editorState = editorStates.get(innerPath);\n                if (editorState) {\n                    (_b = editorRef.current) === null || _b === void 0 ? void 0 : _b.restoreViewState(editorState);\n                }\n                // 聚焦editor\n                (_c = editorRef.current) === null || _c === void 0 ? void 0 : _c.focus();\n            }\n            // 监听editor内容改变\n            sub = model.onDidChangeContent(function () {\n                var v = model.getValue();\n                setInnerValue(v);\n                setInnerFiles(function (pre) {\n                    var _a;\n                    return (__assign(__assign({}, pre), (_a = {}, _a[innerPath] = v, _a)));\n                });\n                if (onValueChange) {\n                    onValueChange(v);\n                }\n                if (onFileChange) {\n                    onFileChange(innerPath, v);\n                }\n            });\n        }\n        // 更新上一次的path\n        prePath.current = innerPath;\n        return function () {\n            if (sub && sub.dispose) {\n                sub.dispose();\n            }\n        };\n    }, [innerPath, innerValue]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {\n        if (editorRef.current) {\n            editorRef.current.updateOptions(options);\n        }\n    }, [options]);\n    var handlePathChange = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (key) {\n        setInnerPath(key);\n        if (!key)\n            return;\n        setInnerValue(innerFiles[key]);\n        if (onPathChange) {\n            onPathChange(key, innerFiles[key]);\n        }\n        setOpenedFiles(function (pre) {\n            var exist = false;\n            pre.forEach(function (v) {\n                if (v.path === key) {\n                    exist = true;\n                }\n            });\n            if (exist) {\n                return pre;\n            }\n            else {\n                return __spreadArray(__spreadArray([], pre, true), [{ path: key }], false);\n            }\n        });\n    }, [innerFiles, onPathChange]);\n    var onCloseFile = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (path) {\n        var targetPath = '';\n        setOpenedFiles(function (pre) {\n            if (pre.length) {\n                var res = pre.filter(function (v, index) {\n                    if (v.path === path) {\n                        if (index === 0) {\n                            if (pre[index + 1]) {\n                                targetPath = pre[index + 1].path;\n                            }\n                        }\n                        else {\n                            targetPath = pre[index - 1].path;\n                        }\n                    }\n                    return v.path !== path;\n                });\n                if (targetPath && innerPath === path) {\n                    handlePathChange(targetPath);\n                }\n                if (res.length === 0) {\n                    handlePathChange('');\n                }\n                return res;\n            }\n            return pre;\n        });\n    }, [innerPath, handlePathChange]);\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useImperativeHandle)(ref, function () { return ({\n        test: function () { return console.log('test'); },\n    }); });\n    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_components_filelist__WEBPACK_IMPORTED_MODULE_4__[\"default\"], { title: \"music web editor\", currentPath: innerPath, files: innerFiles, onPathChange: handlePathChange }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor-area\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_components_openedtab__WEBPACK_IMPORTED_MODULE_3__[\"default\"], { currentPath: innerPath, openedFiles: openedFiles, onCloseFile: onCloseFile, onPathChange: handlePathChange }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"div\", { ref: editorNodeRef, style: { flex: 1, width: '100%' } }, void 0), openedFiles.length === 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(\"div\", __assign({ className: \"music-monaco-editor-area-empty\" }, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"img\", { src: \"//p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5759801316/fb85/e193/a256/03a81ea60cf94212bbc814f2c82b6940.png\", className: \"music-monaco-editor-area-empty-icon\" }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(\"div\", { children: \"music web editor\" }, void 0)] }), void 0))] }), void 0)] }), void 0));\n});\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MultiEditor);\n\n\n//# sourceURL=webpack://@music/base-editor/./src/multi/Editor.tsx?");
 
 /***/ }),
 
@@ -534,6 +534,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/utils/consts.ts":
+/*!*****************************!*\
+  !*** ./src/utils/consts.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"ASSETSPATH\": () => (/* binding */ ASSETSPATH)\n/* harmony export */ });\n// @ts-ignore\nvar ASSETSPATH = window.ASSETSPATH;\n\n\n//# sourceURL=webpack://@music/base-editor/./src/utils/consts.ts?");
+
+/***/ }),
+
 /***/ "./src/utils/index.ts":
 /*!****************************!*\
   !*** ./src/utils/index.ts ***!
@@ -552,7 +563,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"startUp\": () => (/* binding */ startUp)\n/* harmony export */ });\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! monaco-editor */ \"monaco-editor\");\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(monaco_editor__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var onigasm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! onigasm */ \"./node_modules/onigasm/lib/index.js\");\n/* harmony import */ var monaco_textmate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! monaco-textmate */ \"./node_modules/monaco-textmate/dist/main.js\");\n/* harmony import */ var monaco_textmate__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(monaco_textmate__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var monaco_editor_textmate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! monaco-editor-textmate */ \"./node_modules/monaco-editor-textmate/dist/index.js\");\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (undefined && undefined.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (_) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\n/*\n* 初始化editor\n*/\n\n\n\n\nvar execed = false;\n// //@ts-ignore\n// self.MonacoEnvironment = { //@ts-ignore\n// \tgetWorkerUrl: function (moduleId, label) {\n// \t\tif (label === 'json') {\n// \t\t\treturn './json.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'css' || label === 'scss' || label === 'less') {\n// \t\t\treturn './css.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'html' || label === 'handlebars' || label === 'razor') {\n// \t\t\treturn './html.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'typescript' || label === 'javascript') {\n// \t\t\treturn './ts.worker.bundle.js';\n// \t\t}\n// \t\treturn './editor.worker.bundle.js';\n// \t}\n// };\nvar grammerMap = {\n    'source.ts': 'typescript.tmLanguage.json',\n    'source.js': 'javascript.tmLanguage.json',\n    'source.js.jsx': 'JavaScriptReact.tmLanguage.json',\n    'source.ts.tsx': 'TypesSriptReact.tmLanguage.json',\n    'source.css': 'css.tmLanguage.json',\n    'source.less': 'less.tmLanguage.json',\n};\nvar startUp = function () {\n    if (execed)\n        return;\n    execed = true;\n    var init = function () { return __awaiter(void 0, void 0, void 0, function () {\n        var onDarkProTheme, _a, _b;\n        return __generator(this, function (_c) {\n            switch (_c.label) {\n                case 0: \n                // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({\n                //     noSemanticValidation: true,\n                //     noSyntaxValidation: true,\n                // });\n                // 加载textmate语义解析webassembly文件\n                return [4 /*yield*/, (0,onigasm__WEBPACK_IMPORTED_MODULE_1__.loadWASM)('https://st.qa-qwe.igame.163.com/g/monaco-editor/onigasm.wasm')];\n                case 1:\n                    // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({\n                    //     noSemanticValidation: true,\n                    //     noSyntaxValidation: true,\n                    // });\n                    // 加载textmate语义解析webassembly文件\n                    _c.sent();\n                    _b = (_a = JSON).parse;\n                    return [4 /*yield*/, fetch('https://st.qa-qwe.igame.163.com/g/monaco-editor/themes/OneDarkPro.json')];\n                case 2: return [4 /*yield*/, (_c.sent()).text()];\n                case 3:\n                    onDarkProTheme = _b.apply(_a, [_c.sent()]);\n                    // 定义主题\n                    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.editor.defineTheme('OneDarkPro', onDarkProTheme);\n                    // 设置主题\n                    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.editor.setTheme('OneDarkPro');\n                    return [2 /*return*/];\n            }\n        });\n    }); };\n    init();\n    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.languages.register({ id: 'JavascriptReact' });\n    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.languages.register({ id: 'TypescriptReact' });\n    // 创建语法映射\n    var grammars = new Map();\n    grammars.set('typescript', 'source.ts');\n    grammars.set('javascript', 'source.js');\n    grammars.set('JavascriptReact', 'source.js.jsx');\n    grammars.set('TypescriptReact', 'source.ts.tsx');\n    grammars.set('less', 'source.less');\n    grammars.set('css', 'source.css');\n    // 创建一个注册表，可以从作用域名称来加载对应的语法文件\n    var registry = new monaco_textmate__WEBPACK_IMPORTED_MODULE_2__.Registry({\n        getGrammarDefinition: function (scopeName) { return __awaiter(void 0, void 0, void 0, function () {\n            var url, res;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        console.log(scopeName);\n                        url = '/';\n                        return [4 /*yield*/, fetch(\"/Grammars/\" + grammerMap[scopeName])];\n                    case 1: return [4 /*yield*/, (_a.sent()).text()];\n                    case 2:\n                        res = _a.sent();\n                        return [2 /*return*/, {\n                                format: 'json',\n                                content: res,\n                            }];\n                }\n            });\n        }); },\n    });\n    // 将语法映射揉进monaco\n    function wireMonacoGrammars() {\n        (0,monaco_editor_textmate__WEBPACK_IMPORTED_MODULE_3__.wireTmGrammars)(monaco_editor__WEBPACK_IMPORTED_MODULE_0__, registry, grammars);\n    }\n    // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射\n    setTimeout(function () {\n        wireMonacoGrammars();\n    }, 3000);\n};\n\n\n//# sourceURL=webpack://@music/base-editor/./src/utils/initEditor.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"startUp\": () => (/* binding */ startUp)\n/* harmony export */ });\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! monaco-editor */ \"monaco-editor\");\n/* harmony import */ var monaco_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(monaco_editor__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var onigasm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! onigasm */ \"./node_modules/onigasm/lib/index.js\");\n/* harmony import */ var monaco_textmate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! monaco-textmate */ \"./node_modules/monaco-textmate/dist/main.js\");\n/* harmony import */ var monaco_textmate__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(monaco_textmate__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var monaco_editor_textmate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! monaco-editor-textmate */ \"./node_modules/monaco-editor-textmate/dist/index.js\");\n/* harmony import */ var _consts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./consts */ \"./src/utils/consts.ts\");\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (undefined && undefined.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (_) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\n/*\n* 初始化editor\n*/\n\n\n\n\n\nvar execed = false;\n// //@ts-ignore\n// self.MonacoEnvironment = { //@ts-ignore\n// \tgetWorkerUrl: function (moduleId, label) {\n// \t\tif (label === 'json') {\n// \t\t\treturn './json.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'css' || label === 'scss' || label === 'less') {\n// \t\t\treturn './css.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'html' || label === 'handlebars' || label === 'razor') {\n// \t\t\treturn './html.worker.bundle.js';\n// \t\t}\n// \t\tif (label === 'typescript' || label === 'javascript') {\n// \t\t\treturn './ts.worker.bundle.js';\n// \t\t}\n// \t\treturn './editor.worker.bundle.js';\n// \t}\n// };\nvar grammerMap = {\n    'source.ts': 'Typescript.tmLanguage.json',\n    'source.js': 'Javascript.tmLanguage.json',\n    'source.js.jsx': 'JavaScriptReact.tmLanguage.json',\n    'source.ts.tsx': 'TypesSriptReact.tmLanguage.json',\n    'source.css': 'css.tmLanguage.json',\n    'source.less': 'less.tmLanguage.json',\n};\nvar startUp = function () {\n    if (execed)\n        return;\n    execed = true;\n    var init = function () { return __awaiter(void 0, void 0, void 0, function () {\n        var onDarkProTheme, _a, _b;\n        return __generator(this, function (_c) {\n            switch (_c.label) {\n                case 0: \n                // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({\n                //     noSemanticValidation: true,\n                //     noSyntaxValidation: true,\n                // });\n                // 加载textmate语义解析webassembly文件\n                return [4 /*yield*/, (0,onigasm__WEBPACK_IMPORTED_MODULE_1__.loadWASM)('https://st.qa-qwe.igame.163.com/g/monaco-editor/onigasm.wasm')];\n                case 1:\n                    // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({\n                    //     noSemanticValidation: true,\n                    //     noSyntaxValidation: true,\n                    // });\n                    // 加载textmate语义解析webassembly文件\n                    _c.sent();\n                    _b = (_a = JSON).parse;\n                    return [4 /*yield*/, fetch('https://st.qa-qwe.igame.163.com/g/monaco-editor/themes/OneDarkPro.json')];\n                case 2: return [4 /*yield*/, (_c.sent()).text()];\n                case 3:\n                    onDarkProTheme = _b.apply(_a, [_c.sent()]);\n                    // 定义主题\n                    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.editor.defineTheme('OneDarkPro', onDarkProTheme);\n                    // 设置主题\n                    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.editor.setTheme('OneDarkPro');\n                    /**\n                     * Use prettier to format JavaScript code.\n                     * This will replace the default formatter.\n                     */\n                    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.languages.registerDocumentFormattingEditProvider('javascript', {\n                        provideDocumentFormattingEdits: function (model) {\n                            return __awaiter(this, void 0, void 0, function () {\n                                var prettier, babylon, text;\n                                return __generator(this, function (_a) {\n                                    switch (_a.label) {\n                                        case 0: return [4 /*yield*/, __webpack_require__.e(/*! import() */ \"vendors-node_modules_prettier_standalone_js\").then(__webpack_require__.t.bind(__webpack_require__, /*! prettier/standalone */ \"./node_modules/prettier/standalone.js\", 23))];\n                                        case 1:\n                                            prettier = _a.sent();\n                                            return [4 /*yield*/, __webpack_require__.e(/*! import() */ \"vendors-node_modules_prettier_parser-babylon_js\").then(__webpack_require__.t.bind(__webpack_require__, /*! prettier/parser-babylon */ \"./node_modules/prettier/parser-babylon.js\", 23))];\n                                        case 2:\n                                            babylon = _a.sent();\n                                            text = prettier.format(model.getValue(), {\n                                                parser: 'babylon',\n                                                plugins: [babylon],\n                                                singleQuote: true,\n                                            });\n                                            return [2 /*return*/, [\n                                                    {\n                                                        range: model.getFullModelRange(),\n                                                        text: text,\n                                                    },\n                                                ]];\n                                    }\n                                });\n                            });\n                        },\n                    });\n                    return [2 /*return*/];\n            }\n        });\n    }); };\n    init();\n    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.languages.register({ id: 'JavascriptReact' });\n    monaco_editor__WEBPACK_IMPORTED_MODULE_0__.languages.register({ id: 'TypescriptReact' });\n    // 创建语法映射\n    var grammars = new Map();\n    grammars.set('typescript', 'source.ts');\n    grammars.set('javascript', 'source.js');\n    grammars.set('JavascriptReact', 'source.js.jsx');\n    grammars.set('TypescriptReact', 'source.ts.tsx');\n    grammars.set('less', 'source.less');\n    grammars.set('css', 'source.css');\n    // 创建一个注册表，可以从作用域名称来加载对应的语法文件\n    var registry = new monaco_textmate__WEBPACK_IMPORTED_MODULE_2__.Registry({\n        getGrammarDefinition: function (scopeName) { return __awaiter(void 0, void 0, void 0, function () {\n            var res;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0: return [4 /*yield*/, fetch(_consts__WEBPACK_IMPORTED_MODULE_4__.ASSETSPATH + \"Grammars/\" + grammerMap[scopeName])];\n                    case 1: return [4 /*yield*/, (_a.sent()).text()];\n                    case 2:\n                        res = _a.sent();\n                        return [2 /*return*/, {\n                                format: 'json',\n                                content: res,\n                            }];\n                }\n            });\n        }); },\n    });\n    // 将语法映射揉进monaco\n    function wireMonacoGrammars() {\n        (0,monaco_editor_textmate__WEBPACK_IMPORTED_MODULE_3__.wireTmGrammars)(monaco_editor__WEBPACK_IMPORTED_MODULE_0__, registry, grammars);\n    }\n    // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射\n    setTimeout(function () {\n        wireMonacoGrammars();\n    }, 3000);\n};\n\n\n//# sourceURL=webpack://@music/base-editor/./src/utils/initEditor.ts?");
 
 /***/ }),
 
@@ -656,6 +667,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -669,6 +683,36 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/create fake namespace object */
+/******/ 	(() => {
+/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
+/******/ 		var leafPrototypes;
+/******/ 		// create a fake namespace object
+/******/ 		// mode & 1: value is a module id, require it
+/******/ 		// mode & 2: merge all properties of value into the ns
+/******/ 		// mode & 4: return value when already ns object
+/******/ 		// mode & 16: return value when it's Promise-like
+/******/ 		// mode & 8|1: behave like require
+/******/ 		__webpack_require__.t = function(value, mode) {
+/******/ 			if(mode & 1) value = this(value);
+/******/ 			if(mode & 8) return value;
+/******/ 			if(typeof value === 'object' && value) {
+/******/ 				if((mode & 4) && value.__esModule) return value;
+/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
+/******/ 			}
+/******/ 			var ns = Object.create(null);
+/******/ 			__webpack_require__.r(ns);
+/******/ 			var def = {};
+/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
+/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
+/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
+/******/ 			}
+/******/ 			def['default'] = () => (value);
+/******/ 			__webpack_require__.d(ns, def);
+/******/ 			return ns;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -678,6 +722,28 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".bundle.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -698,6 +764,52 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "@music/base-editor:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			;
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -707,6 +819,116 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"index": 0
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if(true) { // all chunks have JS
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						} else installedChunks[chunkId] = 0;
+/******/ 					}
+/******/ 				}
+/******/ 		};
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 		
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk_music_base_editor"] = self["webpackChunk_music_base_editor"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();
 /******/ 	
 /************************************************************************/

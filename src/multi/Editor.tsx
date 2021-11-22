@@ -171,8 +171,8 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }, [options]);
 
     const handlePathChange = useCallback((key: string) => {
-        if (!key) return;
         setInnerPath(key);
+        if (!key) return;
         setInnerValue(innerFiles[key]);
         if (onPathChange) {
             onPathChange(key, innerFiles[key]);

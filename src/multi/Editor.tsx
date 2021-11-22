@@ -48,7 +48,7 @@ function initializeFile(path: string, value: string) {
                 () => [],
             );
         }
-    } else {
+    } else if (path) {
         const type = path.split('.').slice(-1)[0];
         const config: {
             [key: string]: string
@@ -171,6 +171,7 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }, [options]);
 
     const handlePathChange = useCallback((key: string) => {
+        if (!key) return;
         setInnerPath(key);
         setInnerValue(innerFiles[key]);
         if (onPathChange) {
@@ -194,24 +195,29 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     const onCloseFile = useCallback((path: string) => {
         let targetPath = '';
         setOpenedFiles((pre) => {
-            console.log(pre, path);
-            const res =  pre.filter((v, index) => {
-                if (v.path === path) {
-                    if (index === 0) {
-                        if (pre[index + 1]) {
-                            targetPath = pre[index + 1].path;
+            if (pre.length) {
+                const res =  pre.filter((v, index) => {
+                    if (v.path === path) {
+                        if (index === 0) {
+                            if (pre[index + 1]) {
+                                targetPath = pre[index + 1].path;
+                            }
+                        } else {
+                            targetPath = pre[index - 1].path;
                         }
-                    } else {
-                        targetPath = pre[index - 1].path;
                     }
-                }
-                return v.path !== path
-            });
+                    return v.path !== path
+                });
 
-            if (targetPath && innerPath === path) {
-                handlePathChange(targetPath);
+                if (targetPath && innerPath === path) {
+                    handlePathChange(targetPath);
+                }
+                if (res.length == 0) {
+                    handlePathChange('');
+                }
+                return res;
             }
-            return res;
+            return pre;
         });
     }, [innerPath, handlePathChange]);
 

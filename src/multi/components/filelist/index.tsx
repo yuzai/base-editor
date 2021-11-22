@@ -94,6 +94,7 @@ const FileTree: React.FC<{
     currentPath = '',
 }) => {
     const fileTree = generateFileTree(files);
+    console.log(currentPath);
 
     return (
         <div className="music-monaco-editor-list-wrapper">

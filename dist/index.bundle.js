@@ -541,7 +541,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"ASSETSPATH\": () => (/* binding */ ASSETSPATH)\n/* harmony export */ });\n// @ts-ignore\nvar ASSETSPATH = _ASSETSPATH;\n\n\n//# sourceURL=webpack://@music/base-editor/./src/utils/consts.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"ASSETSPATH\": () => (/* binding */ ASSETSPATH)\n/* harmony export */ });\n// @ts-ignore\nvar ASSETSPATH = \"https://st.qa-qwe.igame.163.com/g/monaco-editor/\";\n\n\n//# sourceURL=webpack://@music/base-editor/./src/utils/consts.ts?");
 
 /***/ }),
 

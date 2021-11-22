@@ -1,4 +1,4 @@
-export default {
+{
 	"information_for_contributors": [
 		"This file has been converted from https://github.com/atom/language-css/blob/master/grammars/css.cson",
 		"If you want to provide a fix or improvement, please create a pull request against the original repository.",

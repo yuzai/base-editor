@@ -9,7 +9,7 @@ const fileTypeMap = (fileType: string): string => {
         ts: 'typescript',
         js: 'js',
         tsx: 'reactts',
-        jsx: 'reactjsx',
+        jsx: 'reactjs',
     }
     return config[type] ? `file_type_${config[type]}` : fileType;
 }

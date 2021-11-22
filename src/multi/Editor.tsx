@@ -20,7 +20,7 @@ export interface MultiEditorIProps {
     onValueChange?: (v: string) => void,
     onFileChange?: (key: string, value: string) => void,
     defaultFiles?: filelist,
-    files?: filelist,
+    // files?: filelist,
     options: monaco.editor.IStandaloneEditorConstructionOptions
 }
 
@@ -56,6 +56,8 @@ function initializeFile(path: string, value: string) {
             'js': 'javascript',
             'ts': 'typescript',
             'less': 'less',
+            'jsx': 'javascript',
+            'tsx': 'typescript',
         }
         model = monaco.editor.createModel(
             value,
@@ -108,6 +110,14 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
                 editorRef.current.dispose();
             }
         }
+    }, []);
+
+    useEffect(() => {
+        function dealKey(e: Event) {
+            console.log(e);
+        }
+        document.addEventListener('keydown', dealKey);
+        return () => document.removeEventListener('keydown', dealKey);
     }, []);
 
     useEffect(() => {
@@ -212,7 +222,7 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
                 if (targetPath && innerPath === path) {
                     handlePathChange(targetPath);
                 }
-                if (res.length == 0) {
+                if (res.length === 0) {
                     handlePathChange('');
                 }
                 return res;

@@ -27,6 +27,17 @@ let execed = false;
 // 	}
 // };
 
+const grammerMap: {
+    [key: string]: string,
+} = {
+    'source.ts': 'typescript.tmLanguage.json',
+    'source.js': 'javascript.tmLanguage.json',
+    'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
+    'source.ts.tsx': 'TypesSriptReact.tmLanguage.json',
+    'source.css': 'css.tmLanguage.json',
+    'source.less': 'less.tmLanguage.json',
+}
+
 export const startUp = () => {
     if (execed) return;
     execed = true;
@@ -45,17 +56,26 @@ export const startUp = () => {
         monaco.editor.setTheme('OneDarkPro');
     };
     init();
+
+    monaco.languages.register({ id: 'JavascriptReact' });
+    monaco.languages.register({ id: 'TypescriptReact' });
     
     // 创建语法映射
     const grammars = new Map();
     
     grammars.set('typescript', 'source.ts');
     grammars.set('javascript', 'source.js');
+    grammars.set('JavascriptReact', 'source.js.jsx');
+    grammars.set('TypescriptReact', 'source.ts.tsx');
+    grammars.set('less', 'source.less');
+    grammars.set('css', 'source.css');
     
     // 创建一个注册表，可以从作用域名称来加载对应的语法文件
     const registry = new Registry({
         getGrammarDefinition: async (scopeName) => {
-            const res = await (await fetch(`https://st.qa-qwe.igame.163.com/g/monaco-editor/Grammars/Javascript.tmLanguage.json`)).text();
+            console.log(scopeName);
+            let url = '/';
+            const res = await (await fetch(`/Grammars/${grammerMap[scopeName]}`)).text();
             return {
                 format: 'json', // 语法文件格式，有json、plist
                 content: res,

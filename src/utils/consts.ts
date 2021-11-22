@@ -1,2 +1,2 @@
 // @ts-ignore
-export const ASSETSPATH: string = window.ASSETSPATH;
+export const ASSETSPATH: string = _ASSETSPATH;

@@ -170,8 +170,7 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
         }
     }, [options]);
 
-    const handlePathChange = useCallback((e) => {
-        const key = e.currentTarget.dataset.src!;
+    const handlePathChange = useCallback((key: string) => {
         setInnerPath(key);
         setInnerValue(innerFiles[key]);
         if (onPathChange) {
@@ -193,8 +192,28 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }, [innerFiles, onPathChange]);
 
     const onCloseFile = useCallback((path: string) => {
-        setOpenedFiles(pre => pre.filter(v => v.path !== path));
-    }, []);
+        let targetPath = '';
+        setOpenedFiles((pre) => {
+            console.log(pre, path);
+            const res =  pre.filter((v, index) => {
+                if (v.path === path) {
+                    if (index === 0) {
+                        if (pre[index + 1]) {
+                            targetPath = pre[index + 1].path;
+                        }
+                    } else {
+                        targetPath = pre[index - 1].path;
+                    }
+                }
+                return v.path !== path
+            });
+
+            if (targetPath && innerPath === path) {
+                handlePathChange(targetPath);
+            }
+            return res;
+        });
+    }, [innerPath, handlePathChange]);
 
     useImperativeHandle(ref, () => ({
         test: () => console.log('test'),
@@ -212,7 +231,17 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
                     openedFiles={openedFiles}
                     onCloseFile={onCloseFile}
                     onPathChange={handlePathChange} />
-                <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }}/>
+                <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }} />
+                {
+                    openedFiles.length === 0 && (
+                        <div className="music-monaco-editor-area-empty">
+                            <img
+                                src="//p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5759801316/fb85/e193/a256/03a81ea60cf94212bbc814f2c82b6940.png"
+                                className="music-monaco-editor-area-empty-icon" />
+                            <div>music web editor</div>
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

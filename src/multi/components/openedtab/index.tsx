@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useState } from 'react';
 import Icon from '../icons';
 import './index.less';
 
@@ -7,7 +7,7 @@ const TabItem: React.FC<{
         status?: string,
         path: string,
     },
-    onPathChange?: MouseEventHandler<HTMLDivElement>,
+    onPathChange?: (key: string) => void,
     currentPath?: string,
     onCloseFile: (key: string) => void,
 }> = ({
@@ -19,6 +19,12 @@ const TabItem: React.FC<{
     const name = file.path.split('/').slice(-1)[0];
     const fileType = file.path.split('.').slice(-1);
     const active = currentPath === file.path;
+    const handlePathChange = useCallback((e) => {
+        const key = e.currentTarget.dataset.src!;
+        if (onPathChange) {
+            onPathChange(key);
+        }
+    }, [onPathChange]);
 
     const [showClose, setShowClose] = useState(false);
     const handleOver = () => {
@@ -41,7 +47,7 @@ const TabItem: React.FC<{
             className={
                 `music-monaco-editor-opened-tab-item ${active ? 'music-monaco-editor-opened-tab-item-focused': ''}`
             }
-            onClick={onPathChange}>
+            onClick={handlePathChange}>
             <Icon type={`file_type_${fileType}`} style={{ marginRight: '2px' }} />
             <span style={{ flex: 1, paddingRight: '5px' }}>{name}</span>
             <span
@@ -61,7 +67,7 @@ const OpenedTab: React.FC<{
         status?: string,
         path: string,
     }>,
-    onPathChange?: MouseEventHandler<HTMLDivElement>,
+    onPathChange?: (key: string) => void,
     currentPath?: string,
     onCloseFile: (path: string) => void,
 }> = ({

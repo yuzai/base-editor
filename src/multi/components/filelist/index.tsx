@@ -9,7 +9,7 @@ interface filelist {
 
 const File: React.FC<{
     file: any,
-    onPathChange: MouseEventHandler<HTMLDivElement>,
+    onPathChange: (key: string) => void,
     directory?: string,
     root: boolean,
     currentPath?: string
@@ -26,11 +26,15 @@ const File: React.FC<{
     }, []);
     if (file.name) {
         const fileType = file.name.split('.').slice(-1);
+        const handlePathChange = useCallback((e) => {
+            const key = e.currentTarget.dataset.src!;
+            onPathChange(key);
+        }, [file.path, onPathChange]);
         
         return (
             <div
                 data-src={file.path}
-                onClick={onPathChange}
+                onClick={handlePathChange}
                 key={file.path}
                 className={`music-monaco-editor-list-file-item-row ${currentPath === file.path ? 'music-monaco-editor-list-file-item-row-focused' : ''}`}>
                 <Icon
@@ -80,7 +84,7 @@ const File: React.FC<{
 
 const FileTree: React.FC<{
     files: filelist,
-    onPathChange: MouseEventHandler<HTMLParagraphElement>,
+    onPathChange: (key: string) => void,
     title?: string,
     currentPath?: string,
 }> = ({

@@ -42,7 +42,7 @@ module.exports = {
             process: 'process/browser',
         }),
         new webpack.DefinePlugin({
-            _ASSETSPath: JSON.stringify('https://st.qa-qwe.igame.163.com/g/monaco-editor/'),
+            _ASSETSPATH: JSON.stringify('https://st.qa-qwe.igame.163.com/g/monaco-editor/'),
         })
     ],
     externals: {

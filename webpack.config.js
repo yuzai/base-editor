@@ -66,6 +66,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: 'process/browser',
         }),
-
+        new webpack.DefinePlugin({
+            ASSETSPATH: '/',
+        })
     ],
 };

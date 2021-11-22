@@ -41,6 +41,9 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: 'process/browser',
         }),
+        new webpack.DefinePlugin({
+            ASSETSPath: 'https://st.qa-qwe.igame.163.com/g/monaco-editor/',
+        })
     ],
     externals: {
         'react': 'react',

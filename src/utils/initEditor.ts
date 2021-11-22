@@ -5,6 +5,7 @@ import * as monaco from 'monaco-editor';
 import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
 import { wireTmGrammars } from 'monaco-editor-textmate';
+import { ASSETSPATH } from './consts';
 
 let execed = false;
 
@@ -96,9 +97,7 @@ export const startUp = () => {
     // 创建一个注册表，可以从作用域名称来加载对应的语法文件
     const registry = new Registry({
         getGrammarDefinition: async (scopeName) => {
-            console.log(scopeName);
-            let url = '/';
-            const res = await (await fetch(`/Grammars/${grammerMap[scopeName]}`)).text();
+            const res = await (await fetch(`${ASSETSPATH}Grammars/${grammerMap[scopeName]}`)).text();
             return {
                 format: 'json', // 语法文件格式，有json、plist
                 content: res,

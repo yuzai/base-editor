@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { add } from './cc';
+
+console.log(add(1, 2));
 
 const App = () => {
     const [count, setCount] = useState(0);

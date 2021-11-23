@@ -7,10 +7,10 @@ interface filelist {
 }
 
 const filesName = [
-    '/fn.js',
     '/app.js',
     '/cc.js',
-    '/index.tsx',
+    '/app.ts',
+    '/cc.ts',
     '/test.css',
     '/src/index.jsx',
     '/style.less',
@@ -42,26 +42,17 @@ const App = () => {
     }, []);
 
     // 设置当前文件路径和value
-    const handlePathChange = useCallback((key: string, value: string) => {
-        setPath(key);
-        setValue(value);
-        console.log(key, value);
+    const handlePathChange = useCallback((key: string) => {
+        console.log(key);
     }, []);
 
     // 同步ide内容修改
-    const handleChange = useCallback((e) => {
-        setValue(e);
-        setFiles(pre => ({
-            ...pre,
-            [path]: e,
-        }))
-    }, [path]);
+    const handleChange = useCallback((v: string) => {
+        console.log(v);
+    }, []);
 
     const handleFileChange = (key: string, value: string) => {
-        setFiles(pre => ({
-            ...pre,
-            [key]: value,
-        }))
+        // console.log(key, value);
     }
 
     return (
@@ -76,7 +67,7 @@ const App = () => {
                             defaultFiles={files}
                             // value={value}
                             // path={path}
-                            // onPathChange={handlePathChange}
+                            onPathChange={handlePathChange}
                             // onValueChange={handleChange}
                             // onFileChange={handleFileChange}
                             options={{

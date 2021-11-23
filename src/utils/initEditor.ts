@@ -43,6 +43,7 @@ export const startUp = () => {
     if (execed) return;
     execed = true;
     const init = async () => {
+        monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
         //     noSemanticValidation: true,
         //     noSyntaxValidation: true,

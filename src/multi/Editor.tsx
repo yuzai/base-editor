@@ -6,7 +6,6 @@ import * as monaco from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import './Editor.less';
-
 export interface filelist {
     [key: string]: string,
 }
@@ -41,7 +40,7 @@ function initializeFile(path: string, value: string) {
                 [],
                 [
                     {
-                        range: model!.getFullModelRange(),
+                        range: model?.getFullModelRange(),
                         text: value,
                     },
                 ],
@@ -71,7 +70,7 @@ function initializeFile(path: string, value: string) {
 
 // TODO:重命名model
 
-export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
+export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     defaultPath,
     // path,
     onPathChange,
@@ -83,6 +82,15 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     onFileChange,
     options,
 }, ref) => {
+    const onPathChangeRef = useRef(onPathChange);
+    const onValueChangeRef = useRef(onValueChange);
+    const onFileChangeRef = useRef(onFileChange);
+    const optionsRef = useRef(options);
+    onPathChangeRef.current = onPathChange;
+    onValueChangeRef.current = onValueChange;
+    onFileChangeRef.current = onFileChange;
+    optionsRef.current = options;
+
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
@@ -98,60 +106,6 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }] : []);
 
     const [curPath, setCurPath] = useState(defaultPath || '');
-
-    useEffect(() => {
-        // 创建editor 实例
-        editorRef.current = monaco.editor.create(editorNodeRef.current!, options);
-
-        // const editorService = (editorRef.current as any)._codeEditorService;
-        // const openEditorBase = editorService.openCodeEditor.bind(editorService);
-        // editorService.openCodeEditor = async (input: any, source: any, sideBySide: any) => {
-        //     console.log(input, source, sideBySide);
-        //     const result = await openEditorBase(input, source);
-        //     if (result === null) {
-        //         const fullPath = input.resource.path
-        //         const lineNumber = input.options.selection.startLineNumber
-
-        //         alert("file is at " + fullPath + ":" + lineNumber );
-        //         source.setModel(monaco.editor.getModel(input.resource));
-        //         // // this.props.onOpenPath(resource.path);
-        //         // // Move cursor to the desired position
-        //         // source.setSelection(input.options.selection);
-        //         // // Scroll the editor to bring the desired line into focus
-        //         // source.revealLine(input.options.selection.startLineNumber);
-        //         // return {
-        //         //     getControl: () => source,
-        //         // };
-        //     }
-        //     return result; // always return the base result
-        // };
-
-        return () => {
-            // 销毁实例
-            if (editorRef.current) {
-                editorRef.current.dispose();
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        function dealKey(e: Event) {
-            console.log(e);
-        }
-        document.addEventListener('keydown', dealKey);
-        return () => document.removeEventListener('keydown', dealKey);
-    }, []);
-
-    useEffect(() => {
-        // 初始化创建各个文件model
-        Object.keys(filesRef.current).forEach(key => initializeFile(key, filesRef.current[key]));
-    }, []);
-
-    useEffect(() => {
-        if (editorRef.current) {
-            editorRef.current.updateOptions(options);
-        }
-    }, [options]);
 
     const restoreModel = useCallback((path: string) => {
         const editorStates = editorStatesRef.current;
@@ -176,45 +130,95 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
                 editorRef.current?.focus();
                 valueLisenerRef.current = model.onDidChangeContent(() => {
                     const v = model.getValue();
-                    if (onFileChange) {
-                        onFileChange(path, v);
+                    if (onFileChangeRef.current) {
+                        onFileChangeRef.current(path, v);
                     }
-                    if (onValueChange) {
-                        onValueChange(v);
+                    if (onValueChangeRef.current) {
+                        onValueChangeRef.current(v);
                     }
                 })
-            };
+            }
             prePath.current = path;
             return model;
         }
         return false;
-    }, [onFileChange, onValueChange]);
+    }, []);
+    
+    const openOrFocusPath = useCallback((path: string) => {
+        setOpenedFiles(pre => {
+            let exist = false;
+            pre.forEach(v => {
+                if (v.path === path) {
+                    exist = true;
+                }
+            })
+            if (exist) {
+                return pre;
+            } else {
+                return [...pre, { path: path }]
+            }
+        });
+        setCurPath(path);
+    }, []);
 
     const handlePathChange = useCallback((path: string) => {
         const model = restoreModel(path);
         if (model) {
-            setOpenedFiles(pre => {
-                let exist = false;
-                pre.forEach(v => {
-                    if (v.path === path) {
-                        exist = true;
-                    }
-                })
-                if (exist) {
-                    return pre;
-                } else {
-                    return [...pre, { path: path }]
-                }
-            });
-            setCurPath(path);
+            openOrFocusPath(path);
         }
-    }, [restoreModel, onPathChange]);
+    }, [restoreModel, openOrFocusPath]);
 
     useEffect(() => {
-        if (onPathChange) {
-            onPathChange(curPath);
+        // 创建editor 实例
+        editorRef.current = monaco.editor.create(editorNodeRef.current!, optionsRef.current);
+
+        const editorService = (editorRef.current as any)._codeEditorService;
+        const openEditorBase = editorService.openCodeEditor.bind(editorService);
+        editorService.openCodeEditor = async (input: any, source: any, sideBySide: any) => {
+            console.log(input, source, sideBySide);
+            const result = await openEditorBase(input, source);
+            if (result === null) {
+                const fullPath = input.resource.path
+                source.setModel(monaco.editor.getModel(input.resource));
+                openOrFocusPath(fullPath);
+                source.setSelection(input.options.selection);
+                source.revealLine(input.options.selection.startLineNumber);
+            }
+            return result; // always return the base result
+        };
+
+        return () => {
+            // 销毁实例
+            if (editorRef.current) {
+                editorRef.current.dispose();
+            }
         }
-    }, [curPath, onPathChange]);
+    }, [openOrFocusPath]);
+
+    useEffect(() => {
+        function dealKey(e: Event) {
+            console.log(e);
+        }
+        document.addEventListener('keydown', dealKey);
+        return () => document.removeEventListener('keydown', dealKey);
+    }, []);
+
+    useEffect(() => {
+        // 初始化创建各个文件model
+        Object.keys(filesRef.current).forEach(key => initializeFile(key, filesRef.current[key]));
+    }, []);
+
+    useEffect(() => {
+        if (editorRef.current) {
+            editorRef.current.updateOptions(options);
+        }
+    }, [options]);
+
+    useEffect(() => {
+        if (onPathChangeRef.current) {
+            onPathChangeRef.current(curPath);
+        }
+    }, [curPath]);
 
     const onCloseFile = useCallback((path: string) => {
         setOpenedFiles((pre) => {
@@ -245,7 +249,7 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
             return pre;
         });
 
-    }, [curPath, restoreModel]);
+    }, [restoreModel]);
 
     useImperativeHandle(ref, () => ({
         test: () => console.log('test'),
@@ -281,3 +285,5 @@ export const MultiEditor= React.forwardRef<MultiRefType, MultiEditorIProps>(({
 });
 
 export default MultiEditor;
+
+MultiEditor.displayName = 'MultiEditor';

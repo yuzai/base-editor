@@ -1,5 +1,5 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
-import { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import Editor, { MultiRefType } from './Editor';
 
 interface filelist {
@@ -20,8 +20,6 @@ const filesName = [
 ];
 
 const App = () => {
-    const [value, setValue] = useState('');
-    const [path, setPath] = useState('');
     const [files, setFiles] = useState<filelist>({});
     const editorRef = useRef<MultiRefType>(null);
 
@@ -46,14 +44,14 @@ const App = () => {
         console.log(key);
     }, []);
 
-    // 同步ide内容修改
-    const handleChange = useCallback((v: string) => {
-        console.log(v);
-    }, []);
+    // // 同步ide内容修改
+    // const handleChange = useCallback((v: string) => {
+    //     console.log(v);
+    // }, []);
 
-    const handleFileChange = (key: string, value: string) => {
-        // console.log(key, value);
-    }
+    // const handleFileChange = (key: string, value: string) => {
+    //     // console.log(key, value);
+    // }
 
     return (
         <div>

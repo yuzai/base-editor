@@ -36,7 +36,7 @@
         cursor: pointer;
         height: 35px;
         box-sizing: border-box;
-        padding: 0 10px;
+        padding: 0 5px 0 10px;
         // min-width: 100px;
         display: flex;
         flex-direction: row;
@@ -55,7 +55,11 @@
         }
 
         &-close {
-            padding: 5px 0 5px 5px;
+            padding: 5px 5px;
+            line-height: 10px;
+            &:hover {
+                background-color: var(--list-focusBackground);
+            }
         }
     }
 }

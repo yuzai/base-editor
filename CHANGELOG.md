@@ -1,3 +1,13 @@
+## [1.0.16](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.15...v1.0.16) (2021-11-24)
+
+
+### Features
+
+* add eslint, add go to definition ([3f4ed85](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/3f4ed85e475faa533ab50c1dcd91e8b3c586f177))
+* 彻底移除多文件的受控，精简代码 ([1d6572d](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/1d6572db78ca24308193670f20552379dd2673c4))
+
+
+
 ## [1.0.15](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.15-beta.2...v1.0.15) (2021-11-22)
 
 

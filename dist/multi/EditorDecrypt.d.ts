@@ -6,7 +6,7 @@ export interface filelist {
 }
 export interface MultiEditorIProps {
     defaultPath?: string;
-    onPathChange?: (key: string) => void;
+    onPathChange?: (key: string, value: string) => void;
     onValueChange?: (v: string) => void;
     onFileChange?: (key: string, value: string) => void;
     defaultFiles?: filelist;

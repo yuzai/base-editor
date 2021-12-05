@@ -55,7 +55,7 @@ const App = () => {
 
     return (
         <div>
-            <div onClick={() => console.log(editorRef.current) }>ref api</div>
+            <div onClick={() => console.log(editorRef.current?.getValue('/app.js')) }>ref api</div>
             {
                 Object.keys(files).length > 0 && (
                     <div style={{ width: '800px', height: '600px' }}>

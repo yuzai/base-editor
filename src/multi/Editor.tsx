@@ -5,6 +5,8 @@ import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } 
 import * as monaco from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
+import { generateFileTree } from '../utils';
+
 import './Editor.less';
 export interface filelist {
     [key: string]: string,
@@ -25,6 +27,8 @@ export interface MultiEditorIProps {
 
 export interface MultiRefType {
     test: () => void,
+    getValue: (path: string) => string,
+    getAllValue: () => filelist,
 }
 
 // 初始化各个文件
@@ -95,6 +99,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
     const filesRef = useRef(defaultFiles);
+    const [filetree] = useState(generateFileTree(defaultFiles));
     const valueLisenerRef = useRef<monaco.IDisposable>();
     const editorStatesRef = useRef(new Map());
 
@@ -106,6 +111,8 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }] : []);
 
     const [curPath, setCurPath] = useState(defaultPath || '');
+    const curPathRef = useRef(defaultPath || '');
+    const curValueRef = useRef('');
 
     const restoreModel = useCallback((path: string) => {
         const editorStates = editorStatesRef.current;
@@ -130,9 +137,16 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
                 editorRef.current?.focus();
                 valueLisenerRef.current = model.onDidChangeContent(() => {
                     const v = model.getValue();
+                    setOpenedFiles((pre) => pre.map(v => {
+                        if (v.path === path) {
+                            v.status = 'editing';
+                        }
+                        return v;
+                    }));
                     if (onFileChangeRef.current) {
                         onFileChangeRef.current(path, v);
                     }
+                    curValueRef.current = v;
                     if (onValueChangeRef.current) {
                         onValueChangeRef.current(v);
                     }
@@ -196,8 +210,20 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }, [openOrFocusPath]);
 
     useEffect(() => {
-        function dealKey(e: Event) {
-            console.log(e);
+        function dealKey(e: KeyboardEvent) {
+            const ctrlKey = e.ctrlKey || e.metaKey;
+            const keyCode = e.keyCode;
+
+            if (ctrlKey && keyCode === 83) {
+                e.preventDefault();
+                setOpenedFiles((pre) => pre.map(v => {
+                    if (v.path === curPathRef.current) {
+                        v.status = 'saved';
+                    }
+                    return v;
+                }));
+                filesRef.current[curPathRef.current] = curValueRef.current;
+            }
         }
         document.addEventListener('keydown', dealKey);
         return () => document.removeEventListener('keydown', dealKey);
@@ -215,9 +241,10 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }, [options]);
 
     useEffect(() => {
-        if (onPathChangeRef.current) {
+        if (onPathChangeRef.current && curPath) {
             onPathChangeRef.current(curPath);
         }
+        curPathRef.current = curPath;
     }, [curPath]);
 
     const onCloseFile = useCallback((path: string) => {
@@ -243,6 +270,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
                 if (res.length === 0) {
                     restoreModel('');
                     setCurPath('');
+                    prePath.current = '';
                 }
                 return res;
             }
@@ -253,6 +281,8 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
 
     useImperativeHandle(ref, () => ({
         test: () => console.log('test'),
+        getValue: (path: string) => filesRef.current[path],
+        getAllValue: () => filesRef.current,
     }));
 
     return (
@@ -260,7 +290,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
             <FileList
                 title="music web editor"
                 currentPath={curPath}
-                files={filesRef.current}
+                filetree={filetree}
                 onPathChange={handlePathChange} />
             <div className="music-monaco-editor-area">
                 <OpenedTab

@@ -1,11 +1,6 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Icon from '../icons';
-import { generateFileTree } from '../../../utils';
 import './index.less';
-
-interface filelist {
-    [key: string]: string,
-}
 
 const File: React.FC<{
     file: any,
@@ -24,12 +19,12 @@ const File: React.FC<{
     const handleClick = useCallback(() => {
         setShowChild(pre => !pre);
     }, []);
+    const handlePathChange = useCallback((e) => {
+        const key = e.currentTarget.dataset.src!;
+        onPathChange(key);
+    }, [onPathChange]);
     if (file.name) {
         const fileType = file.name.split('.').slice(-1);
-        const handlePathChange = useCallback((e) => {
-            const key = e.currentTarget.dataset.src!;
-            onPathChange(key);
-        }, [file.path, onPathChange]);
         
         return (
             <div
@@ -83,17 +78,16 @@ const File: React.FC<{
 }
 
 const FileTree: React.FC<{
-    files: filelist,
+    filetree: any,
     onPathChange: (key: string) => void,
     title?: string,
     currentPath?: string,
 }> = ({
-    files,
+    filetree,
     onPathChange,
     title = 'monaco-base-editor',
     currentPath = '',
 }) => {
-    const fileTree = generateFileTree(files);
 
     return (
         <div className="music-monaco-editor-list-wrapper">
@@ -104,7 +98,7 @@ const FileTree: React.FC<{
                 <File
                     currentPath={currentPath}
                     root
-                    file={fileTree}
+                    file={filetree}
                     onPathChange={onPathChange} />
             </div>
         </div>

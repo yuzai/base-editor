@@ -209,24 +209,20 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
         }
     }, [openOrFocusPath]);
 
-    useEffect(() => {
-        function dealKey(e: KeyboardEvent) {
-            const ctrlKey = e.ctrlKey || e.metaKey;
-            const keyCode = e.keyCode;
+    const dealKey = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        const ctrlKey = e.ctrlKey || e.metaKey;
+        const keyCode = e.keyCode;
 
-            if (ctrlKey && keyCode === 83) {
-                e.preventDefault();
-                setOpenedFiles((pre) => pre.map(v => {
-                    if (v.path === curPathRef.current) {
-                        v.status = 'saved';
-                    }
-                    return v;
-                }));
-                filesRef.current[curPathRef.current] = curValueRef.current;
-            }
+        if (ctrlKey && keyCode === 83) {
+            e.preventDefault();
+            setOpenedFiles((pre) => pre.map(v => {
+                if (v.path === curPathRef.current) {
+                    v.status = 'saved';
+                }
+                return v;
+            }));
+            filesRef.current[curPathRef.current] = curValueRef.current;
         }
-        document.addEventListener('keydown', dealKey);
-        return () => document.removeEventListener('keydown', dealKey);
     }, []);
 
     useEffect(() => {
@@ -286,7 +282,10 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     }));
 
     return (
-        <div className="music-monaco-editor">
+        <div
+            tabIndex={1}
+            onKeyDown={dealKey}
+            className="music-monaco-editor">
             <FileList
                 title="music web editor"
                 currentPath={curPath}
@@ -298,7 +297,9 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
                     openedFiles={openedFiles}
                     onCloseFile={onCloseFile}
                     onPathChange={handlePathChange} />
-                <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }} />
+                <div
+                    ref={editorNodeRef}
+                    style={{ flex: 1, width: '100%' }} />
                 {
                     openedFiles.length === 0 && (
                         <div className="music-monaco-editor-area-empty">

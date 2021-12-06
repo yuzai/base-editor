@@ -14,6 +14,8 @@ export interface MultiEditorIProps {
 }
 export interface MultiRefType {
     test: () => void;
+    getValue: (path: string) => string;
+    getAllValue: () => filelist;
 }
 export declare const MultiEditor: React.ForwardRefExoticComponent<MultiEditorIProps & React.RefAttributes<MultiRefType>>;
 export default MultiEditor;

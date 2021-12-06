@@ -121,7 +121,7 @@ export const startUp = () => {
         `)
     });
     const interval = setInterval(() => {
-        if(monaco) {
+        if(window.monaco) {
             configMonaco();
             clearInterval(interval);
         }

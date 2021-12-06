@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
+import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
@@ -20,7 +21,7 @@ export interface MultiEditorIProps {
     onFileChange?: (key: string, value: string) => void,
     defaultFiles?: filelist,
     // files?: filelist,
-    options: monaco.editor.IStandaloneEditorConstructionOptions
+    options: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
 export interface MultiRefType {

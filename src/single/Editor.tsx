@@ -1,13 +1,14 @@
 // @ts-nocheck
 /* eslint-disable */
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import * as monacoType from 'monaco-editor';
 
 export interface EditorIProps {
     defaultValue?: string,
     value?: string,
     language?: string,
     onValueChange?: (v: string) => void,
-    options?: monaco.editor.IStandaloneEditorConstructionOptions
+    options?: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
 export const Editor: React.FC<EditorIProps> = ({

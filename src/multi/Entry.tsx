@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react';
-import Editor from './Editor';
+import Editor, { MultiEditorIProps, MultiRefType } from './Editor';
 
-export const Entry = (props) => {
+export const Entry = React.forwardRef<MultiRefType, MultiEditorIProps>((props, ref) => {
     const [count, setCount] = useState(0);
     useEffect(() => {
         const interval = setInterval(() => {
@@ -13,10 +13,12 @@ export const Entry = (props) => {
         }, 100);
     }, []);
     if (window.monaco) {
-        return <Editor {...props} />;
+        return <Editor {...props} ref={ref} />;
     }
     return (<div>loading</div>);
-};
+});
+
+Entry.displayName = 'MultiEditorEntry';
 
 export default Entry;
 

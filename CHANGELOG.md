@@ -1,3 +1,12 @@
+## [1.0.21](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.20...v1.0.21) (2021-12-06)
+
+
+### Bug Fixes
+
+* type doc ([600165d](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/600165d6616f5d1514803592a53c4f70aa706968))
+
+
+
 ## [1.0.20](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.19...v1.0.20) (2021-12-06)
 
 

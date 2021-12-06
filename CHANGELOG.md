@@ -1,3 +1,12 @@
+## [1.0.19-beta.0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.18...v1.0.19-beta.0) (2021-12-06)
+
+
+### Features
+
+* test monaco-editor ([242e1af](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/242e1afd84f7fd3c3310442dd0e04d62edc35fed))
+
+
+
 ## [1.0.18](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.17...v1.0.18) (2021-12-06)
 
 

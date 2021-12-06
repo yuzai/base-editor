@@ -11,7 +11,7 @@ export interface EditorIProps {
     options?: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
-export const Editor: React.FC<EditorIProps> = ({
+export const EditorComp: React.FC<EditorIProps> = ({
     defaultValue,
     value,
     language,
@@ -78,4 +78,4 @@ export const Editor: React.FC<EditorIProps> = ({
     )
 };
 
-export default Editor;
+export default EditorComp;

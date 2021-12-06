@@ -7,5 +7,5 @@ export interface EditorIProps {
     onValueChange?: (v: string) => void;
     options?: monacoType.editor.IStandaloneEditorConstructionOptions;
 }
-export declare const Editor: React.FC<EditorIProps>;
-export default Editor;
+export declare const EditorComp: React.FC<EditorIProps>;
+export default EditorComp;

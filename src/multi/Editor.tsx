@@ -73,7 +73,7 @@ function initializeFile(path: string, value: string) {
 
 // TODO:重命名model
 
-export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
+export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     defaultPath,
     // path,
     onPathChange,
@@ -314,6 +314,6 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     )
 });
 
-export default MultiEditor;
+export default MultiEditorComp;
 
-MultiEditor.displayName = 'MultiEditor';
+MultiEditorComp.displayName = 'MultiEditorComp';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
@@ -7,6 +6,11 @@ import { generateFileTree } from '../utils';
 
 import './Editor.less';
 
+declare global {
+    interface Window {
+        monaco: typeof monacoType;
+    }
+}
 export interface filelist {
     [key: string]: string,
 }
@@ -33,7 +37,7 @@ export interface MultiRefType {
 // 初始化各个文件
 function initializeFile(path: string, value: string) {
     // model 是否存在
-    let model = monaco.editor
+    let model = window.monaco.editor
       .getModels()
       .find(model => model.uri.path === path);
 
@@ -61,10 +65,10 @@ function initializeFile(path: string, value: string) {
             'jsx': 'javascript',
             'tsx': 'typescript',
         }
-        model = monaco.editor.createModel(
+        model = window.monaco.editor.createModel(
             value,
             config[type] || type,
-            new monaco.Uri().with({ path })
+            new window.monaco.Uri().with({ path })
         );
     }
 }
@@ -95,11 +99,11 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     optionsRef.current = options;
 
     const editorNodeRef = useRef<HTMLDivElement>(null);
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const editorRef = useRef<monacoType.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
     const filesRef = useRef(defaultFiles);
     const [filetree] = useState(generateFileTree(defaultFiles));
-    const valueLisenerRef = useRef<monaco.IDisposable>();
+    const valueLisenerRef = useRef<monacoType.IDisposable>();
     const editorStatesRef = useRef(new Map());
 
     const [openedFiles, setOpenedFiles] = useState<Array<{
@@ -115,7 +119,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     const restoreModel = useCallback((path: string) => {
         const editorStates = editorStatesRef.current;
-        const model = monaco.editor
+        const model = window.monaco.editor
             .getModels()
             .find(model => model.uri.path === path);
         if (path !== prePath.current && prePath.current) {
@@ -183,7 +187,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         // 创建editor 实例
-        editorRef.current = monaco.editor.create(editorNodeRef.current!, optionsRef.current);
+        editorRef.current = window.monaco.editor.create(editorNodeRef.current!, optionsRef.current);
 
         const editorService = (editorRef.current as any)._codeEditorService;
         const openEditorBase = editorService.openCodeEditor.bind(editorService);
@@ -192,7 +196,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             const result = await openEditorBase(input, source);
             if (result === null) {
                 const fullPath = input.resource.path
-                source.setModel(monaco.editor.getModel(input.resource));
+                source.setModel(window.monaco.editor.getModel(input.resource));
                 openOrFocusPath(fullPath);
                 source.setSelection(input.options.selection);
                 source.revealLine(input.options.selection.startLineNumber);

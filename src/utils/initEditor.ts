@@ -1,9 +1,14 @@
-// @ts-nocheck
-// import * as monaco from 'monaco-editor';
 import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
 import { wireTmGrammars } from 'monaco-editor-textmate';
+declare type monacoType = typeof import("monaco-editor");
 import { ASSETSPATH } from './consts';
+
+declare global {
+    interface Window {
+        monaco: monacoType;
+    }
+}
 
 function loadScript(url: string, cb: () => void) {
     const script = document.createElement('script');
@@ -34,7 +39,7 @@ const grammerMap: {
 
 function configMonaco() {
     const init = async () => {
-        monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+        window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
         //     noSemanticValidation: true,
         //     noSyntaxValidation: true,
@@ -44,14 +49,14 @@ function configMonaco() {
         // 获取主题文件
         const onDarkProTheme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/OneDarkPro.json`)).text());
         // 定义主题
-        monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
+        window.monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
         // 设置主题
-        monaco.editor.setTheme('OneDarkPro');
+        window.monaco.editor.setTheme('OneDarkPro');
         /**
          * Use prettier to format JavaScript code.
          * This will replace the default formatter.
          */
-        monaco.languages.registerDocumentFormattingEditProvider('javascript', {
+        window.monaco.languages.registerDocumentFormattingEditProvider('javascript', {
             async provideDocumentFormattingEdits(model) {
                 const prettier = await import('prettier/standalone');
                 // @ts-ignore
@@ -73,8 +78,8 @@ function configMonaco() {
     };
     init();
 
-    monaco.languages.register({ id: 'JavascriptReact' });
-    monaco.languages.register({ id: 'TypescriptReact' });
+    window.monaco.languages.register({ id: 'JavascriptReact' });
+    window.monaco.languages.register({ id: 'TypescriptReact' });
     
     // 创建语法映射
     const grammars = new Map();
@@ -99,7 +104,7 @@ function configMonaco() {
     
     // 将语法映射揉进monaco
     function wireMonacoGrammars() {
-        wireTmGrammars(monaco, registry, grammars);
+        wireTmGrammars(window.monaco, registry, grammars);
     }
 
     // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射
@@ -116,7 +121,6 @@ export const startUp = () => {
             require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs' } });
 
             require(['vs/editor/editor.main'], function () {
-                console.log(monaco);
             });
         `)
     });

@@ -1,3 +1,20 @@
+## [1.0.19](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.19-beta.0...v1.0.19) (2021-12-06)
+
+
+### Bug Fixes
+
+* export name ([66ac104](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/66ac104939360263db435784997ebc09d7e50569))
+* export type ([88f498c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/88f498ccc9acfc0262b6d2e92f428c80d41d74ad))
+* rm peerDep ([a364b7c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a364b7c07974b1b6330f46c05492afa67b2b1e6b))
+
+
+### Features
+
+* 修改monaco editor加载方式 ([499ca68](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/499ca6828d614272091ace682edc8e4558d559bd))
+* 完善monaco-editor加载方式 ([a1a6939](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a1a6939f3cf9454fb7e91945768aaf7eab1d3b23))
+
+
+
 ## [1.0.19-beta.0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.18...v1.0.19-beta.0) (2021-12-06)
 
 

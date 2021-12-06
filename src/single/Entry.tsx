@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Editor from './Editor';
 
-export const EntrySingle = (props, ref) => {
+export const Editor = (props, ref) => {
     const [count, setCount] = useState(0);
     useEffect(() => {
         const interval = setInterval(() => {
@@ -18,5 +18,5 @@ export const EntrySingle = (props, ref) => {
     return (<div>loading</div>);
 };
 
-export default React.forwardRef(EntrySingle);
+export default React.forwardRef(Editor);
 

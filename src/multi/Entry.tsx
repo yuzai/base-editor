@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Editor, { MultiEditorIProps, MultiRefType } from './Editor';
 
-export const Entry = React.forwardRef<MultiRefType, MultiEditorIProps>((props, ref) => {
+export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>((props, ref) => {
     const [count, setCount] = useState(0);
     useEffect(() => {
         const interval = setInterval(() => {
@@ -18,7 +18,7 @@ export const Entry = React.forwardRef<MultiRefType, MultiEditorIProps>((props, r
     return (<div>loading</div>);
 });
 
-Entry.displayName = 'MultiEditorEntry';
+MultiEditor.displayName = 'MultiEditorEntry';
 
-export default Entry;
+export default MultiEditor;
 

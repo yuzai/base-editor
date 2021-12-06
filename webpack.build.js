@@ -1,7 +1,8 @@
+// @ts-nocheck
+/* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
 // const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -42,9 +43,6 @@ module.exports = {
         new webpack.ProvidePlugin({
             process: 'process/browser',
         }),
-        new MonacoWebpackPlugin({
-			languages: ['typescript', 'javascript', 'css']
-		}),
         new webpack.DefinePlugin({
             _ASSETSPATH: JSON.stringify('https://st.qa-qwe.igame.163.com/g/monaco-editor/'),
         })

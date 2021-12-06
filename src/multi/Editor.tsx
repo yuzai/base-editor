@@ -1,13 +1,11 @@
-/*
-* 暂不支持受控，等有场景再支持
-*/
+// @ts-nocheck
 import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
-import * as monaco from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
 
 import './Editor.less';
+
 export interface filelist {
     [key: string]: string,
 }

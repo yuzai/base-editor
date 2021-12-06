@@ -1,5 +1,6 @@
+// @ts-nocheck
+/* eslint-disable */
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import * as monaco from 'monaco-editor';
 
 export interface EditorIProps {
     defaultValue?: string,

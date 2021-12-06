@@ -1,6 +1,6 @@
 {
   "name": "@music/base-editor",
-  "version": "1.0.19-beta.0",
+  "version": "1.0.19-beta.1",
   "description": "",
   "main": "dist/index.bundle.js",
   "typings": "dist/index.d.ts",
@@ -62,7 +62,6 @@
     "monaco-editor-textmate": "^3.0.0",
     "monaco-textmate": "^3.0.1",
     "onigasm": "^2.2.5",
-    "prettier": "^1.14.2",
-    "monaco-editor": "^0.30.1"
+    "prettier": "^1.14.2"
   }
 }

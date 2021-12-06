@@ -1,32 +1,25 @@
-/*
-* 初始化editor
-*/
-import * as monaco from 'monaco-editor';
+// @ts-nocheck
+// import * as monaco from 'monaco-editor';
 import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
 import { wireTmGrammars } from 'monaco-editor-textmate';
 import { ASSETSPATH } from './consts';
 
-let execed = false;
+function loadScript(url: string, cb: () => void) {
+    const script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('body')[0].appendChild(script);
+    script.onload = cb;
+}
 
-// //@ts-ignore
-// self.MonacoEnvironment = { //@ts-ignore
-// 	getWorkerUrl: function (moduleId, label) {
-// 		if (label === 'json') {
-// 			return './json.worker.bundle.js';
-// 		}
-// 		if (label === 'css' || label === 'scss' || label === 'less') {
-// 			return './css.worker.bundle.js';
-// 		}
-// 		if (label === 'html' || label === 'handlebars' || label === 'razor') {
-// 			return './html.worker.bundle.js';
-// 		}
-// 		if (label === 'typescript' || label === 'javascript') {
-// 			return './ts.worker.bundle.js';
-// 		}
-// 		return './editor.worker.bundle.js';
-// 	}
-// };
+function loadCode(code: string) {
+    const script = document.createElement('script');
+    script.type = ' text/javascript';
+    script.appendChild(document.createTextNode(code));
+    document.getElementsByTagName('body')[0].appendChild(script);
+}
+
+let execed = false;
 
 const grammerMap: {
     [key: string]: string,
@@ -39,9 +32,7 @@ const grammerMap: {
     'source.less': 'less.tmLanguage.json',
 }
 
-export const startUp = () => {
-    if (execed) return;
-    execed = true;
+function configMonaco() {
     const init = async () => {
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
@@ -115,4 +106,24 @@ export const startUp = () => {
     setTimeout(() => {
         wireMonacoGrammars();
     }, 3000);
+}
+
+export const startUp = () => {
+    if (execed) return;
+    execed = true;
+    loadScript('https://cdn.jsdelivr.net/npm/monaco-editor@0.25.0/min/vs/loader.js', () => {
+        loadCode(`
+            require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs' } });
+
+            require(['vs/editor/editor.main'], function () {
+                console.log(monaco);
+            });
+        `)
+    });
+    const interval = setInterval(() => {
+        if(monaco) {
+            configMonaco();
+            clearInterval(interval);
+        }
+    }, 100);
 }

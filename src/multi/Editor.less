@@ -19,6 +19,8 @@
     --list-inactiveSelectionForeground: #d7dae0;
     --list-warningForeground: #d19a66;
 
+    --editor-background: #282c34;
+
     --scrollbar-shadow: #23252c;
     --scrollbarSlider-activeBackground: #747d9180;
     --scrollbarSlider-background: #4e566660;
@@ -27,8 +29,19 @@
     //"list.deemphasizedForeground": "#8c8c8c",
     //"list.errorForeground": "#f88070",
     //"list.focusHighlightForeground": "#18a3ff",
-    //"list.focusOutline": "#007fd4",
+    --list-focusOutline: #007fd4;
     //"list.highlightForeground": "#18a3ff",
+
+    &-drag {
+        width: 5px;
+        background: var(--list-background);
+        height: 100%;
+        cursor: col-resize;
+
+        &:hover {
+            background: var(--list-focusOutline);
+        }
+    }
 
     &-area {
         overflow: hidden;
@@ -48,7 +61,7 @@
             right: 0;
             top: 0;
             bottom: 0;
-            background: var(--list-background);
+            background: var(--editor-background);
             display: flex;
             flex-direction: column;
             align-items: center;

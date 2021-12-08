@@ -6,11 +6,6 @@ import { generateFileTree } from '../utils';
 
 import './Editor.less';
 
-declare global {
-    interface Window {
-        monaco: typeof monacoType;
-    }
-}
 export interface filelist {
     [key: string]: string,
 }
@@ -284,16 +279,57 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         getAllValue: () => filesRef.current,
     }));
 
+    const [filelistWidth, setFilelistWidth] = useState(180);
+
+    const dragStartRef = useRef<{
+        pageX: number,
+        width: number,
+        start: boolean,
+    }>({
+        pageX: 0,
+        width: 0,
+        start: false,
+    });
+    const handleMoveStart = useCallback((e) => {
+        dragStartRef.current = {
+            pageX: e.pageX,
+            width: filelistWidth,
+            start: true
+        };
+    }, [filelistWidth]);
+
+    const handleMove = useCallback((e) => {
+        if (dragStartRef.current.start) {
+            setFilelistWidth(dragStartRef.current.width + (e.pageX - dragStartRef.current.pageX));
+        }
+    }, []);
+
+    const handleMoveEnd = useCallback((e) => {
+        dragStartRef.current = {
+            pageX: e.pageX,
+            width: 0,
+            start: false,
+        };
+    }, []);
+
     return (
         <div
             tabIndex={1}
             onKeyDown={dealKey}
+            onMouseMove={handleMove}
+            onMouseUp={handleMoveEnd}
             className="music-monaco-editor">
             <FileList
+                style={{
+                    width: `${filelistWidth}px`,
+                }}
                 title="music web editor"
                 currentPath={curPath}
                 filetree={filetree}
                 onPathChange={handlePathChange} />
+            <div
+                onMouseDown={handleMoveStart}
+                className="music-monaco-editor-drag" />
             <div className="music-monaco-editor-area">
                 <OpenedTab
                     currentPath={curPath}

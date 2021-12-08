@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Editor, { MultiEditorIProps, MultiRefType } from './Editor';
 
 export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>((props, ref) => {
-    const [count, setCount] = useState(0);
+    const [, setCount] = useState(0);
     useEffect(() => {
         const interval = setInterval(() => {
             setCount(pre => pre + 1);

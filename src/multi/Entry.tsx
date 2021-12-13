@@ -15,14 +15,12 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>((pr
     }, []);
     if (window.monaco) {
         return (
-            <div className="music-monaco-editor-colors">
-                <Editor {...props} ref={ref} />
-            </div>
+            <Editor {...props} ref={ref} />
         )
     }
     return (
         <div
-            className="music-monaco-editor-loading music-monaco-editor-colors">
+            className="music-monaco-editor-loading">
             <img
                 className="music-monaco-editor-loading-icon"
                 src="https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/9879093207/2dbb/873a/9e97/e817279537a0417d042f62fbb1b99eea.gif" />

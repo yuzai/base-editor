@@ -37,6 +37,29 @@ const grammerMap: {
     'source.less': 'less.tmLanguage.json',
 }
 
+function configTheme() {
+    const variables = [
+        'list.background',
+        'list.foreground',
+        'list.activeSelectionBackground',
+        'list.activeSelectionForeground',
+        'list.focusBackground',
+        'list.focusForeground',
+        'list.highlightForeground',
+        'list.hoverBackground',
+        'list.hoverForeground',
+        'list.inactiveSelectionBackground',
+        'list.inactiveSelectionForeground',
+        'list.warningForeground',
+        'editor.background',
+        'scrollbar.shadow',
+        'scrollbarSlider.activeBackground',
+        'scrollbarSlider.background',
+        'scrollbarSlider.hoverBackground',
+        'list.focusOutline',
+    ];
+}
+
 function configMonaco() {
     const init = async () => {
         window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
@@ -116,7 +139,7 @@ function configMonaco() {
 export const startUp = () => {
     if (execed) return;
     execed = true;
-    loadScript('https://cdn.jsdelivr.net/npm/monaco-editor@0.25.0/min/vs/loader.js', () => {
+    loadScript('https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs/loader.js', () => {
         loadCode(`
             require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs' } });
 

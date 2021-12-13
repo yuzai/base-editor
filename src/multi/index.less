@@ -1,32 +1,24 @@
-.music-monaco-editor-colors {
-    width: 100%;
-    height: 100%;
+:root {
+    --monaco-list-background: #232830;
+    --monaco-list-foreground: #cccccc;
+    --monaco-list-activeSelectionBackground: #2c313a;
+    --monaco-list-activeSelectionForeground: #d7dae0;
+    --monaco-list-focusBackground: #323842;
+    --monaco-list-focusForeground: #f0f0f0;
+    --monaco-list-highlightForeground: #c5c5c5;
+    --monaco-list-hoverBackground: #2c313a;
+    --monaco-list-hoverForeground: #ffffff;
+    --monaco-list-inactiveSelectionBackground: #323842;
+    --monaco-list-inactiveSelectionForeground: #d7dae0;
+    --monaco-list-warningForeground: #d19a66;
 
-    --list-background: #232830;
-    --list-foreground: #cccccc;
-    --list-activeSelectionBackground: #2c313a;
-    --list-activeSelectionForeground: #d7dae0;
-    --list-focusBackground: #323842;
-    --list-focusForeground: #f0f0f0;
-    --list-highlightForeground: #c5c5c5;
-    --list-hoverBackground: #2c313a;
-    --list-hoverForeground: #ffffff;
-    --list-inactiveSelectionBackground: #323842;
-    --list-inactiveSelectionForeground: #d7dae0;
-    --list-warningForeground: #d19a66;
+    --monaco-editor-background: #282c34;
 
-    --editor-background: #282c34;
-
-    --scrollbar-shadow: #23252c;
-    --scrollbarSlider-activeBackground: #747d9180;
-    --scrollbarSlider-background: #4e566660;
-    --scrollbarSlider-hoverBackground: #5a637580;
-
-    //"list.deemphasizedForeground": "#8c8c8c",
-    //"list.errorForeground": "#f88070",
-    //"list.focusHighlightForeground": "#18a3ff",
-    --list-focusOutline: #007fd4;
-    //"list.highlightForeground": "#18a3ff",
+    --monaco-scrollbar-shadow: #23252c;
+    --monaco-scrollbarSlider-activeBackground: #747d9180;
+    --monaco-scrollbarSlider-background: #4e566660;
+    --monaco-scrollbarSlider-hoverBackground: #5a637580;
+    --monaco-list-focusOutline: #007fd4;
 }
 .music-monaco-editor {
     display: flex;
@@ -38,19 +30,19 @@
 
     &-drag {
         width: 5px;
-        background: var(--list-background);
+        background: var(--monaco-list-background);
         height: 100%;
         cursor: col-resize;
 
         &:hover {
-            background: var(--list-focusOutline);
+            background: var(--monaco-list-focusOutline);
         }
     }
 
     &-area {
         overflow: hidden;
-        color: var(--list-foreground);
-        background-color: var(--list-background);
+        color: var(--monaco-list-foreground);
+        background-color: var(--monaco-list-background);
         flex: 1;
         height: 100%;
         display: flex;
@@ -65,7 +57,7 @@
             right: 0;
             top: 0;
             bottom: 0;
-            background: var(--editor-background);
+            background: var(--monaco-editor-background);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -86,7 +78,7 @@
     justify-content: center;
     height: 100%;
     width: 100%;
-    background: var(--editor-background);
+    background: var(--monaco-editor-background);
     
     &-icon {
         width: 60px;

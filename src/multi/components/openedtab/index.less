@@ -18,16 +18,16 @@
         height: 6px;
     }
     &::-webkit-scrollbar-track {
-        background: var(--list-background);
-        box-shadow: inset 0 0 5px var(--scrollbar-shadow);
-        -webkit-box-shadow: inset 0 0 5px var(--scrollbar-shadow);
+        background: var(--monaco-list-background);
+        box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+        -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
     }
     /* 滚动条滑块 */
     &::-webkit-scrollbar-thumb {
         border-radius: 3px;
-        background: var(--scrollbarSlider-background);
-        box-shadow: inset 0 0 5px var(--scrollbar-shadow);
-        -webkit-box-shadow: inset 0 0 5px var(--scrollbar-shadow);
+        background: var(--monaco-scrollbarSlider-background);
+        box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+        -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
 
         //TODO: 增加滚动条hover态展示
     }
@@ -42,17 +42,17 @@
         flex-direction: row;
         align-items: center;
         margin-right: 1px;
-        background-color: var(--list-background);
+        background-color: var(--monaco-list-background);
         position: relative;
 
         &-focused {
-            background-color: var(--list-focusBackground);
-            color: var(--list-focusForeground);
+            background-color: var(--monaco-list-focusBackground);
+            color: var(--monaco-list-focusForeground);
         }
 
         &:hover {
-            background-color: var(--list-hoverBackground);
-            color: var(--list-hoverForeground);
+            background-color: var(--monaco-list-hoverBackground);
+            color: var(--monaco-list-hoverForeground);
         }
 
         &-close {
@@ -60,7 +60,7 @@
             padding: 5px 5px;
             line-height: 10px;
             &:hover {
-                background-color: var(--list-focusBackground);
+                background-color: var(--monaco-list-focusBackground);
             }
         }
 
@@ -70,7 +70,7 @@
             top: 15px;
             width: 7px;
             height: 7px;
-            background-color: var(--list-hoverForeground);
+            background-color: var(--monaco-list-hoverForeground);
             border-radius: 50%;
         }
     }

@@ -3,9 +3,6 @@ import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
-
-import './Editor.less';
-
 export interface filelist {
     [key: string]: string,
 }
@@ -323,7 +320,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 style={{
                     width: `${filelistWidth}px`,
                 }}
-                title="music web editor"
+                title="web editor"
                 currentPath={curPath}
                 filetree={filetree}
                 onPathChange={handlePathChange} />
@@ -345,7 +342,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                             <img
                                 src="//p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5759801316/fb85/e193/a256/03a81ea60cf94212bbc814f2c82b6940.png"
                                 className="music-monaco-editor-area-empty-icon" />
-                            <div>music web editor</div>
+                            <div>web editor</div>
                         </div>
                     )
                 }

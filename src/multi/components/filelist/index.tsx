@@ -1,35 +1,30 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Icon from '../icons';
-import { generateFileTree } from '../../../utils';
 import './index.less';
-
-interface filelist {
-    [key: string]: string,
-}
 
 const File: React.FC<{
     file: any,
     onPathChange: (key: string) => void,
     directory?: string,
     root: boolean,
-    currentPath?: string
+    currentPath?: string,
 }> = ({
     file,
     onPathChange,
     directory = '',
     currentPath = '',
-    root
+    root,
 }) => {
     const [showChild, setShowChild] = useState(false);
     const handleClick = useCallback(() => {
         setShowChild(pre => !pre);
     }, []);
+    const handlePathChange = useCallback((e) => {
+        const key = e.currentTarget.dataset.src!;
+        onPathChange(key);
+    }, [onPathChange]);
     if (file.name) {
         const fileType = file.name.split('.').slice(-1);
-        const handlePathChange = useCallback((e) => {
-            const key = e.currentTarget.dataset.src!;
-            onPathChange(key);
-        }, [file.path, onPathChange]);
         
         return (
             <div
@@ -83,20 +78,21 @@ const File: React.FC<{
 }
 
 const FileTree: React.FC<{
-    files: filelist,
+    filetree: any,
     onPathChange: (key: string) => void,
     title?: string,
     currentPath?: string,
+    style: any,
 }> = ({
-    files,
+    filetree,
     onPathChange,
     title = 'monaco-base-editor',
     currentPath = '',
+    style,
 }) => {
-    const fileTree = generateFileTree(files);
 
     return (
-        <div className="music-monaco-editor-list-wrapper">
+        <div className="music-monaco-editor-list-wrapper" style={style}>
             <div className="music-monaco-editor-list-title">
                 {title}
             </div>
@@ -104,7 +100,7 @@ const FileTree: React.FC<{
                 <File
                     currentPath={currentPath}
                     root
-                    file={fileTree}
+                    file={filetree}
                     onPathChange={onPathChange} />
             </div>
         </div>

@@ -1,3 +1,66 @@
+## [1.0.21](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.20...v1.0.21) (2021-12-06)
+
+
+### Bug Fixes
+
+* type doc ([600165d](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/600165d6616f5d1514803592a53c4f70aa706968))
+
+
+
+## [1.0.20](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.19...v1.0.20) (2021-12-06)
+
+
+### Bug Fixes
+
+* chang asset path ([fdef9d0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/fdef9d0649796620c9ccb4366cb4be8cc4b88277))
+
+
+
+## [1.0.19](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.19-beta.0...v1.0.19) (2021-12-06)
+
+
+### Bug Fixes
+
+* export name ([66ac104](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/66ac104939360263db435784997ebc09d7e50569))
+* export type ([88f498c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/88f498ccc9acfc0262b6d2e92f428c80d41d74ad))
+* rm peerDep ([a364b7c](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a364b7c07974b1b6330f46c05492afa67b2b1e6b))
+
+
+### Features
+
+* 修改monaco editor加载方式 ([499ca68](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/499ca6828d614272091ace682edc8e4558d559bd))
+* 完善monaco-editor加载方式 ([a1a6939](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/a1a6939f3cf9454fb7e91945768aaf7eab1d3b23))
+
+
+
+## [1.0.19-beta.0](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.18...v1.0.19-beta.0) (2021-12-06)
+
+
+### Features
+
+* test monaco-editor ([242e1af](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/242e1afd84f7fd3c3310442dd0e04d62edc35fed))
+
+
+
+## [1.0.18](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.17...v1.0.18) (2021-12-06)
+
+
+
+## [1.0.17](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.16...v1.0.17) (2021-12-06)
+
+
+### Bug Fixes
+
+* close hover color ([18a99a5](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/18a99a587ba1bb5cf11f615b37db20a4a81a5a95))
+* 修复键盘绑定事件为局部 ([b3bd39e](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/b3bd39e9aeec627399c495662e11150ae4db7f51))
+
+
+### Features
+
+* 增加cmd+s功能，增加ref getValue, getAllValue方法暴漏 ([356f266](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/commits/356f2666dfe7600d320efe77739d52744a371eb2))
+
+
+
 ## [1.0.16](https://g.hz.netease.com/cloudmusic-frontend/independent/monaco-editor-playground/compare/v1.0.15...v1.0.16) (2021-11-24)
 
 

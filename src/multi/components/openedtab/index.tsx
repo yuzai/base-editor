@@ -27,16 +27,33 @@ const TabItem: React.FC<{
     }, [onPathChange]);
 
     const [showClose, setShowClose] = useState(false);
-    const handleOver = () => {
-        setShowClose(true);
+    const [hover, setHover] = useState(false);
+    const [hoverRight, setHoverRight] = useState(false);
+    const handleOver = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target instanceof HTMLElement) {
+            if (e.target.dataset.name === 'editing') {
+                setHoverRight(true);
+            } else {
+                setHoverRight(false);
+            }
+        }
+        setHover(true);
     }
     const handleLeave = () => {
         setShowClose(false);
+        setHover(false);
     }
 
     const handleClose: MouseEventHandler<HTMLSpanElement> = (e) => {
         e.stopPropagation();
         onCloseFile(file.path);
+    }
+
+    let closeVisible = true;
+    if (file.status === 'editing' && !hoverRight) {
+        closeVisible = false;
+    } else if (file.status !== 'editing' && !hover && !active) {
+        closeVisible = false;
     }
 
     return (
@@ -51,9 +68,16 @@ const TabItem: React.FC<{
             <Icon type={`file_type_${fileType}`} style={{ marginRight: '2px' }} />
             <span style={{ flex: 1, paddingRight: '5px' }}>{name}</span>
             <span
+                data-name="editing"
+                className="music-monaco-editor-opened-tab-item-editing"
+                style={{
+                    visibility: (file.status === 'editing' && !hoverRight) ? 'visible' : 'hidden'
+                }} />
+            <span
+                data-name="editing"
                 onClick={handleClose}
                 style={{
-                    visibility: (showClose || active) ? 'visible' : 'hidden',
+                    visibility: closeVisible ? 'visible' : 'hidden'
                 }}
                 className="music-monaco-editor-opened-tab-item-close">
                 x

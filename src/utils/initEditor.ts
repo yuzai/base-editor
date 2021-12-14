@@ -1,32 +1,30 @@
-/*
-* 初始化editor
-*/
-import * as monaco from 'monaco-editor';
 import { loadWASM } from 'onigasm';
 import { Registry } from 'monaco-textmate';
 import { wireTmGrammars } from 'monaco-editor-textmate';
+declare type monacoType = typeof import("monaco-editor");
 import { ASSETSPATH } from './consts';
 
-let execed = false;
+declare global {
+    interface Window {
+        monaco: monacoType;
+    }
+}
 
-// //@ts-ignore
-// self.MonacoEnvironment = { //@ts-ignore
-// 	getWorkerUrl: function (moduleId, label) {
-// 		if (label === 'json') {
-// 			return './json.worker.bundle.js';
-// 		}
-// 		if (label === 'css' || label === 'scss' || label === 'less') {
-// 			return './css.worker.bundle.js';
-// 		}
-// 		if (label === 'html' || label === 'handlebars' || label === 'razor') {
-// 			return './html.worker.bundle.js';
-// 		}
-// 		if (label === 'typescript' || label === 'javascript') {
-// 			return './ts.worker.bundle.js';
-// 		}
-// 		return './editor.worker.bundle.js';
-// 	}
-// };
+function loadScript(url: string, cb: () => void) {
+    const script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('body')[0].appendChild(script);
+    script.onload = cb;
+}
+
+function loadCode(code: string) {
+    const script = document.createElement('script');
+    script.type = ' text/javascript';
+    script.appendChild(document.createTextNode(code));
+    document.getElementsByTagName('body')[0].appendChild(script);
+}
+
+let execed = false;
 
 const grammerMap: {
     [key: string]: string,
@@ -39,28 +37,58 @@ const grammerMap: {
     'source.less': 'less.tmLanguage.json',
 }
 
-export const startUp = () => {
-    if (execed) return;
-    execed = true;
+export async function configTheme(name: string) {
+    const theme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/${name}.json`)).text());
+
+    const variables = [
+        'list.activeSelectionBackground',
+        'list.activeSelectionForeground',
+        'list.focusBackground',
+        'list.focusForeground',
+        'list.highlightForeground',
+        'list.hoverBackground',
+        'list.hoverForeground',
+        'list.inactiveSelectionBackground',
+        'list.inactiveSelectionForeground',
+        'list.warningForeground',
+        'editor.background',
+        'editor.foreground',
+        'scrollbar.shadow',
+        'scrollbarSlider.activeBackground',
+        'scrollbarSlider.background',
+        'scrollbarSlider.hoverBackground',
+        'editorCursor.foreground',
+    ];
+
+    const prefix = '--monaco-';
+
+    variables.forEach(v => {
+        console.log(v, theme.colors[v]);
+        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || '#fff');
+    });
+
+     // 定义主题
+     window.monaco.editor.defineTheme('OneDarkPro', theme);
+     // 设置主题
+     window.monaco.editor.setTheme('OneDarkPro');
+}
+
+function configMonaco() {
     const init = async () => {
-        monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+        window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         // monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
         //     noSemanticValidation: true,
         //     noSyntaxValidation: true,
         // });
         // 加载textmate语义解析webassembly文件
         await loadWASM(`${ASSETSPATH}onigasm.wasm`);
-        // 获取主题文件
-        const onDarkProTheme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/OneDarkPro.json`)).text());
-        // 定义主题
-        monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
-        // 设置主题
-        monaco.editor.setTheme('OneDarkPro');
+        //
+        configTheme('OneDarkPro');
         /**
          * Use prettier to format JavaScript code.
          * This will replace the default formatter.
          */
-        monaco.languages.registerDocumentFormattingEditProvider('javascript', {
+        window.monaco.languages.registerDocumentFormattingEditProvider('javascript', {
             async provideDocumentFormattingEdits(model) {
                 const prettier = await import('prettier/standalone');
                 // @ts-ignore
@@ -82,8 +110,8 @@ export const startUp = () => {
     };
     init();
 
-    monaco.languages.register({ id: 'JavascriptReact' });
-    monaco.languages.register({ id: 'TypescriptReact' });
+    window.monaco.languages.register({ id: 'JavascriptReact' });
+    window.monaco.languages.register({ id: 'TypescriptReact' });
     
     // 创建语法映射
     const grammars = new Map();
@@ -108,11 +136,30 @@ export const startUp = () => {
     
     // 将语法映射揉进monaco
     function wireMonacoGrammars() {
-        wireTmGrammars(monaco, registry, grammars);
+        wireTmGrammars(window.monaco, registry, grammars);
     }
 
     // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射
     setTimeout(() => {
         wireMonacoGrammars();
     }, 3000);
+}
+
+export const startUp = () => {
+    if (execed) return;
+    execed = true;
+    loadScript('https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs/loader.js', () => {
+        loadCode(`
+            require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1/min/vs' } });
+
+            require(['vs/editor/editor.main'], function () {
+            });
+        `)
+    });
+    const interval = setInterval(() => {
+        if(window.monaco) {
+            configMonaco();
+            clearInterval(interval);
+        }
+    }, 100);
 }

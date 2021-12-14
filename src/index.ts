@@ -1,6 +1,6 @@
-export * from './multi/Editor';
+export * from './multi/Entry';
 
-export *  from './single/Editor';
+export *  from './single/Entry';
 
 import { startUp } from './utils/initEditor';
 

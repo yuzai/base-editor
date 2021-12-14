@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Icon from '../icons';
+import Arrow from '../icons/arrow';
 import './index.less';
 
 const File: React.FC<{
@@ -95,6 +96,10 @@ const FileTree: React.FC<{
         <div className="music-monaco-editor-list-wrapper" style={style}>
             <div className="music-monaco-editor-list-title">
                 {title}
+            </div>
+            <div className="music-monaco-editor-list-split">
+                <Arrow />
+                Files
             </div>
             <div className="music-monaco-editor-list-files">
                 <File

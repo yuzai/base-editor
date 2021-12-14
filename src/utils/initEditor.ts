@@ -37,40 +37,27 @@ const grammerMap: {
     'source.less': 'less.tmLanguage.json',
 }
 
-export async function configTheme(name: string) {
-    const theme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/${name}.json`)).text());
+export const themes: {
+    [key: string]: any,
+} = {};
 
-    const variables = [
-        'list.activeSelectionBackground',
-        'list.activeSelectionForeground',
-        'list.focusBackground',
-        'list.focusForeground',
-        'list.highlightForeground',
-        'list.hoverBackground',
-        'list.hoverForeground',
-        'list.inactiveSelectionBackground',
-        'list.inactiveSelectionForeground',
-        'list.warningForeground',
-        'editor.background',
-        'editor.foreground',
-        'scrollbar.shadow',
-        'scrollbarSlider.activeBackground',
-        'scrollbarSlider.background',
-        'scrollbarSlider.hoverBackground',
-        'editorCursor.foreground',
-    ];
+export async function configTheme(name: string) {
+    let theme = themes[name];
+    if (!theme) {
+        theme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/${name}.json`)).text());
+        themes[name] = theme;
+        // 定义主题
+        window.monaco.editor.defineTheme(name, theme);
+    }
 
     const prefix = '--monaco-';
 
-    variables.forEach(v => {
-        console.log(v, theme.colors[v]);
-        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || '#fff');
-    });
+    Object.keys(theme.colors).forEach(v => {
+        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || themes.OneDarkPro.colors[v]);
+    })
 
-     // 定义主题
-     window.monaco.editor.defineTheme('OneDarkPro', theme);
-     // 设置主题
-     window.monaco.editor.setTheme('OneDarkPro');
+    // 设置主题
+    window.monaco.editor.setTheme(name);
 }
 
 function configMonaco() {

@@ -3,6 +3,7 @@ import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
+import { THEMES } from '../utils/consts';
 import { configTheme } from '../utils/initEditor';
 export interface filelist {
     [key: string]: string,
@@ -22,9 +23,10 @@ export interface MultiEditorIProps {
 }
 
 export interface MultiRefType {
-    test: () => void,
     getValue: (path: string) => string,
     getAllValue: () => filelist,
+    getSupportThemes: () => Array<string>,
+    setTheme: (name: string) => void,
 }
 
 // 初始化各个文件
@@ -228,7 +230,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         if (editorRef.current) {
-            configTheme(options.theme || 'OneDarkPro')
+            if (options.theme) {
+                configTheme(options.theme);
+            }
             editorRef.current.updateOptions(options);
         }
     }, [options]);
@@ -273,9 +277,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, [restoreModel]);
 
     useImperativeHandle(ref, () => ({
-        test: () => console.log('test'),
         getValue: (path: string) => filesRef.current[path],
         getAllValue: () => filesRef.current,
+        getSupportThemes: () => THEMES,
+        setTheme: (name) => configTheme(name),
     }));
 
     const [filelistWidth, setFilelistWidth] = useState(180);

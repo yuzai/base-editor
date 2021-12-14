@@ -24,10 +24,12 @@ const Icon: React.FC<{
     style = {},
     className = '',
 }) => {
-    return (<img
+    return (
+        <img
             style={style}
             src={`${ASSETSPATH}icons/${fileTypeMap(type)}.svg`}
-            className={`music-monaco-icons ${className}`}/>)
+            className={`music-monaco-icons ${className}`}/>
+    )
 }
 
 export default Icon;

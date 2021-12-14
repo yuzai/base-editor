@@ -1,8 +1,9 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import Editor from './Entry';
+import { themes } from '../utils/initEditor';
 import { THEMES } from '../utils/consts';
-
+import { copyDataToClipBoard } from '../utils';
 interface filelist {
     [key: string]: string,
 }
@@ -23,6 +24,9 @@ const filesName = [
 const App = () => {
     const [files, setFiles] = useState<filelist>({});
     const editorRef = useRef<any>(null);
+    const [colors, setColors] = useState<{
+        [key: string]: string,
+    }>({});
 
     useEffect(() => {
         // 获取多文件
@@ -37,7 +41,10 @@ const App = () => {
                 // setPath(filesName[0]);
                 // setValue(filesContent[0]);
             });
-        })
+        });
+        setTimeout(() => {
+            setColors(themes['OneDarkPro'].colors);
+        }, 3000);
     }, []);
 
     // 设置当前文件路径和value
@@ -54,24 +61,18 @@ const App = () => {
     //     // console.log(key, value);
     // }
 
-    const [options, setOptions] = useState({
-        fontSize: 14,
-        automaticLayout: true,
-    });
-
     const handleThemeChange = (e: any) => {
-        setOptions(pre => (
-            {
-                ...pre,
-                theme: e.target.value
-            }
-        ))
+        editorRef.current.setTheme(e.target.value);
     };
 
     return (
         <div>
-            <div onClick={() => console.log(editorRef.current?.getValue('/app.js')) }>ref api</div>
-            <select name="theme" onChange={handleThemeChange}>
+            <div onClick={() => console.log(editorRef.current) }>ref api</div>
+            <div onClick={() => setColors(themes['OneDarkPro'].colors)}>refresh theme color</div>
+            <select
+                name="theme"
+                onChange={handleThemeChange}
+                defaultValue="OneDarkPro" >
                 {
                     THEMES.map(theme => <option key={theme} value={theme}>{theme}</option>)
                 }
@@ -88,10 +89,43 @@ const App = () => {
                             onPathChange={handlePathChange}
                             // onValueChange={handleChange}
                             // onFileChange={handleFileChange}
-                            options={options} />
+                            options={{
+                                fontSize: 14,
+                                automaticLayout: true,
+                            }} />
                     </div>
                 )
             }
+            <div style={{
+                position: 'absolute',
+                right: '0',
+                top: '0',
+                width: '400px',
+            }}>
+                {
+                    Object.keys(colors).map(v => (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                            onClick={() => {
+                                copyDataToClipBoard(`var(--monaco-${v.replace('.', '-')})`)
+                            }}
+                            key={v}>
+                            <div style={{
+                                marginRight: '5px',
+                            }}>{v}</div>
+                            <div style={{
+                                width: '100px',
+                                height: '14px',
+                                background: colors[v],
+                            }} />
+                        </div>)
+                    )
+                }
+            </div>
         </div>
     );
 }

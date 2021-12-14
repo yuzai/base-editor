@@ -3,6 +3,7 @@ import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
+import { configTheme } from '../utils/initEditor';
 export interface filelist {
     [key: string]: string,
 }
@@ -227,6 +228,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         if (editorRef.current) {
+            configTheme(options.theme || 'OneDarkPro')
             editorRef.current.updateOptions(options);
         }
     }, [options]);

@@ -6,7 +6,7 @@
     overflow-y: hidden;
     width: 100%;
     white-space: nowrap;
-    background-color: #000;
+    background-color: var(--monaco-editor-background);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,7 +18,7 @@
         height: 6px;
     }
     &::-webkit-scrollbar-track {
-        background: var(--monaco-list-background);
+        background: var(--monaco-editor-background);
         box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
         -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
     }
@@ -42,7 +42,7 @@
         flex-direction: row;
         align-items: center;
         margin-right: 1px;
-        background-color: var(--monaco-list-background);
+        background-color: var(--monaco-editor-background);
         position: relative;
 
         &-focused {

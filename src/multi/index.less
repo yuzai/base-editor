@@ -1,6 +1,4 @@
 :root {
-    --monaco-list-background: #232830;
-    --monaco-list-foreground: #cccccc;
     --monaco-list-activeSelectionBackground: #2c313a;
     --monaco-list-activeSelectionForeground: #d7dae0;
     --monaco-list-focusBackground: #323842;
@@ -13,12 +11,13 @@
     --monaco-list-warningForeground: #d19a66;
 
     --monaco-editor-background: #282c34;
+    --monaco-editor-foreground: #abb2bf;
 
     --monaco-scrollbar-shadow: #23252c;
     --monaco-scrollbarSlider-activeBackground: #747d9180;
     --monaco-scrollbarSlider-background: #4e566660;
     --monaco-scrollbarSlider-hoverBackground: #5a637580;
-    --monaco-list-focusOutline: #007fd4;
+    --monaco-editorCursor-foreground: #528bff;
 }
 .music-monaco-editor {
     display: flex;
@@ -30,19 +29,19 @@
 
     &-drag {
         width: 5px;
-        background: var(--monaco-list-background);
+        background: var(--monaco-editor-background);
         height: 100%;
         cursor: col-resize;
 
         &:hover {
-            background: var(--monaco-list-focusOutline);
+            background: var(--monaco-editorCursor-foreground);
         }
     }
 
     &-area {
         overflow: hidden;
-        color: var(--monaco-list-foreground);
-        background-color: var(--monaco-list-background);
+        color: var(--monaco-editor-foreground);
+        background-color: var(--monaco-editor-background);
         flex: 1;
         height: 100%;
         display: flex;

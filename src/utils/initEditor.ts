@@ -37,10 +37,10 @@ const grammerMap: {
     'source.less': 'less.tmLanguage.json',
 }
 
-function configTheme() {
+export async function configTheme(name: string) {
+    const theme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/${name}.json`)).text());
+
     const variables = [
-        'list.background',
-        'list.foreground',
         'list.activeSelectionBackground',
         'list.activeSelectionForeground',
         'list.focusBackground',
@@ -52,12 +52,25 @@ function configTheme() {
         'list.inactiveSelectionForeground',
         'list.warningForeground',
         'editor.background',
+        'editor.foreground',
         'scrollbar.shadow',
         'scrollbarSlider.activeBackground',
         'scrollbarSlider.background',
         'scrollbarSlider.hoverBackground',
-        'list.focusOutline',
+        'editorCursor.foreground',
     ];
+
+    const prefix = '--monaco-';
+
+    variables.forEach(v => {
+        console.log(v, theme.colors[v]);
+        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || '#fff');
+    });
+
+     // 定义主题
+     window.monaco.editor.defineTheme('OneDarkPro', theme);
+     // 设置主题
+     window.monaco.editor.setTheme('OneDarkPro');
 }
 
 function configMonaco() {
@@ -69,12 +82,8 @@ function configMonaco() {
         // });
         // 加载textmate语义解析webassembly文件
         await loadWASM(`${ASSETSPATH}onigasm.wasm`);
-        // 获取主题文件
-        const onDarkProTheme = JSON.parse(await (await fetch(`${ASSETSPATH}themes/OneDarkPro.json`)).text());
-        // 定义主题
-        window.monaco.editor.defineTheme('OneDarkPro', onDarkProTheme);
-        // 设置主题
-        window.monaco.editor.setTheme('OneDarkPro');
+        //
+        configTheme('OneDarkPro');
         /**
          * Use prettier to format JavaScript code.
          * This will replace the default formatter.

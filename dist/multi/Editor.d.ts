@@ -1,11 +1,5 @@
 import React from 'react';
 import * as monacoType from 'monaco-editor';
-import './Editor.less';
-declare global {
-    interface Window {
-        monaco: typeof monacoType;
-    }
-}
 export interface filelist {
     [key: string]: string;
 }

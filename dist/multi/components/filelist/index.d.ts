@@ -5,5 +5,6 @@ declare const _default: React.NamedExoticComponent<{
     onPathChange: (key: string) => void;
     title?: string | undefined;
     currentPath?: string | undefined;
+    style: any;
 }>;
 export default _default;

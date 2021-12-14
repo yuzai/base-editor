@@ -4,5 +4,6 @@ declare global {
         monaco: monacoType;
     }
 }
+export declare function configTheme(name: string): Promise<void>;
 export declare const startUp: () => void;
 export {};

@@ -1,3 +1,15 @@
+## [1.0.22](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.21...v1.0.22) (2021-12-14)
+
+
+### Features
+
+* add theme support ([06cb1d3](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/06cb1d3d18a59460d296dccd6c9fcf22ee5efe3b))
+* 增加主题文件 ([18de13f](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/18de13f0cfeb23d587a806b35d0ecda4e9a2bd6f))
+* 增加宽度调整 ([668e025](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/668e025ed656b313ee79d531dfb5ed2e6e33707d))
+* 美化loading 样式 ([00cd1fa](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/00cd1fa5bf4e153ac5766c68977b92dd818e0c73))
+
+
+
 ## [1.0.21](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.20...v1.0.21) (2021-12-06)
 
 

@@ -1,6 +1,8 @@
+// @ts-nocheck
+/* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+// const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -42,12 +44,11 @@ module.exports = {
             process: 'process/browser',
         }),
         new webpack.DefinePlugin({
-            _ASSETSPATH: JSON.stringify('https://st.qa-qwe.igame.163.com/g/monaco-editor/'),
+            _ASSETSPATH: JSON.stringify('https://st.qa.igame.163.com/g/monaco-editor/'),
         })
     ],
     externals: {
         'react': 'react',
         'react-dom': 'react-dom',
-        'monaco-editor': 'monaco-editor',
     },
 };

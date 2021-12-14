@@ -1,6 +1,7 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import React, { useCallback, useState, useEffect, useRef } from 'react';
-import Editor, { MultiRefType } from './Editor';
+import Editor from './Entry';
+import { THEMES } from '../utils/consts';
 
 interface filelist {
     [key: string]: string,
@@ -21,7 +22,7 @@ const filesName = [
 
 const App = () => {
     const [files, setFiles] = useState<filelist>({});
-    const editorRef = useRef<MultiRefType>(null);
+    const editorRef = useRef<any>(null);
 
     useEffect(() => {
         // 获取多文件
@@ -53,9 +54,28 @@ const App = () => {
     //     // console.log(key, value);
     // }
 
+    const [options, setOptions] = useState({
+        fontSize: 14,
+        automaticLayout: true,
+    });
+
+    const handleThemeChange = (e: any) => {
+        setOptions(pre => (
+            {
+                ...pre,
+                theme: e.target.value
+            }
+        ))
+    };
+
     return (
         <div>
             <div onClick={() => console.log(editorRef.current?.getValue('/app.js')) }>ref api</div>
+            <select name="theme" onChange={handleThemeChange}>
+                {
+                    THEMES.map(theme => <option key={theme} value={theme}>{theme}</option>)
+                }
+            </select>
             {
                 Object.keys(files).length > 0 && (
                     <div style={{ width: '800px', height: '600px' }}>
@@ -68,10 +88,7 @@ const App = () => {
                             onPathChange={handlePathChange}
                             // onValueChange={handleChange}
                             // onFileChange={handleFileChange}
-                            options={{
-                                fontSize: 14,
-                                automaticLayout: true,
-                            }} />
+                            options={options} />
                     </div>
                 )
             }

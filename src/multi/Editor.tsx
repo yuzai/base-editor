@@ -1,13 +1,9 @@
-/*
-* 暂不支持受控，等有场景再支持
-*/
 import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
-import * as monaco from 'monaco-editor';
+import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
 import { generateFileTree } from '../utils';
-
-import './Editor.less';
+import { configTheme } from '../utils/initEditor';
 export interface filelist {
     [key: string]: string,
 }
@@ -22,7 +18,7 @@ export interface MultiEditorIProps {
     onFileChange?: (key: string, value: string) => void,
     defaultFiles?: filelist,
     // files?: filelist,
-    options: monaco.editor.IStandaloneEditorConstructionOptions
+    options: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
 export interface MultiRefType {
@@ -34,7 +30,7 @@ export interface MultiRefType {
 // 初始化各个文件
 function initializeFile(path: string, value: string) {
     // model 是否存在
-    let model = monaco.editor
+    let model = window.monaco.editor
       .getModels()
       .find(model => model.uri.path === path);
 
@@ -62,10 +58,10 @@ function initializeFile(path: string, value: string) {
             'jsx': 'javascript',
             'tsx': 'typescript',
         }
-        model = monaco.editor.createModel(
+        model = window.monaco.editor.createModel(
             value,
             config[type] || type,
-            new monaco.Uri().with({ path })
+            new window.monaco.Uri().with({ path })
         );
     }
 }
@@ -74,7 +70,7 @@ function initializeFile(path: string, value: string) {
 
 // TODO:重命名model
 
-export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
+export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     defaultPath,
     // path,
     onPathChange,
@@ -96,11 +92,11 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     optionsRef.current = options;
 
     const editorNodeRef = useRef<HTMLDivElement>(null);
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const editorRef = useRef<monacoType.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
     const filesRef = useRef(defaultFiles);
     const [filetree] = useState(generateFileTree(defaultFiles));
-    const valueLisenerRef = useRef<monaco.IDisposable>();
+    const valueLisenerRef = useRef<monacoType.IDisposable>();
     const editorStatesRef = useRef(new Map());
 
     const [openedFiles, setOpenedFiles] = useState<Array<{
@@ -116,7 +112,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
 
     const restoreModel = useCallback((path: string) => {
         const editorStates = editorStatesRef.current;
-        const model = monaco.editor
+        const model = window.monaco.editor
             .getModels()
             .find(model => model.uri.path === path);
         if (path !== prePath.current && prePath.current) {
@@ -184,7 +180,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
 
     useEffect(() => {
         // 创建editor 实例
-        editorRef.current = monaco.editor.create(editorNodeRef.current!, optionsRef.current);
+        editorRef.current = window.monaco.editor.create(editorNodeRef.current!, optionsRef.current);
 
         const editorService = (editorRef.current as any)._codeEditorService;
         const openEditorBase = editorService.openCodeEditor.bind(editorService);
@@ -193,7 +189,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
             const result = await openEditorBase(input, source);
             if (result === null) {
                 const fullPath = input.resource.path
-                source.setModel(monaco.editor.getModel(input.resource));
+                source.setModel(window.monaco.editor.getModel(input.resource));
                 openOrFocusPath(fullPath);
                 source.setSelection(input.options.selection);
                 source.revealLine(input.options.selection.startLineNumber);
@@ -232,6 +228,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
 
     useEffect(() => {
         if (editorRef.current) {
+            configTheme(options.theme || 'OneDarkPro')
             editorRef.current.updateOptions(options);
         }
     }, [options]);
@@ -281,16 +278,57 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
         getAllValue: () => filesRef.current,
     }));
 
+    const [filelistWidth, setFilelistWidth] = useState(180);
+
+    const dragStartRef = useRef<{
+        pageX: number,
+        width: number,
+        start: boolean,
+    }>({
+        pageX: 0,
+        width: 0,
+        start: false,
+    });
+    const handleMoveStart = useCallback((e) => {
+        dragStartRef.current = {
+            pageX: e.pageX,
+            width: filelistWidth,
+            start: true
+        };
+    }, [filelistWidth]);
+
+    const handleMove = useCallback((e) => {
+        if (dragStartRef.current.start) {
+            setFilelistWidth(dragStartRef.current.width + (e.pageX - dragStartRef.current.pageX));
+        }
+    }, []);
+
+    const handleMoveEnd = useCallback((e) => {
+        dragStartRef.current = {
+            pageX: e.pageX,
+            width: 0,
+            start: false,
+        };
+    }, []);
+
     return (
         <div
             tabIndex={1}
             onKeyDown={dealKey}
+            onMouseMove={handleMove}
+            onMouseUp={handleMoveEnd}
             className="music-monaco-editor">
             <FileList
-                title="music web editor"
+                style={{
+                    width: `${filelistWidth}px`,
+                }}
+                title="web editor"
                 currentPath={curPath}
                 filetree={filetree}
                 onPathChange={handlePathChange} />
+            <div
+                onMouseDown={handleMoveStart}
+                className="music-monaco-editor-drag" />
             <div className="music-monaco-editor-area">
                 <OpenedTab
                     currentPath={curPath}
@@ -306,7 +344,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
                             <img
                                 src="//p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/5759801316/fb85/e193/a256/03a81ea60cf94212bbc814f2c82b6940.png"
                                 className="music-monaco-editor-area-empty-icon" />
-                            <div>music web editor</div>
+                            <div>web editor</div>
                         </div>
                     )
                 }
@@ -315,6 +353,6 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     )
 });
 
-export default MultiEditor;
+export default MultiEditorComp;
 
-MultiEditor.displayName = 'MultiEditor';
+MultiEditorComp.displayName = 'MultiEditorComp';

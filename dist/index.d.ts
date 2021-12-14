@@ -1,2 +1,2 @@
-export * from './multi/Editor';
-export * from './single/Editor';
+export * from './multi/Entry';
+export * from './single/Entry';

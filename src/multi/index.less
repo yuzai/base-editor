@@ -1,0 +1,87 @@
+:root {
+    --monaco-list-activeSelectionBackground: #2c313a;
+    --monaco-list-activeSelectionForeground: #d7dae0;
+    --monaco-list-focusBackground: #323842;
+    --monaco-list-focusForeground: #f0f0f0;
+    --monaco-list-highlightForeground: #c5c5c5;
+    --monaco-list-hoverBackground: #2c313a;
+    --monaco-list-hoverForeground: #ffffff;
+    --monaco-list-inactiveSelectionBackground: #323842;
+    --monaco-list-inactiveSelectionForeground: #d7dae0;
+    --monaco-list-warningForeground: #d19a66;
+
+    --monaco-editor-background: #282c34;
+    --monaco-editor-foreground: #abb2bf;
+
+    --monaco-scrollbar-shadow: #23252c;
+    --monaco-scrollbarSlider-activeBackground: #747d9180;
+    --monaco-scrollbarSlider-background: #4e566660;
+    --monaco-scrollbarSlider-hoverBackground: #5a637580;
+    --monaco-editorCursor-foreground: #528bff;
+}
+.music-monaco-editor {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+
+    &-drag {
+        width: 5px;
+        background: var(--monaco-editor-background);
+        height: 100%;
+        cursor: col-resize;
+
+        &:hover {
+            background: var(--monaco-editorCursor-foreground);
+        }
+    }
+
+    &-area {
+        overflow: hidden;
+        color: var(--monaco-editor-foreground);
+        background-color: var(--monaco-editor-background);
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        position: relative;
+
+        &-empty {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: var(--monaco-editor-background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            &-icon {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.music-monaco-editor-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: var(--monaco-editor-background);
+    
+    &-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+

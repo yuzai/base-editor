@@ -2,14 +2,6 @@
 
 ## 如何使用
 
-### 配置monaco打包
-
-由于目前monaco-editor中存在一个还在修复中的bug，二次bundle后将存在esm conflict的问题。
-
-故，本模块目前仅提供组件，将monaco-editor作为externals, 不处理monaco打包的问题。
-
-使用者需要自行按照monaco-editor的[文档](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)去配置打包。
-
 ### 安装
 
 ```
@@ -20,7 +12,7 @@ nenpm install @music/base-editor
 
 提供了两个IDE，Editor和MultiEditor.
 
-Editor的作用主要是提供同时只需要单独编辑一个文件的场景。内部通过monaco-modal实现单monaco实例，多文件切换的行为。
+Editor的作用主要是提供同时只需要单独编辑一个文件的场景。内部通过monaco-modal实现单monaco实例，多文件切换的行为，非常简单的包装。
 
 MultiEditor提供了多文件目录导航的功能。
 

@@ -7,13 +7,13 @@ const File: React.FC<{
     onPathChange: (key: string) => void,
     directory?: string,
     root: boolean,
-    currentPath?: string
+    currentPath?: string,
 }> = ({
     file,
     onPathChange,
     directory = '',
     currentPath = '',
-    root
+    root,
 }) => {
     const [showChild, setShowChild] = useState(false);
     const handleClick = useCallback(() => {
@@ -82,15 +82,17 @@ const FileTree: React.FC<{
     onPathChange: (key: string) => void,
     title?: string,
     currentPath?: string,
+    style: any,
 }> = ({
     filetree,
     onPathChange,
     title = 'monaco-base-editor',
     currentPath = '',
+    style,
 }) => {
 
     return (
-        <div className="music-monaco-editor-list-wrapper">
+        <div className="music-monaco-editor-list-wrapper" style={style}>
             <div className="music-monaco-editor-list-title">
                 {title}
             </div>

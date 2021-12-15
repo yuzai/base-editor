@@ -12,9 +12,10 @@ export interface MultiEditorIProps {
     options: monacoType.editor.IStandaloneEditorConstructionOptions;
 }
 export interface MultiRefType {
-    test: () => void;
     getValue: (path: string) => string;
     getAllValue: () => filelist;
+    getSupportThemes: () => Array<string>;
+    setTheme: (name: string) => void;
 }
 export declare const MultiEditorComp: React.ForwardRefExoticComponent<MultiEditorIProps & React.RefAttributes<MultiRefType>>;
 export default MultiEditorComp;

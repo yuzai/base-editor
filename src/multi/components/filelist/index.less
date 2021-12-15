@@ -11,14 +11,24 @@
         flex-shrink: 0;
     }
 
+    &-split {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        line-height: 14px;
+        height: 21px;
+        user-select: none;
+        cursor: pointer;
+    }
+
     &-file-item {
         user-select: none;
         &-row {
+            cursor: pointer;
             user-select: none;
             display: flex;
             flex-direction: row;
             align-items: center;
-            padding-left: 10px;
 
             &:hover {
                 background-color: var(--monaco-list-hoverBackground);

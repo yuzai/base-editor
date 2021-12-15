@@ -44,7 +44,7 @@ const App = () => {
         });
         setTimeout(() => {
             setColors(themes['OneDarkPro'].colors);
-        }, 3000);
+        }, 2000);
     }, []);
 
     // 设置当前文件路径和value
@@ -100,7 +100,9 @@ const App = () => {
                 position: 'absolute',
                 right: '0',
                 top: '0',
+                bottom: '0',
                 width: '400px',
+                overflow: 'scroll',
             }}>
                 {
                     Object.keys(colors).map(v => (

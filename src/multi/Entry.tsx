@@ -5,6 +5,7 @@ import './index.less';
 
 export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>((props, ref) => {
     const [, setCount] = useState(0);
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCount(pre => pre + 1);
@@ -12,7 +13,11 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>((pr
                 clearInterval(interval);
             }
         }, 100);
+        return () => {
+            clearInterval(interval);
+        }
     }, []);
+
     if (window.monaco) {
         return (
             <Editor {...props} ref={ref} />

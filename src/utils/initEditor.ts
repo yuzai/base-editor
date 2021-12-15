@@ -53,7 +53,7 @@ export async function configTheme(name: string) {
     const prefix = '--monaco-';
 
     Object.keys(theme.colors).forEach(v => {
-        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || themes.OneDarkPro.colors[v]);
+        document.documentElement.style.setProperty(`${prefix}${v.replace('.', '-')}`, theme.colors[v] || themes.OneDarkPro.colors[v] || 'rgba(0, 0, 0, 0)');
     })
 
     // 设置主题

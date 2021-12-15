@@ -2,6 +2,10 @@ import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } 
 import * as monacoType from 'monaco-editor';
 import OpenedTab from './components/openedtab';
 import FileList from './components/filelist';
+import Modal from './components/modal';
+import Select from './components/select';
+import Close from './components/icons/close';
+import SettingIcon from './components/icons/setting';
 import { generateFileTree } from '../utils';
 import { THEMES } from '../utils/consts';
 import { configTheme } from '../utils/initEditor';
@@ -316,8 +320,14 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         };
     }, []);
 
+    const rootRef = useRef(null);
+
+    const [settingVisible, setSettingVisible] = useState(false);
+
     return (
         <div
+            ref={rootRef}
+            id="music-monaco-editor-root"
             tabIndex={1}
             onKeyDown={dealKey}
             onMouseMove={handleMove}
@@ -354,6 +364,55 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                     )
                 }
             </div>
+            <div
+                className="music-monaco-editor-setting-button"
+                onClick={() => setSettingVisible(true) }>
+                    <SettingIcon
+                        style={{
+                            width: '20px',
+                            height: '20px',
+                        }} />
+                </div>
+            <Modal
+                onClose={() => { setSettingVisible(false) }}
+                visible={settingVisible}
+                target={rootRef.current}>
+                <div className="music-monaco-editor-setting">
+                    <div className="music-monaco-editor-setting-header">
+                        设置
+                        <div
+                            onClick={() => setSettingVisible(false) }
+                            className="music-monaco-editor-setting-header-close">
+                            <Close style={{
+                                width: '12px',
+                                height: '12px'
+                            }} />
+                        </div>
+                    </div>
+                    <div className="music-monaco-editor-setting-content">
+                        <div className="music-monaco-editor-input-row">
+                            <div className="music-monaco-editor-input-name">
+                                prettier
+                            </div>
+                            <div className="music-monaco-editor-input-value">
+                                <input type="checkbox" />
+                                <label>prettier on save</label>
+                            </div>
+                        </div>
+                        <div className="music-monaco-editor-input-row">
+                            <div className="music-monaco-editor-input-name">
+                                主题选择
+                            </div>
+                            <div className="music-monaco-editor-input-value">
+                                <Select
+                                    onChange={(v) => configTheme(v)}
+                                    defaultValue="OneDarkPro"
+                                    options={THEMES} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 });

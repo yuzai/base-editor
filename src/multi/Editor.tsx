@@ -6,6 +6,7 @@ import Modal from './components/modal';
 import Select from './components/select';
 import Close from './components/icons/close';
 import SettingIcon from './components/icons/setting';
+import Prettier from './components/prettier';
 import { generateFileTree } from '../utils';
 import { THEMES } from '../utils/consts';
 import { configTheme } from '../utils/initEditor';
@@ -96,6 +97,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     onValueChangeRef.current = onValueChange;
     onFileChangeRef.current = onFileChange;
     optionsRef.current = options;
+    const autoPrettierRef = useRef<boolean>(true);
 
     const editorNodeRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<monacoType.editor.IStandaloneCodeEditor | null>(null);
@@ -115,6 +117,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     const [curPath, setCurPath] = useState(defaultPath || '');
     const curPathRef = useRef(defaultPath || '');
     const curValueRef = useRef('');
+
+    const handleFromat = useCallback(() => {
+        return editorRef.current?.getAction('editor.action.formatDocument').run();
+    }, []);
 
     const restoreModel = useCallback((path: string) => {
         const editorStates = editorStatesRef.current;
@@ -217,13 +223,25 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
         if (ctrlKey && keyCode === 83) {
             e.preventDefault();
-            setOpenedFiles((pre) => pre.map(v => {
-                if (v.path === curPathRef.current) {
-                    v.status = 'saved';
-                }
-                return v;
-            }));
-            filesRef.current[curPathRef.current] = curValueRef.current;
+            if (autoPrettierRef.current) {
+                handleFromat()?.then(() => {
+                    setOpenedFiles((pre) => pre.map(v => {
+                        if (v.path === curPathRef.current) {
+                            v.status = 'saved';
+                        }
+                        return v;
+                    }));
+                    filesRef.current[curPathRef.current] = curValueRef.current;
+                });
+            } else {
+                setOpenedFiles((pre) => pre.map(v => {
+                    if (v.path === curPathRef.current) {
+                        v.status = 'saved';
+                    }
+                    return v;
+                }));
+                filesRef.current[curPathRef.current] = curValueRef.current;
+            }
         }
     }, []);
 
@@ -324,6 +342,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     const [settingVisible, setSettingVisible] = useState(false);
 
+    const handleSetAutoPrettier = useCallback((e) => {
+        autoPrettierRef.current = e.target.checked;
+    }, []);
+
     return (
         <div
             ref={rootRef}
@@ -367,12 +389,15 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             <div
                 className="music-monaco-editor-setting-button"
                 onClick={() => setSettingVisible(true) }>
-                    <SettingIcon
-                        style={{
-                            width: '20px',
-                            height: '20px',
-                        }} />
-                </div>
+                <SettingIcon
+                    style={{
+                        width: '20px',
+                        height: '20px',
+                    }} />
+            </div>
+            <Prettier
+                onClick={handleFromat}
+                className="music-monaco-editor-prettier" />
             <Modal
                 onClose={() => { setSettingVisible(false) }}
                 visible={settingVisible}
@@ -395,7 +420,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                                 prettier
                             </div>
                             <div className="music-monaco-editor-input-value">
-                                <input type="checkbox" />
+                                <input
+                                    defaultChecked={autoPrettierRef.current}
+                                    type="checkbox"
+                                    onChange={handleSetAutoPrettier}/>
                                 <label>prettier on save</label>
                             </div>
                         </div>

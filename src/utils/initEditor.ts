@@ -71,29 +71,6 @@ function configMonaco() {
         await loadWASM(`${ASSETSPATH}onigasm.wasm`);
         //
         configTheme('OneDarkPro');
-        /**
-         * Use prettier to format JavaScript code.
-         * This will replace the default formatter.
-         */
-        window.monaco.languages.registerDocumentFormattingEditProvider('javascript', {
-            async provideDocumentFormattingEdits(model) {
-                const prettier = await import('prettier/standalone');
-                // @ts-ignore
-                const babylon = await import('prettier/parser-babylon');
-                const text = prettier.format(model.getValue(), {
-                    parser: 'babylon',
-                    plugins: [babylon],
-                    singleQuote: true,
-                });
-            
-                return [
-                    {
-                    range: model.getFullModelRange(),
-                    text,
-                    },
-                ];
-            },
-        });
     };
     init();
 

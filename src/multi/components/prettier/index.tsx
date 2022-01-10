@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PrettierIcon from '../icons/prettier';
 
 const Prettier = (props: any) => {
@@ -18,6 +18,7 @@ const Prettier = (props: any) => {
                         parser: 'babylon',
                         plugins: [babylonRef.current],
                         singleQuote: true,
+                        tabWidth: 4,
                     });
                 
                     return [

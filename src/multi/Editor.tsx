@@ -7,13 +7,12 @@ import Select from './components/select';
 import Close from './components/icons/close';
 import SettingIcon from './components/icons/setting';
 import Prettier from './components/prettier';
-import { generateFileTree } from '../utils';
+import { generateFileTree, worker } from '../utils';
 import { THEMES } from '../utils/consts';
 import { configTheme } from '../utils/initEditor';
 export interface filelist {
     [key: string]: string,
 }
-
 export interface MultiEditorIProps {
     defaultPath?: string,
     // path?: string,
@@ -70,6 +69,9 @@ function initializeFile(path: string, value: string) {
             config[type] || type,
             new window.monaco.Uri().with({ path })
         );
+        model.updateOptions({
+            tabSize: 4,
+        });
     }
 }
 
@@ -143,6 +145,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 }
                 // 聚焦editor
                 editorRef.current?.focus();
+                let timer: any = null;
                 valueLisenerRef.current = model.onDidChangeContent(() => {
                     const v = model.getValue();
                     setOpenedFiles((pre) => pre.map(v => {
@@ -158,12 +161,38 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                     if (onValueChangeRef.current) {
                         onValueChangeRef.current(v);
                     }
+
+                    // eslint解析需要消抖，延迟500ms消抖即可
+                    if (timer) clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        timer = null;
+                        worker.postMessage({
+                            code: model.getValue(),
+                            version: model.getVersionId(),
+                            path,
+                        });
+                    }, 500);
                 })
             }
+            worker.postMessage({
+                code: model.getValue(),
+                version: model.getVersionId(),
+                path,
+            });
             prePath.current = path;
             return model;
         }
         return false;
+    }, []);
+
+    useEffect(() => {
+        worker.onmessage = function (event) {
+            const { markers, version } = event.data;
+            const model = editorRef.current?.getModel();
+            if (model && model.getVersionId() === version) {
+                window.monaco.editor.setModelMarkers(model, 'eslint', markers);
+            }
+        }
     }, []);
     
     const openOrFocusPath = useCallback((path: string) => {
@@ -243,7 +272,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 filesRef.current[curPathRef.current] = curValueRef.current;
             }
         }
-    }, []);
+    }, [handleFromat]);
 
     useEffect(() => {
         // 初始化创建各个文件model

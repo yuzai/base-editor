@@ -1,3 +1,5 @@
+import { ASSETSPATH } from "./consts";
+
 export function generateFileTree(files: any) {
     const keys = Object.keys(files);
     const tree = {};
@@ -38,3 +40,5 @@ export const copyDataToClipBoard = (
     }
     document.body.removeChild(input);
 };
+
+export const worker = new Worker(`${ASSETSPATH}eslint.worker.js`);

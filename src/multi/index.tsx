@@ -8,17 +8,28 @@ interface filelist {
     [key: string]: string,
 }
 
+declare global {
+    interface Window {
+        eslint: any,
+        linter: any,
+    }
+}
+
 const filesName = [
-    '/app.js',
-    '/cc.js',
-    '/app.ts',
+    '/index.html',
+    '/app/index.jsx',
+    '/app/index.css',
+    '/app/button.jsx',
+    // '/app.js',
+    // '/cc.js',
+    // '/app.ts',
     '/cc.ts',
-    '/test.css',
-    '/src/index.jsx',
-    '/style.less',
-    '/styles/index.less',
-    '/src/components/title/index.js',
-    '/src/components/title/index.less',
+    // '/test.css',
+    // '/src/index.jsx',
+    // '/style.less',
+    // '/styles/index.less',
+    // '/src/components/title/index.js',
+    // '/src/components/title/index.less',
 ];
 
 const App = () => {
@@ -44,12 +55,12 @@ const App = () => {
         });
         setTimeout(() => {
             setColors(themes['OneDarkPro'].colors);
-        }, 2000);
+        }, 5000);
     }, []);
 
     // 设置当前文件路径和value
     const handlePathChange = useCallback((key: string) => {
-        console.log(key);
+        // console.log(key);
     }, []);
 
     // // 同步ide内容修改
@@ -58,16 +69,36 @@ const App = () => {
     // }, []);
 
     // const handleFileChange = (key: string, value: string) => {
-    //     // console.log(key, value);
+    //     console.log(key, value);
     // }
 
     const handleThemeChange = (e: any) => {
         editorRef.current.setTheme(e.target.value);
     };
 
+    // const sandboxRef = useRef(null);
+
+    // const sendMessage = () => {
+    //     // @ts-ignore
+    //     sandboxRef.current.contentWindow.postMessage({
+    //         type: 'SAVE_FILES',
+    //         files,
+    //     }, 'http://localhost:8081');
+    // };
+
+    // useEffect(() => {
+    //     window.addEventListener('message', res => console.log(res));
+    // }, []);
+
+    const linter = useCallback(() => {
+        console.log(editorRef.current.getValue('/index.jsx'));
+    }, []);
+
     return (
         <div>
             <div onClick={() => console.log(editorRef.current) }>ref api</div>
+            {/* <div onClick={sendMessage}>send postmessage</div> */}
+            <div onClick={linter}>eslint</div>
             <div onClick={() => setColors(themes['OneDarkPro'].colors)}>refresh theme color</div>
             <select
                 name="theme"
@@ -96,6 +127,7 @@ const App = () => {
                     </div>
                 )
             }
+            {/* <iframe src="http://localhost:8081/index.html" ref={sandboxRef} /> */}
             <div style={{
                 position: 'absolute',
                 right: '0',

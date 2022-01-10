@@ -1,3 +1,7 @@
+## [1.0.24](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.2...v1.0.24) (2022-01-10)
+
+
+
 ## [1.0.24-beta.2](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.1...v1.0.24-beta.2) (2022-01-10)
 
 

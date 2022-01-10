@@ -13,7 +13,7 @@ module.exports = {
         filename: "[name].bundle.js",
         libraryTarget: 'umd',
     },
-    mode: "development",
+    mode: "production",
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },

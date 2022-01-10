@@ -42,7 +42,6 @@ export const copyDataToClipBoard = (
 };
 
 export const worker = new Promise<Worker>(async (resolve) => {
-    console.log(1);
     const codeString = await fetch(`${ASSETSPATH}eslint.worker.js`).then(res => res.text());
 
     // 在这里我没有使用 new Worker(`data:application/javascript, ${codeString}`) 这种方式

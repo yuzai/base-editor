@@ -226,7 +226,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         const editorService = (editorRef.current as any)._codeEditorService;
         const openEditorBase = editorService.openCodeEditor.bind(editorService);
         editorService.openCodeEditor = async (input: any, source: any, sideBySide: any) => {
-            console.log(input, source, sideBySide);
             const result = await openEditorBase(input, source);
             if (result === null) {
                 const fullPath = input.resource.path

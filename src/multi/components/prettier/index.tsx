@@ -1,22 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
+import prettier from 'prettier/standalone';
+// @ts-ignore
+import babylon from 'prettier/parser-babylon';
 import PrettierIcon from '../icons/prettier';
 
 const Prettier = (props: any) => {
-    const [loading, setLoading] = useState(true);
-    const prettierRef = useRef<any>({});
-    const babylonRef = useRef<any>({});
 
     useEffect(() => {
         async function loadPrettier() {
-            prettierRef.current = await import('prettier/standalone');
-            // @ts-ignore
-            babylonRef.current = await import('prettier/parser-babylon');
-            setLoading(false);
             window.monaco.languages.registerDocumentFormattingEditProvider('javascript', {
                 async provideDocumentFormattingEdits(model) {
-                    const text = prettierRef.current.format(model.getValue(), {
+                    const text = prettier.format(model.getValue(), {
                         parser: 'babylon',
-                        plugins: [babylonRef.current],
+                        plugins: [babylon],
                         singleQuote: true,
                         tabWidth: 4,
                     });
@@ -35,9 +31,7 @@ const Prettier = (props: any) => {
 
     return (
         <div {...props}>
-            {
-                !loading && <PrettierIcon />
-            }
+            <PrettierIcon />
         </div>
     )
 }

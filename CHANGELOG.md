@@ -1,3 +1,13 @@
+## [1.0.24-beta.2](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.1...v1.0.24-beta.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* dynamic prettier ([9b5696a](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/9b5696a8ad73f0529b6e46baebda2b79b48a1bad))
+* rm dist ([d4617f0](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/d4617f0572d8937120e5466ecea04511c39333be))
+
+
+
 ## [1.0.24-beta.1](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.0...v1.0.24-beta.1) (2022-01-10)
 
 

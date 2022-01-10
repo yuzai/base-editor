@@ -41,4 +41,16 @@ export const copyDataToClipBoard = (
     document.body.removeChild(input);
 };
 
-export const worker = new Worker(`${ASSETSPATH}eslint.worker.js`);
+export const worker = new Promise<Worker>(async (resolve) => {
+    console.log(1);
+    const codeString = await fetch(`${ASSETSPATH}eslint.worker.js`).then(res => res.text());
+
+    // 在这里我没有使用 new Worker(`data:application/javascript, ${codeString}`) 这种方式
+    // 而是使用了 URL.createObjectURL 以及 new Blob, 会将 JavaScript 字符串转换为如下格式
+    // blob:http://same-domain/cd2930c0-f4ca-4a9f-b6b1-8242e520dd62
+    // 因此不再会有跨域问题
+    const localWorkerUrl = window.URL.createObjectURL(new Blob([codeString], {
+        type: 'application/javascript'
+    }));
+    resolve(new Worker(localWorkerUrl));
+});

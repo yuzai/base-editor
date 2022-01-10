@@ -166,19 +166,19 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                     if (timer) clearTimeout(timer);
                     timer = setTimeout(() => {
                         timer = null;
-                        worker.postMessage({
+                        worker.then(res => res.postMessage({
                             code: model.getValue(),
                             version: model.getVersionId(),
                             path,
-                        });
+                        }));
                     }, 500);
                 })
             }
-            worker.postMessage({
+            worker.then(res => res.postMessage({
                 code: model.getValue(),
                 version: model.getVersionId(),
                 path,
-            });
+            }));
             prePath.current = path;
             return model;
         }
@@ -186,13 +186,13 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, []);
 
     useEffect(() => {
-        worker.onmessage = function (event) {
+        worker.then(res => res.onmessage = function (event) {
             const { markers, version } = event.data;
             const model = editorRef.current?.getModel();
             if (model && model.getVersionId() === version) {
                 window.monaco.editor.setModelMarkers(model, 'eslint', markers);
             }
-        }
+        });
     }, []);
     
     const openOrFocusPath = useCallback((path: string) => {

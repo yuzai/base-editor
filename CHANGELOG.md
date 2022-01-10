@@ -1,3 +1,16 @@
+## [1.0.24-beta.0](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.22...v1.0.24-beta.0) (2022-01-10)
+
+
+### Features
+
+* 增加eslint功能及代码补全功能 ([d64cf62](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/d64cf627043a73758cf60c8d626729892ef51f8d))
+* 增加setTheme, getSupportTheme对外暴露方法 ([5d4ae19](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/5d4ae191745da36eed4eba5716e4c709c19189b3))
+* 增加自动prettier及prettier入口 ([9904915](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/9904915d7580d389240e8884990d3b50ab474cbe))
+* 增加设置选项 ([618960f](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/618960fb78bb901a785023de49bf069b15d2098a))
+* 美化文件折叠箭头 ([6d46b17](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/6d46b177a7c1e69c554c9a8cc30e195163ddedc3))
+
+
+
 ## 1.0.23 (2021-12-15)
 
 

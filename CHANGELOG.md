@@ -1,3 +1,12 @@
+## [1.0.24-beta.1](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.0...v1.0.24-beta.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* worker cors ([358735e](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/358735eb48dff3c48979ccc2992cebb161107bbd))
+
+
+
 ## [1.0.24-beta.0](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.22...v1.0.24-beta.0) (2022-01-10)
 
 

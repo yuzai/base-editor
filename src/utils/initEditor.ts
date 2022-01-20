@@ -163,9 +163,9 @@ function configMonaco() {
 export const startUp = () => {
     if (execed) return;
     execed = true;
-    loadScript('https://unpkg.com/monaco-editor@0.31.1/min/vs/loader.js', () => {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.min.js', () => {
         loadCode(`
-            require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@0.31.1/min/vs' } });
+            require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' } });
 
             require(['vs/editor/editor.main'], function () {
             });

@@ -1,9 +1,9 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import Editor from '../src/multi/Entry';
-import { themes } from '../src/utils/initEditor';
-import { THEMES } from '../src/utils/consts';
-import { copyDataToClipBoard } from '../src/utils';
+import { themes } from '@utils/initEditor';
+import { THEMES } from '@utils/consts';
+import { copyDataToClipBoard } from '@utils';
 interface filelist {
     [key: string]: string,
 }

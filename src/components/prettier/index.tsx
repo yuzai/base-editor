@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-// @ts-ignore
-// import babylon from 'prettier/parser-babylon';
+import { useEffect } from 'react';
 import PrettierIcon from '../icons/prettier';
 
 const Prettier = (props: any) => {

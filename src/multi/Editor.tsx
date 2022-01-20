@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import * as monacoType from 'monaco-editor';
-import OpenedTab from './components/openedtab';
-import FileList from './components/filelist';
-import Modal from './components/modal';
-import Select from './components/select';
-import Close from './components/icons/close';
-import SettingIcon from './components/icons/setting';
-import Prettier from './components/prettier';
-import { generateFileTree, worker } from '../utils';
-import { THEMES } from '../utils/consts';
-import { configTheme } from '../utils/initEditor';
+import OpenedTab from '@components/openedtab';
+import FileList from '@components/filelist';
+import Modal from '@components/modal';
+import Select from '@components/select';
+import Close from '@components/icons/close';
+import SettingIcon from '@components/icons/setting';
+import Prettier from '@components/prettier';
+import { generateFileTree, worker } from '@utils';
+import { THEMES } from '@utils/consts';
+import { configTheme } from '@utils/initEditor';
 export interface filelist {
     [key: string]: string,
 }

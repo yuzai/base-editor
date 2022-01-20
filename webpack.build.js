@@ -47,6 +47,12 @@ module.exports = {
             _ASSETSPATH: JSON.stringify('https://st.qa.igame.163.com/g/monaco-editor/'),
         })
     ],
+    resolve: {
+        alias: {
+            '@components': path.resolve(__dirname, './src/components'),
+            '@utils': path.resolve(__dirname, './src/utils'),
+        }
+    },
     externals: {
         'react': 'react',
         'react-dom': 'react-dom',

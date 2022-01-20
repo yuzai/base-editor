@@ -20,9 +20,28 @@
         "isolatedModules": true,
         "noEmit": false,
         "jsx": "react-jsx",
-        "outDir": "dist"
+        "outDir": "dist",
+        "baseUrl": "./",
+        "paths": {
+            "@components": [
+                "src/components"
+            ],
+            "@components/*": [
+                "src/components/*"
+            ],
+            "@utils": [
+                "src/utils"
+            ],
+            "@utils/*": [
+                "src/utils/*"
+            ]
+        }
     },
     "include": [
-        "src"
+        "./demo",
+        "./src"
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }

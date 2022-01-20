@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Arrow from '../icons/arrow';
-import Modal from '../modal';
 import './index.less';
 
 const Select: React.FC<{

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ASSETSPATH } from '../../../utils/consts';
+import { ASSETSPATH } from '@utils/consts';
 import './index.less';
 
 const fileTypeMap = (fileType: string): string => {

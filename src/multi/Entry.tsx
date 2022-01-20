@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import Editor, { MultiEditorIProps, MultiRefType } from './Editor';
 import './index.less';

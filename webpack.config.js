@@ -18,7 +18,7 @@ if (process.env.CLOUDIDE_DEV_PORT) {
 
 module.exports = {
     entry: {
-        app: "./src/example.ts",
+        app: "./demo/index.ts",
     },
     output: {
         globalObject: 'self',
@@ -54,7 +54,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "index.html"),
+            template: path.join(__dirname, "demo", "index.html"),
         }),
         new webpack.ProvidePlugin({
             process: 'process/browser',

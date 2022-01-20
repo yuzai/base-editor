@@ -186,7 +186,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, []);
 
     useEffect(() => {
-        console.log(window.prettier);
         worker.then(res => res.onmessage = function (event) {
             const { markers, version } = event.data;
             const model = editorRef.current?.getModel();

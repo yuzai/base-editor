@@ -2,6 +2,9 @@ declare type monacoType = typeof import("monaco-editor");
 declare global {
     interface Window {
         monaco: monacoType;
+        define: any;
+        prettier: any;
+        prettierPlugins: any;
     }
 }
 export declare const themes: {

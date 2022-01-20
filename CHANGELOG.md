@@ -1,3 +1,12 @@
+## [1.0.25](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24...v1.0.25) (2022-01-20)
+
+
+### Features
+
+* 升级prettier 2，支持html, css, less等格式化 ([592f8cb](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/592f8cba5dc1415afc936bb4770648ee73923245))
+
+
+
 ## [1.0.24](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24-beta.2...v1.0.24) (2022-01-10)
 
 

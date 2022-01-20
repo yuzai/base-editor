@@ -1,29 +1,43 @@
 import React, { useEffect } from 'react';
-import prettier from 'prettier/standalone';
 // @ts-ignore
-import babylon from 'prettier/parser-babylon';
+// import babylon from 'prettier/parser-babylon';
 import PrettierIcon from '../icons/prettier';
 
 const Prettier = (props: any) => {
 
     useEffect(() => {
         async function loadPrettier() {
+            function provideDocumentFormattingEdits(model: any) {
+                const text = window.prettier.format(model.getValue(), {
+                    filepath: model.uri.path,
+                    plugins: window.prettierPlugins,
+                    singleQuote: true,
+                    tabWidth: 4,
+                });
+            
+                return [
+                    {
+                    range: model.getFullModelRange(),
+                    text,
+                    },
+                ];
+            }
             window.monaco.languages.registerDocumentFormattingEditProvider('javascript', {
-                async provideDocumentFormattingEdits(model) {
-                    const text = prettier.format(model.getValue(), {
-                        parser: 'babylon',
-                        plugins: [babylon],
-                        singleQuote: true,
-                        tabWidth: 4,
-                    });
-                
-                    return [
-                        {
-                        range: model.getFullModelRange(),
-                        text,
-                        },
-                    ];
-                },
+                provideDocumentFormattingEdits
+            });
+            window.monaco.languages.registerDocumentFormattingEditProvider('typescript', {
+                provideDocumentFormattingEdits
+            });
+            setTimeout(() => {
+                window.monaco.languages.registerDocumentFormattingEditProvider('html', {
+                    provideDocumentFormattingEdits
+                });
+            }, 3000);
+            window.monaco.languages.registerDocumentFormattingEditProvider('css', {
+                provideDocumentFormattingEdits
+            });
+            window.monaco.languages.registerDocumentFormattingEditProvider('less', {
+                provideDocumentFormattingEdits
             });
         }
         loadPrettier();

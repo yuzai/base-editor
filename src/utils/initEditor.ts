@@ -7,6 +7,9 @@ import { ASSETSPATH } from './consts';
 declare global {
     interface Window {
         monaco: monacoType;
+        define: any;
+        prettier: any;
+        prettierPlugins: any;
     }
 }
 
@@ -145,6 +148,15 @@ function configMonaco() {
     // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射
     setTimeout(() => {
         wireMonacoGrammars();
+        delete window.define.amd;
+        const prettiers = [
+            'https://unpkg.com/prettier@2.5.1/standalone.js',
+            'https://unpkg.com/prettier@2.5.1/parser-babel.js',
+            'https://unpkg.com/prettier@2.5.1/parser-html.js',
+            'https://unpkg.com/prettier@2.5.1/parser-postcss.js',
+            'https://unpkg.com/prettier@2.5.1/parser-typescript.js'
+        ];
+        prettiers.map(v => loadScript(v, () => ({})));
     }, 3000);
 }
 
@@ -157,7 +169,7 @@ export const startUp = () => {
 
             require(['vs/editor/editor.main'], function () {
             });
-        `)
+        `);
     });
     const interval = setInterval(() => {
         if(window.monaco) {

@@ -26,7 +26,7 @@ const filesName = [
     '/cc.ts',
     // '/test.css',
     // '/src/index.jsx',
-    // '/style.less',
+    '/style.less',
     // '/styles/index.less',
     // '/src/components/title/index.js',
     // '/src/components/title/index.less',

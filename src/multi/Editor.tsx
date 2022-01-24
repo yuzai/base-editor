@@ -67,7 +67,7 @@ function initializeFile(path: string, value: string) {
         model = window.monaco.editor.createModel(
             value,
             config[type] || type,
-            new window.monaco.Uri().with({ path })
+            new window.monaco.Uri().with({ path, scheme: 'music' })
         );
         model.updateOptions({
             tabSize: 4,

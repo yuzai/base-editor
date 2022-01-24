@@ -74,29 +74,29 @@ async function addExtraLib() {
     })
     window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/@types/react/index.d.ts'
+        'music:/node_modules/@types/react/index.d.ts'
     );
     window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/@types/react/index.d.ts'
+        'music:/node_modules/@types/react/index.d.ts'
     );
     res = await (await fetch(`${ASSETSPATH}@types/react/global.d.ts`)).text();
     window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/%40types/react/global.d.ts'
+        'music:/node_modules/%40types/react/global.d.ts'
     );
     window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/%40types/react/global.d.ts'
+        'music:/node_modules/%40types/react/global.d.ts'
     );
     res = await (await fetch(`${ASSETSPATH}@types/react-dom/index.d.ts`)).text();
     window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/@types/react-dom/index.d.ts'
+        'music:/node_modules/@types/react-dom/index.d.ts'
     );
     window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
         res,
-        'file:///node_modules/@types/react-dom/index.d.ts'
+        'music:/node_modules/@types/react-dom/index.d.ts'
     );
 }
 

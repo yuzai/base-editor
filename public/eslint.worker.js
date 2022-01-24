@@ -98,6 +98,8 @@ function getExtName(path) {
     return arr[arr.length - 1] || '';
 }
 
+const ruleDefines = self.linter.esLinter.getRules();
+
 self.addEventListener('message', function (e) {
     const { code, version, path } = e.data;
     const extName = getExtName(path);
@@ -107,13 +109,17 @@ self.addEventListener('message', function (e) {
     }
     const errs = self.linter.esLinter.verify(code, config);
     const markers = errs.map(err => ({
+        code: {
+            value: err.ruleId,
+            target: ruleDefines.get(err.ruleId).meta.docs.url,
+        },
         startLineNumber: err.line,
         endLineNumber: err.endLine,
         startColumn: err.column,
         endColumn: err.endColumn,
-        message: `${err.message} (${err.ruleId})`,
+        message: err.message,
         severity: severityMap[err.severity],
-        source: 'ESLint',
+        source: 'esLint',
     }));
     self.postMessage({ markers, version });
 });

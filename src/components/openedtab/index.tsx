@@ -1,4 +1,10 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react';
+import React, {
+    MouseEventHandler,
+    useCallback,
+    useEffect,
+    useState,
+    useRef
+} from 'react';
 import Icon from '../icons';
 import './index.less';
 
@@ -16,6 +22,7 @@ const TabItem: React.FC<{
     currentPath,
     onCloseFile
 }) => {
+    const itemRef = useRef<HTMLDivElement | null>(null);
     const name = file.path.split('/').slice(-1)[0];
     const fileType = file.path.split('.').slice(-1);
     const active = currentPath === file.path;
@@ -26,7 +33,12 @@ const TabItem: React.FC<{
         }
     }, [onPathChange]);
 
-    const [showClose, setShowClose] = useState(false);
+    useEffect(() => {
+        if (active) {
+            itemRef.current?.scrollIntoView();
+        }
+    }, [active]);
+
     const [hover, setHover] = useState(false);
     const [hoverRight, setHoverRight] = useState(false);
     const handleOver = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -40,7 +52,6 @@ const TabItem: React.FC<{
         setHover(true);
     }
     const handleLeave = () => {
-        setShowClose(false);
         setHover(false);
     }
 
@@ -58,6 +69,7 @@ const TabItem: React.FC<{
 
     return (
         <div
+            ref={itemRef}
             onMouseOver={handleOver}
             onMouseLeave={handleLeave}
             data-src={file.path}
@@ -101,18 +113,20 @@ const OpenedTab: React.FC<{
     onCloseFile,
 }) => {
     return (
-        <div className="music-monaco-editor-opened-tab">
-            {
-                openedFiles.map(file => 
-                    <TabItem
-                        onCloseFile={onCloseFile}
-                        file={file}
-                        key={file.path}
-                        onPathChange={onPathChange}
-                        currentPath={currentPath}
-                        />
-                )
-            }
+        <div className="music-monaco-editor-opened-tab-wrapper">
+            <div className="music-monaco-editor-opened-tab">
+                {
+                    openedFiles.map(file => 
+                        <TabItem
+                            onCloseFile={onCloseFile}
+                            file={file}
+                            key={file.path}
+                            onPathChange={onPathChange}
+                            currentPath={currentPath}
+                            />
+                    )
+                }
+            </div>
         </div>
     )
 }

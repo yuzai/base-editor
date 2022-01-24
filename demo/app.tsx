@@ -1,6 +1,6 @@
 import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
-import React, { useCallback, useState, useEffect, useRef } from 'react';
-import Editor from '../src/multi/Entry';
+import { useCallback, useState, useEffect, useRef } from 'react';
+import Editor from '../src/multi';
 import { themes } from '@utils/initEditor';
 import { THEMES } from '@utils/consts';
 import { copyDataToClipBoard } from '@utils';
@@ -22,7 +22,7 @@ const filesName = [
     '/app/button.jsx',
     // '/app.js',
     // '/cc.js',
-    // '/app.ts',
+    '/app.ts',
     '/cc.ts',
     // '/test.css',
     // '/src/index.jsx',
@@ -90,15 +90,10 @@ const App = () => {
     //     window.addEventListener('message', res => console.log(res));
     // }, []);
 
-    const linter = useCallback(() => {
-        console.log(editorRef.current.getValue('/index.jsx'));
-    }, []);
-
     return (
         <div>
             <div onClick={() => console.log(editorRef.current) }>ref api</div>
             {/* <div onClick={sendMessage}>send postmessage</div> */}
-            <div onClick={linter}>eslint</div>
             <div onClick={() => setColors(themes['OneDarkPro'].colors)}>refresh theme color</div>
             <select
                 name="theme"

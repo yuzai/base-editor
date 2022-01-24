@@ -10,6 +10,7 @@ declare global {
         define: any;
         prettier: any;
         prettierPlugins: any;
+        require: any,
     }
 }
 
@@ -20,12 +21,12 @@ function loadScript(url: string, cb: () => void) {
     script.onload = cb;
 }
 
-function loadCode(code: string) {
-    const script = document.createElement('script');
-    script.type = ' text/javascript';
-    script.appendChild(document.createTextNode(code));
-    document.getElementsByTagName('body')[0].appendChild(script);
-}
+// function loadCode(code: string) {
+//     const script = document.createElement('script');
+//     script.type = ' text/javascript';
+//     script.appendChild(document.createTextNode(code));
+//     document.getElementsByTagName('body')[0].appendChild(script);
+// }
 
 let execed = false;
 
@@ -148,15 +149,6 @@ function configMonaco() {
     // 延迟语法解析的修改，防止monaco在加载后覆盖次语法映射
     setTimeout(() => {
         wireMonacoGrammars();
-        delete window.define.amd;
-        const prettiers = [
-            'https://unpkg.com/prettier@2.5.1/standalone.js',
-            'https://unpkg.com/prettier@2.5.1/parser-babel.js',
-            'https://unpkg.com/prettier@2.5.1/parser-html.js',
-            'https://unpkg.com/prettier@2.5.1/parser-postcss.js',
-            'https://unpkg.com/prettier@2.5.1/parser-typescript.js'
-        ];
-        prettiers.map(v => loadScript(v, () => ({})));
     }, 3000);
 }
 
@@ -164,12 +156,29 @@ export const startUp = () => {
     if (execed) return;
     execed = true;
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.min.js', () => {
-        loadCode(`
-            require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' } });
+        window.require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' } });
 
-            require(['vs/editor/editor.main'], function () {
-            });
-        `);
+        window.require(['vs/editor/editor.main'], function () {
+            console.log(2);
+        });
+        window.define('prettier', [
+                'https://unpkg.com/prettier@2.5.1/standalone.js',
+                'https://unpkg.com/prettier@2.5.1/parser-babel.js',
+                'https://unpkg.com/prettier@2.5.1/parser-html.js',
+                'https://unpkg.com/prettier@2.5.1/parser-postcss.js',
+                'https://unpkg.com/prettier@2.5.1/parser-typescript.js'
+            ], (prettier: any, ...args: any[]) => {
+            const prettierPlugins = {
+                babel: args[0],
+                html: args[1],
+                postcss: args[2],
+                typescript: args[3],
+            }
+            return {
+                prettier,
+                prettierPlugins,
+            }
+        });
     });
     const interval = setInterval(() => {
         if(window.monaco) {

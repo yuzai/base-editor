@@ -6,9 +6,11 @@ const Prettier = (props: any) => {
     useEffect(() => {
         async function loadPrettier() {
             function provideDocumentFormattingEdits(model: any) {
-                const text = window.prettier.format(model.getValue(), {
+                const p = window.require('prettier');
+                if (!p.prettier) return;
+                const text = p.prettier.format(model.getValue(), {
                     filepath: model.uri.path,
-                    plugins: window.prettierPlugins,
+                    plugins: p.prettierPlugins,
                     singleQuote: true,
                     tabWidth: 4,
                 });

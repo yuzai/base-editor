@@ -18,7 +18,7 @@ const Modal = (props: any) => {
         <div className="music-monaco-editor-modal">
             <div className="music-monaco-editor-modal-mask" onClick={() => props.onClose && props.onClose()}/>
             <div className="music-monaco-editor-modal-content">
-                {props.children}
+                {(props.destroyOnClose && !props.visible) ? null : props.children}
             </div>
         </div>,
         elRef.current,

@@ -427,6 +427,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 onClick={handleFromat}
                 className="music-monaco-editor-prettier" />
             <Modal
+                destroyOnClose
                 onClose={() => { setSettingVisible(false) }}
                 visible={settingVisible}
                 target={rootRef.current}>
@@ -460,10 +461,13 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                                 主题选择
                             </div>
                             <div className="music-monaco-editor-input-value">
-                                <Select
-                                    onChange={(v) => configTheme(v)}
-                                    defaultValue="OneDarkPro"
-                                    options={THEMES} />
+                                <Select defaultValue="OneDarkPro" onChange={(v) => configTheme(v.value)}>
+                                    {
+                                        THEMES.map(theme => (
+                                            <Select.Menu label={theme} value={theme} key={theme} />
+                                        ))
+                                    }
+                                </Select>
                             </div>
                         </div>
                     </div>

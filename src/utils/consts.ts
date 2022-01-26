@@ -1,27 +1,21 @@
 // @ts-ignore
 export const ASSETSPATH: string = _ASSETSPATH;
 
-export const THEMES = [
+const DARKTHEMES = [
     'AtlanticNight',
-    'EvaLight',
     'Nebula',
     'ShadesOfPurple',
     'AtomOneDark',
-    'FlatUI',
     'NoctisAzureus',
-    'SnazzyLight',
-    'AuroraX',
+    'AuroraX', // bad
     'Hopscotch',
     'NoctisBordo',
     'SnazzyOperator',
-    'HorlaLightTheme',
     'NoctisLux',
     'SublimeMaterialThemeDark',
-    'AyuLight',
     'HybridNext',
     'OneDarkPro',
     'SynthWave84',
-    'BlulocoLight',
     'KimbieDark',
     'OneMonokai',
     'TokyoNightStorm',
@@ -35,7 +29,18 @@ export const THEMES = [
     'Twilight',
     'MonokaiPro',
     'RemedyDark',
-];
+]
+
+const LIGHTTHEMES = [
+    'EvaLight',
+    'FlatUI',
+    'SnazzyLight', // bad
+    'AyuLight',
+    'BlulocoLight', // bad
+    'HorlaLightTheme', // bad
+]
+
+export const THEMES = DARKTHEMES.concat(LIGHTTHEMES);
 
 export const ESLINTCONFIG = {
     "parserOptions": {

@@ -7,18 +7,19 @@ export function generateFileTree(files: any) {
         const path = key.slice(1).split('/');
         let temp: any = tree;
         path.forEach((v, index) => {
-        if (index === path.length - 1) {
-            temp[v] = {
-                name: v,
-                path: key,
-                value: files[key]
+            if (index === path.length - 1) {
+                temp[v] = {
+                    name: v,
+                    path: key,
+                    value: files[key],
+                    _isFile: true,
+                }
+            } else if (temp[v]) {
+                temp = temp[v];
+            } else {
+                temp[v] = {};
+                temp = temp[v];
             }
-        } else if (temp[v]) {
-            temp = temp[v];
-        } else {
-            temp[v] = {};
-            temp = temp[v];
-        }
         });
     });
     return tree;

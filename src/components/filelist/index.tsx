@@ -24,7 +24,7 @@ const File: React.FC<{
         const key = e.currentTarget.dataset.src!;
         onPathChange(key);
     }, [onPathChange]);
-    if (file.name) {
+    if (file._isFile) {
         const fileType = file.name.split('.').slice(-1);
         
         return (

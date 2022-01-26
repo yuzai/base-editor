@@ -119,7 +119,7 @@ self.addEventListener('message', function (e) {
         endColumn: err.endColumn,
         message: err.message,
         severity: severityMap[err.severity],
-        source: 'esLint',
+        source: 'eslint',
     }));
     self.postMessage({ markers, version });
 });

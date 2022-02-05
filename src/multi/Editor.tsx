@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState, useImperativeHandle } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    useImperativeHandle,
+    useMemo
+} from 'react';
 import * as monacoType from 'monaco-editor';
 import OpenedTab from '@components/openedtab';
 import FileList from '@components/filelist';
@@ -7,7 +14,7 @@ import Select from '@components/select';
 import Close from '@components/icons/close';
 import SettingIcon from '@components/icons/setting';
 import Prettier from '@components/prettier';
-import { generateFileTree, worker } from '@utils';
+import { worker, createOrUpdateModel, deleteModel } from '@utils';
 import { THEMES } from '@utils/consts';
 import { configTheme } from '@utils/initEditor';
 export interface filelist {
@@ -32,52 +39,6 @@ export interface MultiRefType {
     getSupportThemes: () => Array<string>,
     setTheme: (name: string) => void,
 }
-
-// 初始化各个文件
-function initializeFile(path: string, value: string) {
-    // model 是否存在
-    let model = window.monaco.editor
-      .getModels()
-      .find(model => model.uri.path === path);
-
-    if (model) {
-        if (model.getValue() !== value) {
-            model.pushEditOperations(
-                [],
-                [
-                    {
-                        range: model?.getFullModelRange(),
-                        text: value,
-                    },
-                ],
-                () => [],
-            );
-        }
-    } else if (path) {
-        const type = path.split('.').slice(-1)[0];
-        const config: {
-            [key: string]: string
-        } = {
-            'js': 'javascript',
-            'ts': 'typescript',
-            'less': 'less',
-            'jsx': 'javascript',
-            'tsx': 'typescript',
-        }
-        model = window.monaco.editor.createModel(
-            value,
-            config[type] || type,
-            new window.monaco.Uri().with({ path, scheme: 'music' })
-        );
-        model.updateOptions({
-            tabSize: 4,
-        });
-    }
-}
-
-// TODO:删除model
-
-// TODO:重命名model
 
 export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>(({
     defaultPath,
@@ -105,7 +66,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     const editorRef = useRef<monacoType.editor.IStandaloneCodeEditor | null>(null);
     const prePath = useRef<string | null>(defaultPath || '');
     const filesRef = useRef(defaultFiles);
-    const [filetree] = useState(generateFileTree(defaultFiles));
     const valueLisenerRef = useRef<monacoType.IDisposable>();
     const editorStatesRef = useRef(new Map());
 
@@ -154,6 +114,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                         }
                         return v;
                     }));
+                    filesRef.current[path] = v;
                     if (onFileChangeRef.current) {
                         onFileChangeRef.current(path, v);
                     }
@@ -221,7 +182,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         // 创建editor 实例
-        editorRef.current = window.monaco.editor.create(editorNodeRef.current!, optionsRef.current);
+        editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {
+            ...optionsRef.current,
+            model: null,
+        });
 
         const editorService = (editorRef.current as any)._codeEditorService;
         const openEditorBase = editorService.openCodeEditor.bind(editorService);
@@ -275,7 +239,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         // 初始化创建各个文件model
-        Object.keys(filesRef.current).forEach(key => initializeFile(key, filesRef.current[key]));
+        Object.keys(filesRef.current).forEach(key => createOrUpdateModel(key, filesRef.current[key]));
     }, []);
 
     useEffect(() => {
@@ -310,7 +274,8 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                     }
                     return v.path !== path
                 });
-                if (targetPath) {
+                // 目标文件是当前文件，且存在下一激活文件时，执行model及path切换的逻辑
+                if (targetPath && curPathRef.current === path) {
                     restoreModel(targetPath);
                     setCurPath(targetPath);
                 }
@@ -332,6 +297,32 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         getSupportThemes: () => THEMES,
         setTheme: (name) => configTheme(name),
     }));
+
+    const addFile = useCallback((path: string, value?: string) => {
+        createOrUpdateModel(path, value || '');
+        filesRef.current[path] = value || '';
+        // 神奇的延时，此处不加延时，monaco会抛错
+        setTimeout(() => {
+            handlePathChange(path);
+        }, 50);
+    }, [handlePathChange]);
+
+    const deleteFile = useCallback((path: string) => {
+        deleteModel(path);
+        delete filesRef.current[path];
+        onCloseFile(path);
+    }, [onCloseFile]);
+
+    const editFileName = useCallback((path: string, name: string) => {
+        const value = filesRef.current[path];
+        // 神奇的延时，此处不加延时，monaco会抛错
+        setTimeout(() => {
+            deleteFile(path);
+            // TODO:使用正则替换，减少开销
+            const newPath = path.split('/').slice(0, -1).concat(name).join('/');
+            addFile(newPath, value);
+        }, 50);
+    }, [deleteFile]);
 
     const [filelistWidth, setFilelistWidth] = useState(180);
 
@@ -374,6 +365,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         autoPrettierRef.current = e.target.checked;
     }, []);
 
+    const styles = useMemo(() => ({
+        width: `${filelistWidth}px`,
+    }), [filelistWidth]);
+
     return (
         <div
             ref={rootRef}
@@ -384,12 +379,15 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             onMouseUp={handleMoveEnd}
             className="music-monaco-editor">
             <FileList
-                style={{
-                    width: `${filelistWidth}px`,
-                }}
+                onEditFileName={editFileName}
+                onDeleteFile={deleteFile}
+                onAddFile={addFile}
+                // onEditFileName={editFileName}
+                // onDeleteFile={deleteFile}
+                style={styles}
                 title="web editor"
                 currentPath={curPath}
-                filetree={filetree}
+                defaultFiles={defaultFiles}
                 onPathChange={handlePathChange} />
             <div
                 onMouseDown={handleMoveStart}

@@ -159,7 +159,6 @@ export const startUp = () => {
         window.require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' } });
 
         window.require(['vs/editor/editor.main'], function () {
-            console.log(2);
         });
         window.define('prettier', [
                 'https://unpkg.com/prettier@2.5.1/standalone.js',

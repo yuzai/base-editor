@@ -93,6 +93,7 @@ const App = () => {
     return (
         <div>
             <div onClick={() => console.log(editorRef.current) }>ref api</div>
+            <div onClick={() => console.log(editorRef.current.getAllValue()) }>getAllValue</div>
             {/* <div onClick={sendMessage}>send postmessage</div> */}
             <div onClick={() => setColors(themes['OneDarkPro'].colors)}>refresh theme color</div>
             <select

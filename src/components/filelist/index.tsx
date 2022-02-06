@@ -1,33 +1,53 @@
-import React, { useCallback, useState, useMemo, useRef, useEffect, FocusEventHandler } from 'react';
+import React, {
+    useCallback,
+    useState,
+    useMemo,
+    useRef,
+    useEffect
+} from 'react';
 import AddFileIcon from '@components/icons/addfile';
 import AddFolderIcon from '@components/icons/addfolder';
 import Icon from '@components/icons';
 import Arrow from '@components/icons/arrow';
 import DeleteIcon from '@components/icons/delete';
 import EditIcon from '@components/icons/edit';
-import { generateFileTree, addSourceFile, deleteSourceFile, editSourceFileName } from '@utils/index';
+import {
+    generateFileTree,
+    addSourceFile,
+    deleteSourceFile,
+    editSourceFileName,
+    addSourceFolder,
+    deleteSourceFolder,
+    editSourceFolderName
+} from '@utils/index';
 import './index.less';
 
 const File: React.FC<{
     file: any,
     onPathChange: (key: string) => void,
-    directory?: string,
     root: boolean,
     currentPath?: string,
     onAddFile: (...args: any[]) => void,
     onConfirmAddFile: (...args: any[]) => void,
     onDeleteFile: (...args: any[]) => void,
     onEditFileName: (...args: any[]) => void,
+    onConfirmAddFolder: (...args: any[]) => void,
+    onAddFolder: (...args: any[]) => void,
+    onDeleteFolder: (...args: any[]) => void,
+    onEditFolderName: (...args: any[]) => void,
 }> = ({
     file,
     onPathChange,
-    directory = '',
     currentPath = '',
     root,
     onAddFile,
     onConfirmAddFile,
     onDeleteFile,
     onEditFileName,
+    onConfirmAddFolder,
+    onAddFolder,
+    onDeleteFolder,
+    onEditFolderName,
 }) => {
     const [showChild, setShowChild] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -46,18 +66,35 @@ const File: React.FC<{
         if (editing) {
             setEditing(false);
             if (file.name !== name) {
-                onEditFileName(file.path, name);
+                if (file._isDirectory) {
+                    onEditFolderName(file.path, name);
+                } else {
+                    onEditFileName(file.path, name);
+                }
             }
         } else {
-            onConfirmAddFile({
-                ...file,
-                name,
-            });
+            if (file._isDirectory) {
+                onConfirmAddFolder({
+                    ...file,
+                    name,
+                })
+            } else {
+                onConfirmAddFile({
+                    ...file,
+                    name,
+                });
+            }
         }
-    }, [editing, file, onEditFileName, onConfirmAddFile]);
+    }, [
+        editing,
+        file,
+        onEditFileName,
+        onConfirmAddFile,
+        onConfirmAddFolder,
+    ]);
 
     useEffect(() => {
-        if (file._isFile && !file.name) {
+        if (!root && !file.name) {
             nameRef.current!.focus();
         }
     }, [file]);
@@ -131,7 +168,7 @@ const File: React.FC<{
     return (
         <div className="music-monaco-editor-list-file-item">
             {
-                directory && (
+                file._isDirectory && (
                     <div onClick={handleClick} className="music-monaco-editor-list-file-item-row">
                         <Arrow collpase={!showChild} />
                         <Icon
@@ -139,7 +176,34 @@ const File: React.FC<{
                                 marginRight: '5px',
                             }}
                             type={showChild ? 'default_folder_opened' : 'default_folder'} />
-                        <span style={{flex: 1}}>{directory}</span>
+                        {
+                            (file.name && !editing) ? (
+                                <>
+                                    <span style={{ flex: 1 }}>{file.name}</span>
+                                    <EditIcon
+                                        onClick={(e:Event) => {
+                                            e.stopPropagation();
+                                            setEditing(true);
+                                        }}
+                                        className="music-monaco-editor-list-split-icon" />
+                                    <DeleteIcon
+                                        onClick={(e:Event) => {
+                                            e.stopPropagation();
+                                            onDeleteFolder(file.path);
+                                        }}
+                                        className="music-monaco-editor-list-split-icon" />
+                                </>
+                            ) : (
+                                <div
+                                    onClick={(e: any) => {
+                                        e.stopPropagation();
+                                    }}
+                                    onBlur={handleBlur}
+                                    ref={nameRef}
+                                    className="music-monaco-editor-list-file-item-new"
+                                    contentEditable />
+                            )
+                        }
                         <AddFileIcon
                             onClick={(e:Event) => {
                                 e.stopPropagation();
@@ -147,27 +211,35 @@ const File: React.FC<{
                                 onAddFile(file.path + '/');
                             }}
                             className="music-monaco-editor-list-split-icon" />
-                        {/* <AddFolderIcon
-                            className="music-monaco-editor-list-split-icon" /> */}
+                        <AddFolderIcon
+                            onClick={(e:Event) => {
+                                e.stopPropagation();
+                                setShowChild(true);
+                                onAddFolder(file.path + '/');
+                            }}
+                            className="music-monaco-editor-list-split-icon" />
                     </div>
                 )
             }
             {
                 (showChild || root) && (
-                    <div style={{paddingLeft: directory ? '7px' : '0'}}>
+                    <div style={{paddingLeft: file._isDirectory ? '7px' : '0'}}>
                         {
                             keys.map(item => (
                                 <File
                                     onEditFileName={onEditFileName}
+                                    onEditFolderName={onEditFolderName}
                                     onDeleteFile={onDeleteFile}
+                                    onDeleteFolder={onDeleteFolder}
                                     onConfirmAddFile={onConfirmAddFile}
+                                    onConfirmAddFolder={onConfirmAddFolder}
                                     onAddFile={onAddFile}
+                                    onAddFolder={onAddFolder}
                                     currentPath={currentPath}
                                     root={false}
                                     file={file.children[item]}
                                     onPathChange={onPathChange}
                                     key={item}
-                                    directory={item}
                                     />
                             ))
                         }
@@ -187,6 +259,9 @@ const FileTree: React.FC<{
     onAddFile: (...args: any) => void,
     onDeleteFile: (...args: any) => void,
     onEditFileName: (...args: any) => void,
+    onAddFolder: (...args: any) => void,
+    onDeleteFolder: (path: string) => void,
+    onEditFolderName: (path: string, name: string) => void
 }> = ({
     defaultFiles,
     onPathChange,
@@ -196,10 +271,13 @@ const FileTree: React.FC<{
     onAddFile,
     onDeleteFile,
     onEditFileName,
+    onAddFolder,
+    onDeleteFolder,
+    onEditFolderName
 }) => {
     const [collpase, setCollpase] = useState(false);
 
-    const [filetree, setFiletree] = useState(generateFileTree(defaultFiles));
+    const [filetree, setFiletree] = useState(() => generateFileTree(defaultFiles));
 
     const addFile = useCallback((path: string) => {
         setFiletree(addSourceFile(filetree, path));
@@ -227,6 +305,32 @@ const FileTree: React.FC<{
         setFiletree(tree);
     }, [filetree, onAddFile]);
 
+    const addFolder = useCallback((path: string) => {
+        setFiletree(addSourceFolder(filetree, path));
+    }, [filetree]);
+
+    const deleteFolder = useCallback((path: string) => {
+        setFiletree(deleteSourceFolder(filetree, path));
+        onDeleteFolder(path);
+    }, [filetree, onDeleteFolder]);
+
+    const editFolderName = useCallback((path: string, name: string) => {
+        setFiletree(editSourceFolderName(filetree, path, name));
+        onEditFolderName(path, name);
+    }, [filetree, onEditFolderName]);
+
+    const handleConfirmAddFolder = useCallback((file: any) => {
+        let tree:any = {};
+        if (file.name) {
+            tree = deleteSourceFolder(filetree, file.path);
+            tree = addSourceFolder(tree, file.path + file.name);
+            onAddFolder(file.path + file.name);
+        } else {
+            tree = deleteSourceFolder(filetree, file.path);
+        }
+        setFiletree(tree);
+    }, [filetree, onAddFolder]);
+
     const handleCollapse = useCallback(() => {
         setCollpase(pre => !pre);
     }, []);
@@ -247,17 +351,25 @@ const FileTree: React.FC<{
                         addFile('/');
                     }}
                     className="music-monaco-editor-list-split-icon" />
-                {/* <AddFolderIcon
-                    className="music-monaco-editor-list-split-icon" /> */}
+                <AddFolderIcon
+                    onClick={(e:Event) => {
+                        e.stopPropagation();
+                        addFolder('/');
+                    }}
+                    className="music-monaco-editor-list-split-icon" />
             </div>
             {
                 !collpase && (
                 <div className="music-monaco-editor-list-files">
                     <File
                         onEditFileName={editFileName}
+                        onEditFolderName={editFolderName}
                         onDeleteFile={deleteFile}
+                        onDeleteFolder={deleteFolder}
                         onAddFile={addFile}
+                        onAddFolder={addFolder}
                         onConfirmAddFile={handleConfirmAddFile}
+                        onConfirmAddFolder={handleConfirmAddFolder}
                         currentPath={currentPath}
                         root
                         file={filetree}

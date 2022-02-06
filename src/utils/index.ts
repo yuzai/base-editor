@@ -4,6 +4,7 @@ export function deepCopy<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj));
 }
 
+// 生成文件树
 export function generateFileTree(files: any) {
     const keys = Object.keys(files);
     const tree = {
@@ -26,9 +27,10 @@ export function generateFileTree(files: any) {
                 temp = temp[v].children;
             } else {
                 temp[v] = {
-                    _isDirectroy: true,
+                    _isDirectory: true,
                     children: {},
                     path: '/' + path.slice(0, index + 1).join('/'),
+                    name: v,
                 };
                 temp = temp[v].children;
             }
@@ -37,6 +39,7 @@ export function generateFileTree(files: any) {
     return tree;
 }
 
+// 在文件树中添加文件
 export function addSourceFile(sourcetree: any, path: string, value?: string) {
     const copy = deepCopy(sourcetree);
     const paths = (path || '/').slice(1).split('/');
@@ -54,9 +57,10 @@ export function addSourceFile(sourcetree: any, path: string, value?: string) {
             temp = temp[v].children;
         } else {
             temp[v] = {
-                _isDirectroy: true,
+                _isDirectory: true,
                 children: {},
                 path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
             };
             temp = temp[v].children;
         }
@@ -64,10 +68,10 @@ export function addSourceFile(sourcetree: any, path: string, value?: string) {
     return copy;
 }
 
+// 在文件树中删除文件
 export function deleteSourceFile(sourcetree: any, path: string) {
     const copy = deepCopy(sourcetree);
     const paths = (path || '/').slice(1).split('/');
-    const name = paths[paths.length - 1];
     let temp = copy.children;
     paths.forEach((v, index) => {
         if (index === paths.length - 1) {
@@ -76,9 +80,10 @@ export function deleteSourceFile(sourcetree: any, path: string) {
             temp = temp[v].children;
         } else {
             temp[v] = {
-                _isDirectroy: true,
+                _isDirectory: true,
                 children: {},
                 path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
             };
             temp = temp[v].children;
         }
@@ -86,6 +91,7 @@ export function deleteSourceFile(sourcetree: any, path: string) {
     return copy;
 }
 
+// 在文件树中修改文件名称
 export function editSourceFileName(sourcetree: any, path:string, name: string) {
     const copy = deepCopy(sourcetree);
     const paths = (path || '/').slice(1).split('/');
@@ -103,13 +109,105 @@ export function editSourceFileName(sourcetree: any, path:string, name: string) {
             temp = temp[v].children;
         } else {
             temp[v] = {
-                _isDirectroy: true,
+                _isDirectory: true,
                 children: {},
                 path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
             };
             temp = temp[v].children;
         }
     });
+    return copy;
+}
+
+// 在文件树中增加文件夹
+export function addSourceFolder(sourcetree: any, path: string, value?: string) {
+    const copy = deepCopy(sourcetree);
+    const paths = (path || '/').slice(1).split('/');
+    let temp = copy.children;
+    paths.forEach((v, index) => {
+        if (index === paths.length - 1) {
+            temp[v] = {
+                children: {},
+                path,
+                _isDirectory: true,
+                name: v,
+            }
+        } else if (temp[v]) {
+            temp = temp[v].children;
+        } else {
+            temp[v] = {
+                _isDirectory: true,
+                children: {},
+                path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
+            };
+            temp = temp[v].children;
+        }
+    });
+    return copy;
+}
+
+// 在文件树中删除文件夹
+export function deleteSourceFolder(sourcetree: any, path: string) {
+    const copy = deepCopy(sourcetree);
+    const paths = (path || '/').slice(1).split('/');
+    let temp = copy.children;
+    paths.forEach((v, index) => {
+        if (index === paths.length - 1) {
+            delete temp[v];
+        } else if (temp[v]) {
+            temp = temp[v].children;
+        } else {
+            temp[v] = {
+                _isDirectory: true,
+                children: {},
+                path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
+            };
+            temp = temp[v].children;
+        }
+    });
+    return copy;
+}
+
+function editSubFolder(tree: any, oldPath: string, newPath: string) {
+    tree.path = tree.path.replace(oldPath, newPath);
+    if (tree._isDirectory) {
+        Object.keys(tree.children).forEach(v => editSubFolder(tree.children[v], oldPath, newPath));
+    }
+}
+
+// 在文件树中修改文件夹名称
+export function editSourceFolderName(sourcetree: any, path:string, name: string) {
+    const copy = deepCopy(sourcetree);
+    const paths = (path || '/').slice(1).split('/');
+    let temp = copy.children;
+    const newPath =  '/' + paths.slice(0, -1).concat(name).join('/');
+    paths.forEach((v, index) => {
+        if (index === paths.length - 1) {
+            temp[name] = {
+                name,
+                path: newPath,
+                children: temp[v].children,
+                _isDirectory: true,
+            }
+            delete temp[v];
+        } else if (temp[v]) {
+            temp = temp[v].children;
+        } else {
+            temp[v] = {
+                _isDirectory: true,
+                children: {},
+                path: '/' + paths.slice(0, index + 1).join('/'),
+                name: v,
+            };
+            temp = temp[v].children;
+        }
+    });
+
+    // 修改文件夹名称后，修改子路径下所有文件及文件夹的路径
+    editSubFolder(temp[name], path + '/', newPath + '/');
     return copy;
 }
 
@@ -169,7 +267,7 @@ export function deleteModel(path: string) {
     if (model) {
         model.dispose();
     } else {
-        console.warn('要删除的文件不存在');
+        console.warn('要删除的model不存在');
     }
 }
 

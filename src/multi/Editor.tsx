@@ -18,7 +18,7 @@ import { worker, createOrUpdateModel, deleteModel } from '@utils';
 import { THEMES } from '@utils/consts';
 import { configTheme } from '@utils/initEditor';
 export interface filelist {
-    [key: string]: string,
+    [key: string]: string | null,
 }
 export interface MultiEditorIProps {
     defaultPath?: string,
@@ -34,7 +34,7 @@ export interface MultiEditorIProps {
 }
 
 export interface MultiRefType {
-    getValue: (path: string) => string,
+    getValue: (path: string) => string | null,
     getAllValue: () => filelist,
     getSupportThemes: () => Array<string>,
     setTheme: (name: string) => void,
@@ -239,7 +239,12 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
         // 初始化创建各个文件model
-        Object.keys(filesRef.current).forEach(key => createOrUpdateModel(key, filesRef.current[key]));
+        Object.keys(filesRef.current).forEach(key => {
+            const value = filesRef.current[key];
+            if (typeof value === 'string') {
+                createOrUpdateModel(key, value);
+            }
+        });
     }, []);
 
     useEffect(() => {
@@ -303,6 +308,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         filesRef.current[path] = value || '';
         // 神奇的延时，此处不加延时，monaco会抛错
         setTimeout(() => {
+            // 自动打开新建的文件
             handlePathChange(path);
         }, 50);
     }, [handlePathChange]);
@@ -314,7 +320,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, [onCloseFile]);
 
     const editFileName = useCallback((path: string, name: string) => {
-        const value = filesRef.current[path];
+        const value = filesRef.current[path] || '';
         // 神奇的延时，此处不加延时，monaco会抛错
         setTimeout(() => {
             deleteFile(path);
@@ -323,6 +329,71 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             addFile(newPath, value);
         }, 50);
     }, [deleteFile]);
+
+    const addFolder = useCallback((path: string) => {
+        let hasChild = false;
+        Object.keys(filesRef.current).forEach(p => {
+            if (p.startsWith(path + '/')) {
+                hasChild = true;
+            }
+        });
+        if (!hasChild) {
+            filesRef.current[path] = null;
+        }
+    }, []);
+
+    const deleteFolder = useCallback((path: string) => {
+        // 删除目录引用
+        delete filesRef.current[path];
+        // 删除子路径下的子文件和文件夹
+        Object.keys(filesRef.current).forEach(p => {
+            if (p.startsWith(path + '/')) {
+                const value = filesRef.current[p];
+                if (typeof value === 'string') {
+                    deleteFile(p);
+                }
+            }
+        });
+    }, [deleteFile]);
+
+    const editFolderName = useCallback((path: string, name: string) => {
+        const paths = (path || '/').slice(1).split('/');
+        const newPath =  '/' + paths.slice(0, -1).concat(name).join('/');
+        // 删除文件夹引用
+        delete filesRef.current[path];
+        // 新建文件夹引用
+        addFolder(newPath);
+        // 删除子路径下的子文件和文件夹
+        Object.keys(filesRef.current).forEach(p => {
+            if (p.startsWith(path + '/')) {
+                const value = filesRef.current[p];
+                if (typeof value === 'string') {
+                    setTimeout(() => {
+                         // 子文件需要删除原model
+                        deleteModel(p);
+                        // 重新创建新model
+                        const finalPath = p.replace(path + '/', newPath + '/');
+                        createOrUpdateModel(finalPath, value || '');
+                        filesRef.current[finalPath] = value || '';
+                    }, 50);
+                }
+                delete filesRef.current[p];
+            }
+        });
+        // 对已打开的涉事文件进行路径替换处理
+        setOpenedFiles((pre) => pre.map(v => {
+            if (v.path.startsWith(path + '/')) {
+                v.path = v.path.replace(path + '/', newPath + '/');
+            }
+            return v;
+        }));
+        // 如果涉及当前激活的model，则需要重新打开
+        if (curPathRef.current.startsWith(path + '/')) {
+            setTimeout(() => {
+                handlePathChange(curPathRef.current.replace(path + '/', newPath + '/'));
+            }, 50);
+        }
+    }, [handlePathChange, addFolder]);
 
     const [filelistWidth, setFilelistWidth] = useState(180);
 
@@ -382,8 +453,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 onEditFileName={editFileName}
                 onDeleteFile={deleteFile}
                 onAddFile={addFile}
-                // onEditFileName={editFileName}
-                // onDeleteFile={deleteFile}
+                onAddFolder={addFolder}
+                onDeleteFolder={deleteFolder}
+                onEditFolderName={editFolderName}
                 style={styles}
                 title="web editor"
                 currentPath={curPath}

@@ -35,7 +35,9 @@ const TabItem: React.FC<{
 
     useEffect(() => {
         if (active) {
-            itemRef.current?.scrollIntoView();
+            itemRef.current?.scrollIntoView({
+                block: 'nearest',
+            });
         }
     }, [active]);
 

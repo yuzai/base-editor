@@ -14,9 +14,6 @@ module.exports = {
         libraryTarget: 'umd',
     },
     mode: "production",
-    resolve: {
-        extensions: [".tsx", ".ts", ".js"],
-    },
     module: {
         rules: [
             {
@@ -48,6 +45,7 @@ module.exports = {
         })
     ],
     resolve: {
+        extensions: [".tsx", ".ts", ".js"],
         alias: {
             '@components': path.resolve(__dirname, './src/components'),
             '@utils': path.resolve(__dirname, './src/utils'),

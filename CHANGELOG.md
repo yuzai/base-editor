@@ -1,3 +1,26 @@
+## [1.0.26](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.25...v1.0.26) (2022-02-07)
+
+
+### Bug Fixes
+
+* 调整demo结构，优化select组件，优化prettier引入方案，避免污染全局bianlaing ([0053ba6](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/0053ba619a86d0dd515f0aa9edcb65ae49173855))
+* 修复编辑器大小调整后无法复原的问题，文件tab增加自动定位到当前文件的功能 ([ce388f5](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/ce388f581925bf881b2292786303beab200255de))
+* 自动代码补全概率失效 ([9ff1a69](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/9ff1a691138ba00b60f90e930f090bae2f45b1d4))
+* webpack build extension ([e274e58](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/e274e586e6e5224f0dcbe8286f6203a14d5b5fab))
+
+
+### Features
+
+* 调整目录结构，区分demo代码及包代码 ([23cdedb](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/23cdedb24ecb985662d74f041292e816cbeffbff))
+* 修改文件域为music:/, 增加eslint报错时，规则链接的跳转 ([8a2bf2a](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/8a2bf2a4d1867e3f944828db16240cf3ce88b4af))
+* 增加文件管理功能，实现文件的增加删除与名称修改 ([6a9403a](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/6a9403aa424b36d6a0f5db8d2555699e35a9d6dc))
+* 增加文件夹增删修改名称，修复focus文件时 ([5fa5827](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/5fa5827159ea577f47a2a2c2bb03b349eccf0014))
+* 整理目录结构，提供alias ([1575a9d](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/1575a9d6faac3f18dafb390642ba60aaa2351c20))
+* 整理主题选择 ([3323085](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/332308551307f10894864a3885f68bcd1079becd))
+* change cdn to unpkg ([f8be654](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/f8be654c89e1372f3b1c93df3d1acaf8834cf25b))
+
+
+
 ## [1.0.25](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.24...v1.0.25) (2022-01-20)
 
 

@@ -24,7 +24,12 @@ const TabItem: React.FC<{
 }) => {
     const itemRef = useRef<HTMLDivElement | null>(null);
     const name = file.path.split('/').slice(-1)[0];
-    const fileType = file.path.split('.').slice(-1);
+    let fileType;
+        if (file.path && file.path.indexOf('.') !== -1) {
+            fileType = `file_type_${file.path.split('.').slice(-1)}`;
+        } else {
+            fileType = 'default_file';
+        }
     const active = currentPath === file.path;
     const handlePathChange = useCallback((e) => {
         const key = e.currentTarget.dataset.src!;
@@ -79,7 +84,7 @@ const TabItem: React.FC<{
                 `music-monaco-editor-opened-tab-item ${active ? 'music-monaco-editor-opened-tab-item-focused': ''}`
             }
             onClick={handlePathChange}>
-            <Icon type={`file_type_${fileType}`} style={{ marginRight: '2px' }} />
+            <Icon type={fileType} style={{ marginRight: '2px' }} />
             <span style={{ flex: 1, paddingRight: '5px' }}>{name}</span>
             <span
                 data-name="editing"

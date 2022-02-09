@@ -460,6 +460,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             onMouseUp={handleMoveEnd}
             className="music-monaco-editor">
             <FileList
+                rootEl={rootRef.current}
                 onEditFileName={editFileName}
                 onDeleteFile={deleteFile}
                 onAddFile={addFile}

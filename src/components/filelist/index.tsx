@@ -11,6 +11,7 @@ import Icon from '@components/icons';
 import Arrow from '@components/icons/arrow';
 import DeleteIcon from '@components/icons/delete';
 import EditIcon from '@components/icons/edit';
+import Modal from '@components/modal';
 import {
     generateFileTree,
     addSourceFile,
@@ -113,6 +114,12 @@ const File: React.FC<{
         const files = Object.keys(childs).filter(key => childs[key]._isFile).sort();
         return folders.concat(files);
     }, [file]);
+
+    useEffect(() => {
+        if (currentPath && currentPath.startsWith(file.path + '/')) {
+            setShowChild(true);
+        }
+    }, [currentPath, file.path]);
 
     if (file._isFile) {
         let fileType;
@@ -261,7 +268,8 @@ const FileTree: React.FC<{
     onEditFileName: (...args: any) => void,
     onAddFolder: (...args: any) => void,
     onDeleteFolder: (path: string) => void,
-    onEditFolderName: (path: string, name: string) => void
+    onEditFolderName: (path: string, name: string) => void,
+    rootEl: HTMLElement | null,
 }> = ({
     defaultFiles,
     onPathChange,
@@ -273,7 +281,8 @@ const FileTree: React.FC<{
     onEditFileName,
     onAddFolder,
     onDeleteFolder,
-    onEditFolderName
+    onEditFolderName,
+    rootEl
 }) => {
     const [collpase, setCollpase] = useState(false);
 
@@ -284,9 +293,23 @@ const FileTree: React.FC<{
     }, [filetree]);
 
     const deleteFile = useCallback((path: string) => {
-        setFiletree(deleteSourceFile(filetree, path));
-        onDeleteFile(path);
-    }, [filetree, onDeleteFile]);
+        Modal.confirm({
+            target: rootEl,
+            okText: '删除',
+            onOk: (close: () => void) => {
+                setFiletree(deleteSourceFile(filetree, path));
+                onDeleteFile(path);
+                close();
+            },
+            title: '是否确实要删除本文件',
+            content: () => (
+                <div>
+                    <div>删除后不可恢复</div>
+                    <div>当前文件路径: {path}</div>
+                </div>
+            )
+        });
+    }, [filetree, onDeleteFile, rootEl]);
 
     const editFileName = useCallback((path: string, name: string) => {
         setFiletree(editSourceFileName(filetree, path, name));
@@ -310,9 +333,23 @@ const FileTree: React.FC<{
     }, [filetree]);
 
     const deleteFolder = useCallback((path: string) => {
-        setFiletree(deleteSourceFolder(filetree, path));
-        onDeleteFolder(path);
-    }, [filetree, onDeleteFolder]);
+        Modal.confirm({
+            target: rootEl,
+            okText: '删除',
+            onOk: (close: () => void) => {
+                setFiletree(deleteSourceFolder(filetree, path));
+            onDeleteFolder(path);
+                close();
+            },
+            title: '是否确实要删除此文件夹',
+            content: () => (
+                <div>
+                    <div>文件夹删除后不可恢复，同时会删除子文件夹</div>
+                    <div>当前文件路径: {path}</div>
+                </div>
+            )
+        });
+    }, [filetree, onDeleteFolder, rootEl]);
 
     const editFolderName = useCallback((path: string, name: string) => {
         setFiletree(editSourceFolderName(filetree, path, name));

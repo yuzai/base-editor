@@ -114,7 +114,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                         }
                         return v;
                     }));
-                    filesRef.current[path] = v;
+                    // filesRef.current[path] = v;
                     if (onFileChangeRef.current) {
                         onFileChangeRef.current(path, v);
                     }
@@ -209,23 +209,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         }
     }, [openOrFocusPath]);
 
-    const dealKey = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
-        const ctrlKey = e.ctrlKey || e.metaKey;
-        const keyCode = e.keyCode;
-
-        if (ctrlKey && keyCode === 83) {
-            e.preventDefault();
-            if (autoPrettierRef.current) {
-                handleFromat()?.then(() => {
-                    setOpenedFiles((pre) => pre.map(v => {
-                        if (v.path === curPathRef.current) {
-                            v.status = 'saved';
-                        }
-                        return v;
-                    }));
-                    filesRef.current[curPathRef.current] = curValueRef.current;
-                });
-            } else {
+    const saveFile = useCallback((path: string) => {
+        if (autoPrettierRef.current) {
+            handleFromat()?.then(() => {
                 setOpenedFiles((pre) => pre.map(v => {
                     if (v.path === curPathRef.current) {
                         v.status = 'saved';
@@ -233,35 +219,17 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                     return v;
                 }));
                 filesRef.current[curPathRef.current] = curValueRef.current;
-            }
+            });
+        } else {
+            setOpenedFiles((pre) => pre.map(v => {
+                if (v.path === curPathRef.current) {
+                    v.status = 'saved';
+                }
+                return v;
+            }));
+            filesRef.current[curPathRef.current] = curValueRef.current;
         }
-    }, [handleFromat]);
-
-    useEffect(() => {
-        // 初始化创建各个文件model
-        Object.keys(filesRef.current).forEach(key => {
-            const value = filesRef.current[key];
-            if (typeof value === 'string') {
-                createOrUpdateModel(key, value);
-            }
-        });
     }, []);
-
-    useEffect(() => {
-        if (editorRef.current) {
-            if (options.theme) {
-                configTheme(options.theme);
-            }
-            editorRef.current.updateOptions(options);
-        }
-    }, [options]);
-
-    useEffect(() => {
-        if (onPathChangeRef.current && curPath) {
-            onPathChangeRef.current(curPath);
-        }
-        curPathRef.current = curPath;
-    }, [curPath]);
 
     const onCloseFile = useCallback((path: string) => {
         setOpenedFiles((pre) => {
@@ -295,6 +263,48 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         });
 
     }, [restoreModel]);
+
+    const abortFileChange = useCallback((path: string) => {
+        const value = filesRef.current[path] || '';
+        createOrUpdateModel(path, value);
+        onCloseFile(path);
+    }, [onCloseFile]);
+
+    const dealKey = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        const ctrlKey = e.ctrlKey || e.metaKey;
+        const keyCode = e.keyCode;
+
+        if (ctrlKey && keyCode === 83) {
+            e.preventDefault();
+            saveFile(curPathRef.current);
+        }
+    }, [handleFromat, saveFile]);
+
+    useEffect(() => {
+        // 初始化创建各个文件model
+        Object.keys(filesRef.current).forEach(key => {
+            const value = filesRef.current[key];
+            if (typeof value === 'string') {
+                createOrUpdateModel(key, value);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        if (editorRef.current) {
+            if (options.theme) {
+                configTheme(options.theme);
+            }
+            editorRef.current.updateOptions(options);
+        }
+    }, [options]);
+
+    useEffect(() => {
+        if (onPathChangeRef.current && curPath) {
+            onPathChangeRef.current(curPath);
+        }
+        curPathRef.current = curPath;
+    }, [curPath]);
 
     useImperativeHandle(ref, () => ({
         getValue: (path: string) => filesRef.current[path],
@@ -466,6 +476,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 className="music-monaco-editor-drag" />
             <div className="music-monaco-editor-area">
                 <OpenedTab
+                    onSaveFile={saveFile}
+                    onAbortSave={abortFileChange}
+                    rootEl={rootRef.current}
                     currentPath={curPath}
                     openedFiles={openedFiles}
                     onCloseFile={onCloseFile}

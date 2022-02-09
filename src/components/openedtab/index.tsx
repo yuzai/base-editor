@@ -5,6 +5,7 @@ import React, {
     useState,
     useRef
 } from 'react';
+import Modal from '@components/modal';
 import Icon from '../icons';
 import './index.less';
 
@@ -16,11 +17,17 @@ const TabItem: React.FC<{
     onPathChange?: (key: string) => void,
     currentPath?: string,
     onCloseFile: (key: string) => void,
+    rootEl: HTMLElement | null,
+    onSaveFile: (path: string) => void,
+    onAbortSave: (path: string) => void,
 }> = ({
     file,
     onPathChange,
     currentPath,
-    onCloseFile
+    onCloseFile,
+    rootEl,
+    onSaveFile,
+    onAbortSave
 }) => {
     const itemRef = useRef<HTMLDivElement | null>(null);
     const name = file.path.split('/').slice(-1)[0];
@@ -37,6 +44,40 @@ const TabItem: React.FC<{
             onPathChange(key);
         }
     }, [onPathChange]);
+
+    const handleMouseDown = useCallback((e) => {
+        console.log(e.button);
+        if (e.button !== 2) {
+            return;
+        }
+        setTimeout(() => {
+            Modal.confirm({
+                title: '是否确认删除？',
+                target: rootEl,
+                onOk: (close: () => void) => {
+                    close();
+                },
+                content: (close: any) => (
+                    <div
+                        className="music-monaco-editor-rightclick-panel">
+                        <div
+                            className="music-monaco-editor-rightclick-panel-item">
+                            关闭
+                        </div>
+                        <div
+                            className="music-monaco-editor-rightclick-panel-item">
+                            关闭其他
+                        </div>
+                        <div
+                            className="music-monaco-editor-rightclick-panel-item">
+                            关闭全部
+                        </div>
+                    </div>
+                ),
+                // className: 'music-monaco-editor-modal-rightclick'
+            });
+        });
+    }, [rootEl]);
 
     useEffect(() => {
         if (active) {
@@ -60,11 +101,38 @@ const TabItem: React.FC<{
     }
     const handleLeave = () => {
         setHover(false);
+        setHoverRight(false);
     }
 
     const handleClose: MouseEventHandler<HTMLSpanElement> = (e) => {
         e.stopPropagation();
-        onCloseFile(file.path);
+        if (file.status === 'editing') {
+            setTimeout(() => {
+                Modal.confirm({
+                    title: '是否要保存对本文件的修改',
+                    target: rootEl,
+                    okText: '保存',
+                    cancelText: '不保存',
+                    onCancel: (close: () => void) => {
+                        close();
+                        onAbortSave(file.path);
+                    },
+                    onOk: (close: () => void) => {
+                        close();
+                        onCloseFile(file.path);
+                        onSaveFile(file.path);
+                    },
+                    content: () => (
+                        <div>
+                            <div>如果不保存，你的更改将丢失</div>
+                            <div>当前文件路径: {file.path}</div>
+                        </div>
+                    ),
+                });
+            });
+        } else {
+            onCloseFile(file.path);
+        }
     }
 
     let closeVisible = true;
@@ -77,6 +145,8 @@ const TabItem: React.FC<{
     return (
         <div
             ref={itemRef}
+            onContextMenu={(e) => e.preventDefault()}
+            onMouseDown={handleMouseDown}
             onMouseOver={handleOver}
             onMouseLeave={handleLeave}
             data-src={file.path}
@@ -113,11 +183,17 @@ const OpenedTab: React.FC<{
     onPathChange?: (key: string) => void,
     currentPath?: string,
     onCloseFile: (path: string) => void,
+    rootEl: HTMLElement | null,
+    onSaveFile: (path: string) => void,
+    onAbortSave: (path: string) => void,
 }> = ({
     openedFiles,
     onPathChange,
     currentPath,
     onCloseFile,
+    rootEl,
+    onSaveFile,
+    onAbortSave,
 }) => {
     return (
         <div className="music-monaco-editor-opened-tab-wrapper">
@@ -125,6 +201,9 @@ const OpenedTab: React.FC<{
                 {
                     openedFiles.map(file => 
                         <TabItem
+                            onSaveFile={onSaveFile}
+                            onAbortSave={onAbortSave}
+                            rootEl={rootEl}
                             onCloseFile={onCloseFile}
                             file={file}
                             key={file.path}

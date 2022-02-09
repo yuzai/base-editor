@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PrettierIcon from '../icons/prettier';
+import './index.less';
 
 const Prettier = (props: any) => {
 
@@ -45,7 +46,7 @@ const Prettier = (props: any) => {
 
     return (
         <div {...props}>
-            <PrettierIcon />
+            <PrettierIcon className="music-monaco-editor-prettier-icon" />
         </div>
     )
 }

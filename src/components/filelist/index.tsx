@@ -94,6 +94,13 @@ const File: React.FC<{
         onConfirmAddFolder,
     ]);
 
+    const handleKeyDown = useCallback((e: any) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            handleBlur(e);
+        }
+    }, [handleBlur]);
+
     useEffect(() => {
         if (!root && !file.name) {
             nameRef.current!.focus();
@@ -102,8 +109,15 @@ const File: React.FC<{
 
     useEffect(() => {
         if (editing) {
+            const dotIndex = file.name.indexOf('.');
             nameRef.current!.textContent = file.name;
             nameRef.current!.focus();
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.setStart(nameRef.current?.firstChild!, 0);
+            range.setEnd(nameRef.current?.firstChild!, dotIndex > 0 ? dotIndex : file.name.length);
+            selection?.removeAllRanges();
+            selection?.addRange(range);
         }
     }, [editing]);
 
@@ -163,6 +177,8 @@ const File: React.FC<{
                             onClick={(e: any) => {
                                 e.stopPropagation();
                             }}
+                            spellCheck={false}
+                            onKeyDown={handleKeyDown}
                             onBlur={handleBlur}
                             ref={nameRef}
                             className="music-monaco-editor-list-file-item-new"
@@ -199,32 +215,34 @@ const File: React.FC<{
                                             onDeleteFolder(file.path);
                                         }}
                                         className="music-monaco-editor-list-split-icon" />
+                                    <AddFileIcon
+                                        onClick={(e:Event) => {
+                                            e.stopPropagation();
+                                            setShowChild(true);
+                                            onAddFile(file.path + '/');
+                                        }}
+                                        className="music-monaco-editor-list-split-icon" />
+                                    <AddFolderIcon
+                                        onClick={(e:Event) => {
+                                            e.stopPropagation();
+                                            setShowChild(true);
+                                            onAddFolder(file.path + '/');
+                                        }}
+                                        className="music-monaco-editor-list-split-icon" />
                                 </>
                             ) : (
                                 <div
                                     onClick={(e: any) => {
                                         e.stopPropagation();
                                     }}
+                                    spellCheck={false}
+                                    onKeyDown={handleKeyDown}
                                     onBlur={handleBlur}
                                     ref={nameRef}
                                     className="music-monaco-editor-list-file-item-new"
                                     contentEditable />
                             )
                         }
-                        <AddFileIcon
-                            onClick={(e:Event) => {
-                                e.stopPropagation();
-                                setShowChild(true);
-                                onAddFile(file.path + '/');
-                            }}
-                            className="music-monaco-editor-list-split-icon" />
-                        <AddFolderIcon
-                            onClick={(e:Event) => {
-                                e.stopPropagation();
-                                setShowChild(true);
-                                onAddFolder(file.path + '/');
-                            }}
-                            className="music-monaco-editor-list-split-icon" />
                     </div>
                 )
             }

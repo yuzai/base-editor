@@ -47,11 +47,12 @@ const TabItem: React.FC<{
 
     const handleMouseDown = useCallback((e) => {
         console.log(e.button);
+        console.log(e);
         if (e.button !== 2) {
             return;
         }
         setTimeout(() => {
-            Modal.confirm({
+            Modal.create({
                 title: '是否确认删除？',
                 target: rootEl,
                 onOk: (close: () => void) => {

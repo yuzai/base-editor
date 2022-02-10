@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ASSETSPATH } from '@utils/consts';
 import './index.less';
 
@@ -24,10 +24,16 @@ const Icon: React.FC<{
     style = {},
     className = '',
 }) => {
+    const [src, setSrc] = useState(`${ASSETSPATH}icons/${fileTypeMap(type)}.svg`);
+    const handleError = (e: any) => {
+        setSrc(`${ASSETSPATH}icons/default_file.svg`);
+    }
+
     return (
         <img
+            onError={handleError}
             style={style}
-            src={`${ASSETSPATH}icons/${fileTypeMap(type)}.svg`}
+            src={src}
             className={`music-monaco-icons ${className}`}/>
     )
 }

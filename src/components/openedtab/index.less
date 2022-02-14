@@ -88,3 +88,25 @@
         opacity: 0;
     }
 }
+
+.music-monaco-editor-rightclick {
+    &-panel {
+        position: fixed;
+        background: var(--monaco-editorWidget-background);
+        padding: 5px 0;
+        font-size: 12px;
+        line-height: 30px;
+        min-width: 150px;
+        color: var(--monaco-editor-foreground);
+
+        &-item {
+            padding: 0 10px;
+            cursor: pointer;
+
+            &:hover {
+                color: var(--monaco-list-hoverForeground);
+                background: var(--monaco-list-focusBackground);
+            }
+        }
+    }
+}

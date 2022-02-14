@@ -45,41 +45,6 @@ const TabItem: React.FC<{
         }
     }, [onPathChange]);
 
-    const handleMouseDown = useCallback((e) => {
-        console.log(e.button);
-        console.log(e);
-        if (e.button !== 2) {
-            return;
-        }
-        setTimeout(() => {
-            Modal.create({
-                title: '是否确认删除？',
-                target: rootEl,
-                onOk: (close: () => void) => {
-                    close();
-                },
-                content: (close: any) => (
-                    <div
-                        className="music-monaco-editor-rightclick-panel">
-                        <div
-                            className="music-monaco-editor-rightclick-panel-item">
-                            关闭
-                        </div>
-                        <div
-                            className="music-monaco-editor-rightclick-panel-item">
-                            关闭其他
-                        </div>
-                        <div
-                            className="music-monaco-editor-rightclick-panel-item">
-                            关闭全部
-                        </div>
-                    </div>
-                ),
-                // className: 'music-monaco-editor-modal-rightclick'
-            });
-        });
-    }, [rootEl]);
-
     useEffect(() => {
         if (active) {
             itemRef.current?.scrollIntoView({
@@ -105,7 +70,7 @@ const TabItem: React.FC<{
         setHoverRight(false);
     }
 
-    const handleClose: MouseEventHandler<HTMLSpanElement> = (e) => {
+    const handleClose: MouseEventHandler<HTMLSpanElement> = useCallback((e) => {
         e.stopPropagation();
         if (file.status === 'editing') {
             setTimeout(() => {
@@ -134,7 +99,52 @@ const TabItem: React.FC<{
         } else {
             onCloseFile(file.path);
         }
-    }
+    }, [file, onCloseFile])
+
+    const handleMouseDown = useCallback((e) => {
+        if (e.button !== 2) {
+            return;
+        }
+        const position = {
+            x: e.clientX,
+            y: e.clientY,
+        }
+        setTimeout(() => {
+            Modal.create({
+                title: '是否确认删除？',
+                // target: rootEl,
+                onOk: (close: () => void) => {
+                    close();
+                },
+                content: (close: any) => (
+                    <div
+                        style={{
+                            top: `${position.y}px`,
+                            left: `${position.x}px`,
+                        }}
+                        className="music-monaco-editor-rightclick-panel">
+                        <div
+                            onClick={(e) => {
+                                close();
+                                handleClose(e);
+                            }}
+                            className="music-monaco-editor-rightclick-panel-item">
+                            Close
+                        </div>
+                        <div
+                            className="music-monaco-editor-rightclick-panel-item">
+                            Close others
+                        </div>
+                        <div
+                            className="music-monaco-editor-rightclick-panel-item">
+                            Close all
+                        </div>
+                    </div>
+                ),
+                className: 'music-monaco-editor-modal-rightclick'
+            });
+        });
+    }, [handleClose]);
 
     let closeVisible = true;
     if (file.status === 'editing' && !hoverRight) {

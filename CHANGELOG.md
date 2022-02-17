@@ -1,3 +1,12 @@
+## [1.0.28](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.27...v1.0.28) (2022-02-17)
+
+
+### Bug Fixes
+
+* modal style ([8935907](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/893590775c65d9c123f4d3cced9c0de037d3c9c9))
+
+
+
 ## [1.0.27](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.25...v1.0.27) (2022-02-17)
 
 

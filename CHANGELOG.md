@@ -1,3 +1,32 @@
+## [1.0.27](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.25...v1.0.27) (2022-02-17)
+
+
+### Bug Fixes
+
+* webpack build extension ([e274e58](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/e274e586e6e5224f0dcbe8286f6203a14d5b5fab))
+* 修复编辑器大小调整后无法复原的问题，文件tab增加自动定位到当前文件的功能 ([ce388f5](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/ce388f581925bf881b2292786303beab200255de))
+* 自动代码补全概率失效 ([9ff1a69](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/9ff1a691138ba00b60f90e930f090bae2f45b1d4))
+* 调整demo结构，优化select组件，优化prettier引入方案，避免污染全局bianlaing ([0053ba6](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/0053ba619a86d0dd515f0aa9edcb65ae49173855))
+
+
+### Features
+
+* change cdn to unpkg ([f8be654](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/f8be654c89e1372f3b1c93df3d1acaf8834cf25b))
+* 优化新增编辑框，美化样式，增加自动选择，增加回车输入，兼容部分场景下文件类型找不到不展示默认文件图标的情况 ([8d75ab4](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/8d75ab43a40d70af44cfa0dbacb7fef6f0643bf1))
+* 修改文件域为music:/, 增加eslint报错时，规则链接的跳转 ([8a2bf2a](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/8a2bf2a4d1867e3f944828db16240cf3ce88b4af))
+* 增加tab区文件类型识别 ([c6fd7a9](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/c6fd7a952d67e8958c2b726bf68066a3adba442d))
+* 增加右键功能覆盖 ([7229b4b](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/7229b4bf31dcc4870430e93629b305d661d0e81d))
+* 增加文件夹增删修改名称，修复focus文件时 ([5fa5827](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/5fa5827159ea577f47a2a2c2bb03b349eccf0014))
+* 增加文件夹自动展开功能，增加文件删除提醒功能 ([82d557e](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/82d557e671ca8dd6c2677057cd4939e1ff966f0f))
+* 增加文件管理功能，实现文件的增加删除与名称修改 ([6a9403a](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/6a9403aa424b36d6a0f5db8d2555699e35a9d6dc))
+* 完成右键closeall, closeOthers功能 ([4341420](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/434142040cdaac6625aa4580c02714e09795697b))
+* 整理主题选择 ([3323085](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/332308551307f10894864a3885f68bcd1079becd))
+* 整理目录结构，提供alias ([1575a9d](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/1575a9d6faac3f18dafb390642ba60aaa2351c20))
+* 补充基础组件button, modal, 增加已修改文件的保存二次确认，prettier增加hover高亮 ([8dca39e](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/8dca39eae4ec9d0e121fa16aacf51fae0d8ad8ed))
+* 调整目录结构，区分demo代码及包代码 ([23cdedb](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/commits/23cdedb24ecb985662d74f041292e816cbeffbff))
+
+
+
 ## [1.0.26](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.25...v1.0.26) (2022-02-07)
 
 

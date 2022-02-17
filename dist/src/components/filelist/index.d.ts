@@ -12,5 +12,6 @@ declare const _default: React.NamedExoticComponent<{
     onAddFolder: (...args: any) => void;
     onDeleteFolder: (path: string) => void;
     onEditFolderName: (path: string, name: string) => void;
+    rootEl: HTMLElement | null;
 }>;
 export default _default;

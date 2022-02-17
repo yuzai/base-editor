@@ -78,10 +78,10 @@ Modal.confirm = (props: any) => {
             <div className="music-monaco-editor-modal-mask" onClick={close}/>
             <div className="music-monaco-editor-modal-content music-monaco-editor-modal-content-confirm">
                 {
-                    props.title && <div className="title">{props.title}</div>
+                    props.title && <div className="music-monaco-editor-modal-content-title">{props.title}</div>
                 }
-                <div className="content">{props.content(close)}</div>
-                <div className="footer">
+                <div className="music-monaco-editor-modal-content-content">{props.content(close)}</div>
+                <div className="music-monaco-editor-modal-content-footer">
                     <Button onClick={() => {
                         if (props.onCancel) {
                             props.onCancel(close)
@@ -100,7 +100,7 @@ Modal.confirm = (props: any) => {
                     {/* <div className="button button-default" onClick={close}>取消</div> */}
                     {/* <div className="button button-primary">确认</div> */}
                 </div>
-                <div className="close" onClick={close}>
+                <div className="music-monaco-editor-modal-content-close" onClick={close}>
                     <Close style={{
                         width: '12px',
                         height: '12px'

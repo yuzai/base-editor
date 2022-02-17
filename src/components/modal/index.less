@@ -28,38 +28,38 @@
             border-radius: 10px;
             color: var(--monaco-list-activeSelectionForeground);
             padding-bottom: 10px;
+        }
 
-            & .title {
-                background: var(--monaco-editorCursor-foreground);
-                height: 30px;
-                border-radius: 10px 10px 0 0;
-                padding-left: 10px;
-                line-height: 30px;
-                color: var(--monaco-settings-headerForeground);
-            }
+        &-title {
+            background: var(--monaco-editorCursor-foreground);
+            height: 30px;
+            border-radius: 10px 10px 0 0;
+            padding-left: 10px;
+            line-height: 30px;
+            color: var(--monaco-settings-headerForeground);
+        }
 
-            & .content {
-                font-size: 14px;
-                padding: 20px;
-            }
+        &-content {
+            font-size: 14px;
+            padding: 20px;
+        }
 
-            & .footer {
-                padding: 0 10px;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-            }
+        &-footer {
+            padding: 0 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
 
-            & .close {
-                position: absolute;
-                right: 10px;
-                top: 5px;
-                cursor: pointer;
-                color: var(--monaco-settings-headerForeground);
+        &-close {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            cursor: pointer;
+            color: var(--monaco-settings-headerForeground);
 
-                &:focus {
-                    color: var(--monaco-list-hoverForeground);
-                }
+            &:focus {
+                color: var(--monaco-list-hoverForeground);
             }
         }
     }

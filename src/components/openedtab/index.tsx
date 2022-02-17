@@ -20,6 +20,7 @@ const TabItem: React.FC<{
     rootEl: HTMLElement | null,
     onSaveFile: (path: string) => void,
     onAbortSave: (path: string) => void,
+    onCloseOtherFiles: (path: string) => void,
 }> = ({
     file,
     onPathChange,
@@ -27,7 +28,8 @@ const TabItem: React.FC<{
     onCloseFile,
     rootEl,
     onSaveFile,
-    onAbortSave
+    onAbortSave,
+    onCloseOtherFiles
 }) => {
     const itemRef = useRef<HTMLDivElement | null>(null);
     const name = file.path.split('/').slice(-1)[0];
@@ -99,7 +101,7 @@ const TabItem: React.FC<{
         } else {
             onCloseFile(file.path);
         }
-    }, [file, onCloseFile])
+    }, [file, onCloseFile, onAbortSave, rootEl, onSaveFile])
 
     const handleMouseDown = useCallback((e) => {
         if (e.button !== 2) {
@@ -132,10 +134,18 @@ const TabItem: React.FC<{
                             Close
                         </div>
                         <div
+                            onClick={() => {
+                                close();
+                                onCloseOtherFiles(file.path);
+                            }}
                             className="music-monaco-editor-rightclick-panel-item">
                             Close others
                         </div>
                         <div
+                            onClick={() => {
+                                close();
+                                onCloseOtherFiles('');
+                            }}
                             className="music-monaco-editor-rightclick-panel-item">
                             Close all
                         </div>
@@ -144,7 +154,7 @@ const TabItem: React.FC<{
                 className: 'music-monaco-editor-modal-rightclick'
             });
         });
-    }, [handleClose]);
+    }, [handleClose, onCloseOtherFiles, file.path]);
 
     let closeVisible = true;
     if (file.status === 'editing' && !hoverRight) {
@@ -197,6 +207,7 @@ const OpenedTab: React.FC<{
     rootEl: HTMLElement | null,
     onSaveFile: (path: string) => void,
     onAbortSave: (path: string) => void,
+    onCloseOtherFiles: (path: string) => void,
 }> = ({
     openedFiles,
     onPathChange,
@@ -205,6 +216,7 @@ const OpenedTab: React.FC<{
     rootEl,
     onSaveFile,
     onAbortSave,
+    onCloseOtherFiles,
 }) => {
     return (
         <div className="music-monaco-editor-opened-tab-wrapper">
@@ -220,6 +232,7 @@ const OpenedTab: React.FC<{
                             key={file.path}
                             onPathChange={onPathChange}
                             currentPath={currentPath}
+                            onCloseOtherFiles={onCloseOtherFiles}
                             />
                     )
                 }

@@ -209,7 +209,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
         }
     }, [openOrFocusPath]);
 
-    const saveFile = useCallback((path: string) => {
+    const saveFile = useCallback(() => {
         if (autoPrettierRef.current) {
             handleFromat()?.then(() => {
                 setOpenedFiles((pre) => pre.map(v => {
@@ -229,7 +229,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             }));
             filesRef.current[curPathRef.current] = curValueRef.current;
         }
-    }, []);
+    }, [handleFromat]);
 
     const onCloseFile = useCallback((path: string) => {
         setOpenedFiles((pre) => {
@@ -264,6 +264,72 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     }, [restoreModel]);
 
+    const closeOtherFiles = useCallback((path: string) => {
+        const unSavedFiles = openedFiles.filter(v => v.status === 'editing');
+        if (unSavedFiles.length) {
+            Modal.confirm({
+                title: '是否要保留未保存文件的修改',
+                target: rootRef.current,
+                okText: '保存',
+                cancelText: '不保存',
+                onCancel: (close: () => void) => {
+                    close();
+                    setOpenedFiles(pre => pre.filter(p => p.path === path));
+                    restoreModel(path);
+                    setCurPath(path);
+                    // 恢复文件的数值修改
+                    unSavedFiles.forEach((v) => {
+                        const value = filesRef.current[v.path] || '';
+                        createOrUpdateModel(v.path, value);
+                    });
+                    prePath.current = path;
+                },
+                onOk: (close: () => void) => {
+                    close();
+                    unSavedFiles.forEach((v) => {
+                        const model = window.monaco.editor
+                            .getModels()
+                            .find(model => model.uri.path === v.path);
+                        if (autoPrettierRef.current) {
+                            const p = window.require('prettier');
+                            if (!p.prettier) return;
+                            const text = p.prettier.format(model?.getValue(), {
+                                filepath: model?.uri.path,
+                                plugins: p.prettierPlugins,
+                                singleQuote: true,
+                                tabWidth: 4,
+                            });
+                            filesRef.current[v.path] = text;
+                            createOrUpdateModel(v.path, text);
+                        } else {
+                            filesRef.current[v.path] = model?.getValue() || '';
+                        }
+                    });
+                    setOpenedFiles(pre => pre.filter(p => p.path === path));
+                    restoreModel(path);
+                    setCurPath(path);
+                    prePath.current = path;
+                },
+                content: () => (
+                    <div>
+                        <div>如果不保存，你的更改将丢失</div>
+                        <div>
+                            未保存的文件路径: 
+                        </div>
+                        {
+                            unSavedFiles.map(v => (<div key={v.path}>{v.path}</div>))
+                        }
+                    </div>
+                ),
+            });
+        } else {
+            setOpenedFiles(pre => pre.filter(p => p.path === path));
+            restoreModel(path);
+            setCurPath(path);
+            prePath.current = path;
+        }
+    }, [restoreModel, openedFiles]);
+
     const abortFileChange = useCallback((path: string) => {
         const value = filesRef.current[path] || '';
         createOrUpdateModel(path, value);
@@ -276,9 +342,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
         if (ctrlKey && keyCode === 83) {
             e.preventDefault();
-            saveFile(curPathRef.current);
+            saveFile();
         }
-    }, [handleFromat, saveFile]);
+    }, [saveFile]);
 
     useEffect(() => {
         // 初始化创建各个文件model
@@ -338,7 +404,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             const newPath = path.split('/').slice(0, -1).concat(name).join('/');
             addFile(newPath, value);
         }, 50);
-    }, [deleteFile]);
+    }, [deleteFile, addFile]);
 
     const addFolder = useCallback((path: string) => {
         let hasChild = false;
@@ -477,6 +543,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 className="music-monaco-editor-drag" />
             <div className="music-monaco-editor-area">
                 <OpenedTab
+                    onCloseOtherFiles={closeOtherFiles}
                     onSaveFile={saveFile}
                     onAbortSave={abortFileChange}
                     rootEl={rootRef.current}

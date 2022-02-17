@@ -92,6 +92,7 @@ const File: React.FC<{
         onEditFileName,
         onConfirmAddFile,
         onConfirmAddFolder,
+        onEditFolderName,
     ]);
 
     const handleKeyDown = useCallback((e: any) => {
@@ -105,7 +106,7 @@ const File: React.FC<{
         if (!root && !file.name) {
             nameRef.current!.focus();
         }
-    }, [file]);
+    }, [file, root]);
 
     useEffect(() => {
         if (editing) {
@@ -119,7 +120,7 @@ const File: React.FC<{
             selection?.removeAllRanges();
             selection?.addRange(range);
         }
-    }, [editing]);
+    }, [editing, file]);
 
     const keys = useMemo(() => {
         if (file._isFile) return [];
@@ -390,7 +391,7 @@ const FileTree: React.FC<{
         setCollpase(pre => !pre);
     }, []);
 
-    console.log(filetree);
+    // console.log(filetree);
 
     return (
         <div className="music-monaco-editor-list-wrapper" style={style}>

@@ -8,7 +8,7 @@
     "webpack": "webpack",
     "build": "webpack --config webpack.build.js",
     "builddemo": "webpack --config webpack.build.demo.js",
-    "dev": "webpack serve",
+    "dev": "webpack serve --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "preversion": "npm run build && npm run doc",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && node replace.js && git add .",

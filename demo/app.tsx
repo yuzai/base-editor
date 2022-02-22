@@ -123,8 +123,9 @@ const App = () => {
                     </div>
                 )
             }
+            <div>依赖了比较多的静态文件，且部署在github pages上，访问速度过慢可以考虑clone代码后本地npm run dev查看demo</div>
             {/* <iframe src="http://localhost:8081/index.html" ref={sandboxRef} /> */}
-            <div style={{
+            {/* <div style={{
                 position: 'absolute',
                 right: '0',
                 top: '0',
@@ -155,7 +156,7 @@ const App = () => {
                         </div>)
                     )
                 }
-            </div>
+            </div> */}
         </div>
     );
 }

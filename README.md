@@ -5,7 +5,7 @@
 ### 安装
 
 ```
-nenpm install @music/base-editor
+npm install yuzai-base-editor
 ```
 
 ### 使用

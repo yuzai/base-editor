@@ -1,4 +1,4 @@
-importScripts('https://st.qa.igame.163.com/g/monaco-editor/eslint.js');
+importScripts('https://yuzai.github.io/public/eslint.js');
 
 const baseRuleChange = {
     'react/jsx-filename-extension': 0,

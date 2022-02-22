@@ -1,3 +1,20 @@
+## [1.0.31](https://github.com/yuzai/base-editor/compare/v1.0.30...v1.0.31) (2022-02-22)
+
+
+### Bug Fixes
+
+* readme ([280ae1b](https://github.com/yuzai/base-editor/commit/280ae1bd415b7a0d0229c9eaa3273dfd251bb3ca))
+
+
+### Features
+
+* build demo ([c1cbddf](https://github.com/yuzai/base-editor/commit/c1cbddfbc6a6e7f7a5a3eca6452a31d4dce198b8))
+* change package name ([82e9161](https://github.com/yuzai/base-editor/commit/82e916129029fda896ba801b0af3b8cd1d57fb7c))
+* change readme ([15a3851](https://github.com/yuzai/base-editor/commit/15a3851ed007f49baa41fbf2d33373be2dea026c))
+* change readme ([efb43e8](https://github.com/yuzai/base-editor/commit/efb43e847e86826cc0635b3186246283534d22b4))
+
+
+
 ## [1.0.30](https://github.com/yuzai/base-editor/compare/v1.0.29...v1.0.30) (2022-02-22)
 
 

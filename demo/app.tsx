@@ -2,7 +2,7 @@ import ReactDOM, { unstable_batchedUpdates } from 'react-dom';
 import { useCallback, useState, useEffect, useRef } from 'react';
 import Editor from '../src/multi';
 import { themes } from '@utils/initEditor';
-import { THEMES } from '@utils/consts';
+import { THEMES, ASSETSPATH } from '@utils/consts';
 import { copyDataToClipBoard } from '@utils';
 interface filelist {
     [key: string]: string,
@@ -41,7 +41,7 @@ const App = () => {
 
     useEffect(() => {
         // 获取多文件
-        const promises = filesName.map(async v => await (await (fetch(`/editorfiles${v}`))).text());
+        const promises = filesName.map(async v => await (await (fetch(`${ASSETSPATH}editorfiles${v}`))).text());
         Promise.all(promises).then(filesContent => {
             const res:filelist = {};
             filesContent.forEach((content, index) => {

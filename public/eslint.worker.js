@@ -1,6 +1,5 @@
 importScripts('https://st.qa.igame.163.com/g/monaco-editor/eslint.js');
 
-// 本配置照搬云音乐eslint配置，见https://g.hz.netease.com/cloudmusic-frontend/lint/elint-preset
 const baseRuleChange = {
     'react/jsx-filename-extension': 0,
     'react/prop-types': 1,

@@ -5,9 +5,6 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Alias = require('alias-jsconfig-webpack-plugin');
 
-const devServer = {
-}
-
 module.exports = {
     entry: {
         app: "./demo/index.ts",
@@ -17,11 +14,10 @@ module.exports = {
         path: path.join(__dirname, "build"),
         filename: "[name].bundle.js"
     },
-    mode: process.env.NODE_ENV || "development",
+    mode: "production",
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
     },
-    devServer,
     module: {
         rules: [
             {
@@ -52,7 +48,7 @@ module.exports = {
             process: 'process/browser',
         }),
         new webpack.DefinePlugin({
-            _ASSETSPATH: JSON.stringify('/'),
+            _ASSETSPATH: JSON.stringify('https://st.qa.igame.163.com/g/monaco-editor/'),
         }),
         new Alias({
             language: 'ts', // or 'ts'

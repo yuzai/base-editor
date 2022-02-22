@@ -48,7 +48,7 @@ module.exports = {
             process: 'process/browser',
         }),
         new webpack.DefinePlugin({
-            _ASSETSPATH: JSON.stringify('https://yuzai.github.io/base-editor/public/'),
+            _ASSETSPATH: JSON.stringify('/base-editor/public/'),
         }),
         new Alias({
             language: 'ts', // or 'ts'

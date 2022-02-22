@@ -12,7 +12,7 @@ npm install yuzai-base-editor
 
 ```js
 
-import { MultiEditor } from '@music/base-editor';
+import { MultiEditor } from 'yuzai-base-editor';
 
 function IDE() {
     const defaultFiles = {

@@ -1,4 +1,4 @@
-importScripts('https://yuzai.github.io/public/eslint.js');
+importScripts('https://yuzai.github.io/base-editor/public/eslint.js');
 
 const baseRuleChange = {
     'react/jsx-filename-extension': 0,

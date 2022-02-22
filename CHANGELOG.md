@@ -1,3 +1,7 @@
+## [1.0.32](https://github.com/yuzai/base-editor/compare/v1.0.31...v1.0.32) (2022-02-22)
+
+
+
 ## [1.0.31](https://github.com/yuzai/base-editor/compare/v1.0.30...v1.0.31) (2022-02-22)
 
 

@@ -1,3 +1,19 @@
+## [1.0.29](https://github.com/yuzai/base-editor/compare/v1.0.28...v1.0.29) (2022-02-22)
+
+
+### Bug Fixes
+
+* demo assets path ([0af527c](https://github.com/yuzai/base-editor/commit/0af527c3ba13023fd47c30ab556a16cbd9a306e8))
+* readme ([47a3ce1](https://github.com/yuzai/base-editor/commit/47a3ce190cf32eb0598252b168fab41909a1f320))
+* rm ([987fa8d](https://github.com/yuzai/base-editor/commit/987fa8d8b3825e0247f6ed61e4f3ef6af9bdf5a9))
+
+
+### Features
+
+* change asset_path ([a19c949](https://github.com/yuzai/base-editor/commit/a19c9495befcc45ab79cdf25ca852abaa6c9c9e7))
+
+
+
 ## [1.0.28](https://g.hz.netease.com/NeteaseMusicUI/cloud-ide/monaco-editor-playground/compare/v1.0.27...v1.0.28) (2022-02-17)
 
 

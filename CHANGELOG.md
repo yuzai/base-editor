@@ -1,3 +1,17 @@
+## [1.0.30](https://github.com/yuzai/base-editor/compare/v1.0.29...v1.0.30) (2022-02-22)
+
+
+### Bug Fixes
+
+* worker address ([2d4bc64](https://github.com/yuzai/base-editor/commit/2d4bc645b9ccb7344845400313dbba8f27bc682b))
+
+
+### Features
+
+* change script address ([0d65a13](https://github.com/yuzai/base-editor/commit/0d65a13777011c8a94105ef8076ad7a545100e5e))
+
+
+
 ## [1.0.29](https://github.com/yuzai/base-editor/compare/v1.0.28...v1.0.29) (2022-02-22)
 
 

@@ -48,7 +48,7 @@ module.exports = {
             process: 'process/browser',
         }),
         new webpack.DefinePlugin({
-            _ASSETSPATH: JSON.stringify('https://st.qa.igame.163.com/g/monaco-editor/'),
+            _ASSETSPATH: JSON.stringify('https://yuzai.github.io/base-editor/public/'),
         }),
         new Alias({
             language: 'ts', // or 'ts'

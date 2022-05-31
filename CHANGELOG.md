@@ -1,3 +1,12 @@
+## [1.0.34](https://github.com/yuzai/base-editor/compare/v1.0.33...v1.0.34) (2022-05-31)
+
+
+### Bug Fixes
+
+* cors for public resources ([ecfd60e](https://github.com/yuzai/base-editor/commit/ecfd60e83d810ab5aea0c6f2fb49f4e3ed1cc8d1))
+
+
+
 ## [1.0.33](https://github.com/yuzai/base-editor/compare/v1.0.32...v1.0.33) (2022-05-31)
 
 

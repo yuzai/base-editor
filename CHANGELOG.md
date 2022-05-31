@@ -1,3 +1,13 @@
+## [1.0.33](https://github.com/yuzai/base-editor/compare/v1.0.32...v1.0.33) (2022-05-31)
+
+
+### Bug Fixes
+
+* package.json ([b9ac6d9](https://github.com/yuzai/base-editor/commit/b9ac6d955089e17b38e6b41d02b64d143999fc0a))
+* public path error ([780904a](https://github.com/yuzai/base-editor/commit/780904a05aff4fcb7be1aae78b3bc44c34902cde))
+
+
+
 ## [1.0.32](https://github.com/yuzai/base-editor/compare/v1.0.31...v1.0.32) (2022-02-22)
 
 

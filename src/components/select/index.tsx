@@ -91,7 +91,7 @@ const Select:SelectInterface = ({
                         getContainer={getContainer}>
                         {
                             React.Children.toArray(children).map(child => (
-                                React.isValidElement(child) ? React.cloneElement(child, {
+                                React.isValidElement(child) ? React.cloneElement(child as React.ReactElement<any>, {
                                     defaultValue: data.value,
                                     handleSelect,
                                 }) : child

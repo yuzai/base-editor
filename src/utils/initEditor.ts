@@ -40,6 +40,8 @@ const grammerMap: {
     'source.css': 'css.tmLanguage.json',
     'source.less': 'less.tmLanguage.json',
     'text.html.basic': 'html.tmLanguage.json',
+	'source.verilog': 'Verilog.tmLanguage.json',
+	'source.systemverilog': 'system-verilog.tmLanguage.json',
 }
 
 export const themes: {
@@ -129,6 +131,8 @@ function configMonaco() {
     grammars.set('less', 'source.less');
     grammars.set('css', 'source.css');
     grammars.set('html', 'text.html.basic');
+	grammars.set('verilog', 'source.verilog');
+	grammars.set('systemverilog', 'source.systemverilog');
     
     // 创建一个注册表，可以从作用域名称来加载对应的语法文件
     const registry = new Registry({

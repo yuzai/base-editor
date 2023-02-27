@@ -245,6 +245,8 @@ export function createOrUpdateModel(path: string, value: string) {
             'less': 'less',
             'jsx': 'javascript',
             'tsx': 'typescript',
+            "v": "verilog",
+            "sv": "systemverilog"
         }
         model = window.monaco.editor.createModel(
             value,

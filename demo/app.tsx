@@ -45,7 +45,7 @@ const App = () => {
         Promise.all(promises).then(filesContent => {
             const res:filelist = {};
             filesContent.forEach((content, index) => {
-                res[filesName[index]] = content;
+                res[decodeURIComponent(filesName[index])] = content;
             });
             unstable_batchedUpdates(() => {
                 setFiles(res);
